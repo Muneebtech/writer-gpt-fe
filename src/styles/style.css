@@ -1,0 +1,8 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+.selected {
+  background-color: #171717;
+  border-color: #404040;
+  color: #fff;
+}
