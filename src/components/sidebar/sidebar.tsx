@@ -1,13 +1,31 @@
 // components/Sidebar.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import './../../../public/profile.png'
 import { FiSettings, FiLogOut, FiPlayCircle, FiFolder, FiTv, FiBook, FiHome, FiEdit, FiHash, FiMessageSquare } from 'react-icons/fi';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { decryptData } from '@/utils/localStorage';
+import { useLogout } from '@/services/auth';
+import Cookies from 'js-cookie';
 
 const Sidebar: React.FC = () => {
     const router = useRouter();
+    const userData = decryptData("userdata")
+    const token = decryptData("token")
+    console.log(userData, '------', token);
+    const { mutate, isSuccess } = useLogout()
+    const handleLogout = () => {
+        mutate({ refreshToken: token?.refresh?.token })
+        Cookies.remove('userdata')
+        Cookies.remove('token')
+    }
+    useEffect(() => {
+        if (isSuccess) {
+            router.push('/signin')
+        }
+    }, [isSuccess])
+
     return (
         <div className="w-48 h-screen flex flex-col text-white">
             <div className="p-4">
@@ -56,8 +74,8 @@ const Sidebar: React.FC = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/create">
-                            <span className={` ${router.pathname === '/create' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
+                        <Link href="/script/create">
+                            <span className={` ${router.pathname === '/script/create' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
                                 <span className="w-6 mr-2">
                                     <FiEdit />
 
@@ -76,40 +94,17 @@ const Sidebar: React.FC = () => {
                             </span>
                         </Link>
                     </li>
-                    <li>
-                        <Link href="/chatGPT">
-                            <span className={` ${router.pathname === '/chatGPT' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
-                                <span className="w-6 mr-2">
-                                    <FiMessageSquare />
-                                </span>
-                                ChatGPT
-                            </span>
-                        </Link>
-                    </li>
                     {/* Add more navigation options here */}
                 </ul>
             </nav>
             <div className="p-4">
                 {/* Bottom section */}
                 <ul className="space-y-2">
-                    <li>
-                        <Link href="/settings">
-                            <span className=" flex items-center">
-                                <FiSettings className="mr-2" />
-                                Settings
-                            </span>
-                        </Link>
-
-                    </li>
-                    <li>
-                        <Link href="/logout">
-
-                            <span className=" flex items-center">
-                                <FiLogOut className="mr-2" />
-                                Logout
-                            </span>
-                        </Link>
-
+                    <li onClick={handleLogout}>
+                        <span className=" flex items-center cursor-pointer" >
+                            <FiLogOut className="mr-2" />
+                            Logout
+                        </span>
                     </li>
                 </ul>
             </div>

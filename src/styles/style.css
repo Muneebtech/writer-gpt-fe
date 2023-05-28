@@ -6,3 +6,26 @@
   border-color: #404040;
   color: #fff;
 }
+.searchBar {
+  border-radius: 35px;
+  display: flex;
+  align-items: center;
+  padding: 0px 30px;
+gap: 10px;
+  width: 444px;
+  height: 36px;
+  left: 416px;
+  top: 23px;
+  background: #FBFBFB;
+}
+.bgSearch{
+  background: #FBFBFB;
+  height: 36px;
+
+}
+.table-bb-gray{
+  border-bottom: 1px solid #DADADA;
+}
+.table-b-gray{
+  border: 0.5px solid #DADADA;
+}

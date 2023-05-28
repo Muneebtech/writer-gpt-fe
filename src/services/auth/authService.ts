@@ -1,5 +1,5 @@
 import { request } from "./../../lib/axios";
-import { SignIn } from "./types";
+import { Logout, SignIn } from "./types";
 
 export class AuthService {
   static logInUser(data: SignIn) {
@@ -9,10 +9,11 @@ export class AuthService {
       data: data,
     });
   }
-  static logoutUser() {
+  static logoutUser(data: Logout) {
     return request({
       url: "/auth/logout",
       method: "POST",
+      data: data,
     });
   }
 }

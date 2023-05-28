@@ -18,8 +18,10 @@ const SignInPage: NextPageWithLayout = () => {
   };
 
   if (isSuccess) {
+    console.log(data?.tokens,'tokens');
+    
     encryptData(data?.user, 'userdata')
-    encryptData(data?.tokens?.access?.token, 'token')
+    encryptData(data?.tokens, 'token')
     router.push('/')
   }
 

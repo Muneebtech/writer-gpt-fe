@@ -13,4 +13,4 @@ const index: NextPageWithLayout = () => {
 
 export default index
 index.isProtected = true
-index.getLayout = getAppLayout
+index.getLayout = (page)=> getAppLayout(page,'Brands')

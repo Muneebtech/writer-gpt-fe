@@ -1,12 +1,11 @@
 import { useMutation } from "react-query";
 import { AuthService } from "../authService";
+import { Logout } from "../types";
 
-export function useLogout(callback?: Function) {
-  const { mutate, isLoading } = useMutation(AuthService.logoutUser, {
-    onSuccess: (_response) => {
-      callback?.();
-    },
-  });
+export function useLogout() {
+  const { mutate, isLoading,isSuccess } = useMutation((data: Logout) =>
+    AuthService.logoutUser(data)
+  );
 
-  return { mutate, isLoading };
+  return { mutate, isLoading,isSuccess };
 }
