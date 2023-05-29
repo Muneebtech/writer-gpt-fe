@@ -1,8 +1,10 @@
 import { categories } from "@/constants/categories";
+import { languageModel } from "@/constants/languageModel";
 import { OutroItems, Outros } from "@/constants/outro";
 import {
   Box,
   Button,
+  FormControlLabel,
   Input,
   InputLabel,
   List,
@@ -10,8 +12,11 @@ import {
   ListItemText,
   MenuItem,
   Modal,
+  Radio,
+  RadioGroup,
   Select,
   Typography,
+  makeStyles,
 } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { FiCopy } from "react-icons/fi";
@@ -53,6 +58,8 @@ const Script = () => {
 
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
+  };
+  const handleSelect = () => {
     setTextareaValue(selectedOption);
     setModalOpen(false);
   };
@@ -64,24 +71,40 @@ const Script = () => {
   return (
     <>
       <div className="flex flex-col gap-8">
-        <div className="flex justify-between gap-2 items-center w-full">
+        <div className="flex justify-between gap-2 items-centers w-full">
           <div className="flex flex-col gap-2 w-half">
-            <InputLabel htmlFor="name">Name</InputLabel>
-            <Input id="name" placeholder="Enter name here"></Input>
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              placeholder="Enter name here"
+              className="inputField"
+            ></input>
             <InputLabel htmlFor="name">Category</InputLabel>
-            <Select placeholder="Select category">
+            <Select className="inputField" placeholder="Select category">
               {categories.map((item) => (
                 <MenuItem value={item}>{item}</MenuItem>
               ))}
             </Select>
-            <InputLabel htmlFor="youtube">Youtube link</InputLabel>
-            <div className="flex items-center">
-              <Input
-                id="youtube"
+            <InputLabel htmlFor="modal">Language Model</InputLabel>
+            <Select
+              id="modal"
+              className="inputField"
+              placeholder="Select language model"
+            >
+              {languageModel.map((item) => (
+                <MenuItem value={item.script}>{item.modelTitle}</MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div className="flex flex-col gap-2 w-half">
+            <InputLabel htmlFor="discord">Discord Link</InputLabel>
+            <div className="inputField flex items-center">
+              <input
+                id="discord"
                 type="text"
-                placeholder="Insert Youtube Link"
+                placeholder="Insert Discord Link"
                 ref={InputRef}
-                className="py-2 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow"
+                className="focus:outline-none w-full"
               />
               <Button
                 onClick={copyToClipboard}
@@ -91,16 +114,13 @@ const Script = () => {
                 <FiCopy />
               </Button>
             </div>
-          </div>
-          <div className="flex flex-col gap-2 w-half">
-            <div>
-              <InputLabel htmlFor="discord">Discord Link</InputLabel>
-              <Input
-                id="discord"
-                type="text"
-                placeholder="Insert Discord Link"
+            <InputLabel htmlFor="youtube">Youtube link</InputLabel>
+            <div className="inputField flex items-center">
+              <input
+                id="youtube"
+                placeholder="Insert Youtube Link"
                 ref={InputRef}
-                className="py-2 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow"
+                className="focus:outline-none w-full"
               />
               <Button
                 onClick={copyToClipboard}
@@ -111,32 +131,36 @@ const Script = () => {
               </Button>
             </div>
             <InputLabel htmlFor="topic">Topic</InputLabel>
-            <Select id="topic" placeholder="Select topic">
+            <Select
+              id="topic"
+              placeholder="Select topic"
+              className="inputField"
+            >
               {categories.map((item) => (
                 <MenuItem value={item}>{item}</MenuItem>
               ))}
             </Select>
           </div>
         </div>
-        <InputLabel htmlFor="outro">Outro</InputLabel>
-        <Select
-          id="outro"
-          className="w-full"
-          placeholder="Select outro"
-        ></Select>
 
-        <div className="container mx-auto mt-8">
+        <div className="container mx-auto">
+          <InputLabel htmlFor="outro">Outro</InputLabel>
           <textarea
+            id="outro"
             value={textareaValue}
             onChange={handleTextareaChange}
-            className="border w-full border-gray-300 rounded p-2 mb-4"
+            className="textField focus:outline-none"
           ></textarea>
-          <button
+          <Button
             onClick={handleOpenModal}
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded px-4 py-2"
+            sx={{
+              color: "white",
+              fontSize: "12px",
+            }}
+            className="bg-black hover:bg-black"
           >
             Change
-          </button>
+          </Button>
           <Modal
             open={modalOpen}
             onClose={handleCloseModal}
@@ -146,22 +170,64 @@ const Script = () => {
               <Typography variant="h6" gutterBottom>
                 Select an option
               </Typography>
-              <List>
-                {Outros.map((item: OutroItems, index) => {
-                  return (
-                    <ListItem
-                      button
-                      key={index}
-                      onClick={() => handleSelectOption(item.value)}
-                    >
-                      <ListItemText primary={item.value} />
+              <RadioGroup
+                value={selectedOption}
+                onChange={(e) => handleSelectOption(e.target.value)}
+              >
+                <List>
+                  {Outros.map((item: OutroItems, index) => (
+                    <ListItem button key={index}>
+                      <FormControlLabel
+                        value={item.value}
+                        control={
+                          <Radio
+                            sx={{
+                              color: "black",
+                              "&.Mui-checked": {
+                                color: "black",
+                              },
+                            }}
+                          />
+                        }
+                        label={item.value}
+                      />
                     </ListItem>
-                  );
-                })}
-              </List>
+                  ))}
+                </List>
+              </RadioGroup>
+              <div className="flex justify-end gap-2">
+                <Button
+                  sx={{
+                    color: "black",
+                    border: "1px solid #DADADA",
+                  }}
+                  className="bg-white hover:bg-white"
+                  onClick={() => setModalOpen(false)}
+                >
+                  Close
+                </Button>
+                <Button
+                  sx={{
+                    color: "white",
+                  }}
+                  className="bg-black hover:bg-black"
+                  onClick={() => handleSelect()}
+                >
+                  Select
+                </Button>
+              </div>
             </div>
           </Modal>
         </div>
+        <Button
+          sx={{
+            color: "white",
+            width:'200px'
+          }}
+          className="bg-black hover:bg-black place-self-end"
+        >
+          CREATE
+        </Button>
       </div>
     </>
   );
