@@ -1,10 +1,9 @@
-import { categories } from "@/constants/categories";
-import { languageModel } from "@/constants/languageModel";
-import { OutroItems, Outros } from "@/constants/outro";
+import { categories } from "@/constants/categories"
+import { OutroItems, Outros } from "@/constants/outro"
 import {
   Box,
   Button,
-  FormControlLabel,
+  Checkbox,
   Input,
   InputLabel,
   List,
@@ -15,25 +14,125 @@ import {
   Radio,
   RadioGroup,
   Select,
-  Typography,
-  makeStyles,
-} from "@mui/material";
-import React, { useRef, useState } from "react";
-import { FiCopy } from "react-icons/fi";
+  SelectChangeEvent,
+  Typography
+} from "@mui/material"
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
+import { FiCopy } from "react-icons/fi"
+import { AiOutlineUpload } from "react-icons/ai"
 
+import Image from "next/image"
+interface FormData {
+  name: string;
+  categorylist: string;
+  youtubeLink: string;
+  discordLink: string;
+  learningVideos: string;
+  videoTopic: string;
+
+
+  // Add more properties with their respective data types
+}
 const Script = () => {
-  const InputRef = useRef<HTMLInputElement>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [textareaValue, setTextareaValue] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null);
+  const discordLinkInputRef = useRef<HTMLInputElement>(null);
+  const InputRef = useRef<HTMLInputElement>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedOption, setSelectedOption] = useState("")
+  const [textareaValue, setTextareaValue] = useState("")
+  const [selectedColor, setSelectedColor] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
+  const colors = ['red', 'blue', 'green', 'yellow'];
+  const [profileimage, setProfileImage] = useState<File | null>(null);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    categorylist: '',
+    youtubeLink: "",
+    discordLink: "",
+    learningVideos: "",
+    videoTopic: ""
+  });
 
-  const copyToClipboard = () => {
-    if (InputRef.current !== null) {
-      InputRef?.current.select();
-      InputRef?.current.setSelectionRange(0, 99999);
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+  const [userData, setUserData] = useState<FormData[]>([])
+  const handleInputChange = (event: ChangeEvent<{ name?: string; value: string }>) => {
+    const { name, value } = event.target;
+
+    setFormData(prevState => ({
+      ...prevState,
+      [name || '']: value,
+    }));
+  };
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    const { name, value } = event.target;
+  
+    setFormData(prevState => ({
+      ...prevState,
+      [name || '']: value,
+    }));
+  };
+  console.log("UserData", userData)
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+
+    const newFormData = {
+      name: formData.name,
+      categorylist: formData.categorylist,
+      youtubeLink: formData.youtubeLink,
+      discordLink: formData.discordLink,
+      learningVideos: formData.learningVideos,
+      videoTopic: formData.videoTopic,
+      profileimage: profileimage ? URL.createObjectURL(profileimage) : ''
+    };
+
+    setUserData(prevData => [...prevData, newFormData]);
+    setFormData({
+      name: '',
+      categorylist: '',
+      youtubeLink: '',
+      discordLink: '',
+      learningVideos: '',
+      videoTopic: ''
+    });
+    setProfileImage(null);
+  };
+  const handleUploadPictureClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
-    document.execCommand("copy");
-    alert("Link copied to clipboard!");
+  };
+  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedImage = event.target.files[0];
+      setProfileImage(selectedImage);
+
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        profileimage: URL.createObjectURL(selectedImage)
+      }));
+    }
+  };
+  const copyToClipboard = (fieldName: string) => {
+    let textToCopy = '';
+
+    if (fieldName === 'discordLink' && discordLinkInputRef.current) {
+      textToCopy = discordLinkInputRef.current.value;
+    } else if (fieldName === 'youtubeLink' && youtubeLinkSelectRef.current) {
+      textToCopy = youtubeLinkSelectRef.current.value;
+    }
+
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          console.log('Text copied to clipboard:', textToCopy);
+        })
+        .catch((error) => {
+          console.error('Error copying text to clipboard:', error);
+        });
+    }
   };
   const style = {
     position: "absolute" as "absolute",
@@ -45,192 +144,272 @@ const Script = () => {
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
-  };
+    p: 4
+  }
 
   const handleOpenModal = () => {
-    setModalOpen(true);
-  };
+    setModalOpen(true)
+  }
 
   const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+    setModalOpen(false)
+  }
 
   const handleSelectOption = (option: string) => {
-    setSelectedOption(option);
-  };
-  const handleSelect = () => {
-    setTextareaValue(selectedOption);
-    setModalOpen(false);
-  };
+    setSelectedOption(option)
+    setTextareaValue(selectedOption)
+    setModalOpen(false)
+  }
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextareaValue(e.target.value);
-  };
-
+    setTextareaValue(e.target.value)
+  }
   return (
     <>
-      <div className="flex flex-col gap-8">
-        <div className="flex justify-between gap-2 items-centers w-full">
-          <div className="flex flex-col gap-2 w-half">
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              placeholder="Enter name here"
-              className="inputField"
-            ></input>
-            <InputLabel htmlFor="name">Category</InputLabel>
-            <Select className="inputField" placeholder="Select category">
-              {categories.map((item) => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
-            </Select>
-            <InputLabel htmlFor="modal">Language Model</InputLabel>
-            <Select
-              id="modal"
-              className="inputField"
-              placeholder="Select language model"
-            >
-              {languageModel.map((item) => (
-                <MenuItem value={item.script}>{item.modelTitle}</MenuItem>
-              ))}
-            </Select>
+      {/* Right-section */}
+      <div className="flex items-center">
+        <div className="Side-spacing ">
+          <div className="pt-2 pb-2">
+            <InputLabel htmlFor="name" className="pt-2 pb-2 font-bold">
+              Name
+            </InputLabel>
+            <Input
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Enter Your Name"
+              className="border ps-4 pe-4 pt-3 pb-3 input-size "
+            />
           </div>
-          <div className="flex flex-col gap-2 w-half">
-            <InputLabel htmlFor="discord">Discord Link</InputLabel>
-            <div className="inputField flex items-center">
-              <input
-                id="discord"
-                type="text"
-                placeholder="Insert Discord Link"
-                ref={InputRef}
-                className="focus:outline-none w-full"
-              />
-              <Button
-                onClick={copyToClipboard}
-                title="Copy Link"
-                className="bg-gray-200 border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
+          <div className="pt-2 pb-2">
+            <div className="flex items-center justify-between w-10/12">
+              <InputLabel htmlFor="name" className="pt-2 pb-2 font-bold">
+                Category
+              </InputLabel>
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => setIsOpen(true)}
               >
-                <FiCopy />
-              </Button>
-            </div>
-            <InputLabel htmlFor="youtube">Youtube link</InputLabel>
-            <div className="inputField flex items-center">
-              <input
-                id="youtube"
-                placeholder="Insert Youtube Link"
-                ref={InputRef}
-                className="focus:outline-none w-full"
-              />
-              <Button
-                onClick={copyToClipboard}
-                title="Copy Link"
-                className="bg-gray-200 border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
-              >
-                <FiCopy />
-              </Button>
-            </div>
-            <InputLabel htmlFor="topic">Topic</InputLabel>
-            <Select
-              id="topic"
-              placeholder="Select topic"
-              className="inputField"
-            >
-              {categories.map((item) => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
-            </Select>
-          </div>
-        </div>
-
-        <div className="container mx-auto">
-          <InputLabel htmlFor="outro">Outro</InputLabel>
-          <textarea
-            id="outro"
-            value={textareaValue}
-            onChange={handleTextareaChange}
-            className="textField focus:outline-none"
-          ></textarea>
-          <Button
-            onClick={handleOpenModal}
-            sx={{
-              color: "white",
-              fontSize: "12px",
-            }}
-            className="bg-black hover:bg-black"
-          >
-            Change
-          </Button>
-          <Modal
-            open={modalOpen}
-            onClose={handleCloseModal}
-            className="flex justify-center items-center"
-          >
-            <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-80 max-w-4xl">
-              <Typography variant="h6" gutterBottom>
-                Select an option
-              </Typography>
-              <RadioGroup
-                value={selectedOption}
-                onChange={(e) => handleSelectOption(e.target.value)}
-              >
-                <List>
-                  {Outros.map((item: OutroItems, index) => (
-                    <ListItem button key={index}>
-                      <FormControlLabel
-                        value={item.value}
-                        control={
-                          <Radio
-                            sx={{
-                              color: "black",
-                              "&.Mui-checked": {
-                                color: "black",
-                              },
-                            }}
-                          />
-                        }
-                        label={item.value}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </RadioGroup>
-              <div className="flex justify-end gap-2">
-                <Button
-                  sx={{
-                    color: "black",
-                    border: "1px solid #DADADA",
-                  }}
-                  className="bg-white hover:bg-white"
-                  onClick={() => setModalOpen(false)}
-                >
-                  Close
-                </Button>
-                <Button
-                  sx={{
-                    color: "white",
-                  }}
-                  className="bg-black hover:bg-black"
-                  onClick={() => handleSelect()}
-                >
-                  Select
-                </Button>
+                <span className="border-b-2 border-gray-400 text-sm ">
+                  Select Color
+                </span>
+                <div className="bg-gray-600 rounded-full ps-2 pe-2 pt-2 pb-2  ms-1 me-1">
+                  <div>
+                    <span style={{ color: selectedColor }}>
+                      {selectedColor}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </Modal>
+            <Select
+              name="categorylist"
+              value={formData.categorylist}
+              onChange={handleSelectChange}
+              placeholder="Select category"
+              className="input-size"
+            >
+              <MenuItem value="category">Category</MenuItem>
+            </Select>
+            {isOpen ? (
+              <div>
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={toggleModal}
+                >
+                  Open Modal
+                </button>
+                {isOpen && (
+                  <>
+                    {colors.map((color, index) => (
+                      <div
+                        key={index}
+                        className="w-10 h-10 rounded-full mr-2"
+                        style={{ backgroundColor: color }}
+                      ></div>
+                    ))}
+                  </>
+                )}
+              </div>
+            ) : ""}
+          </div>
+          <div className="pt-2 pb-2">
+            <InputLabel className="pt-2 pb-2 font-bold" htmlFor="youtube">
+              Youtube link
+            </InputLabel>
+            <Input
+              id="youtube"
+              name="youtubeLink"
+              value={formData.youtubeLink}
+              onChange={handleInputChange}
+              type="text"
+              placeholder="Insert Youtube Link"
+              inputRef={youtubeLinkSelectRef}
+              className="py-2 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
+            />
+            <Button
+              onClick={() => copyToClipboard('youtubeLink')}
+              title="Copy Link"
+              className="bg-gray-200 position-btn border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
+            >
+              <FiCopy />
+            </Button>
+          </div>
+          <div className="pt-2 pb-2 ">
+            <InputLabel htmlFor="topic" className="pt-2 pb-2 font-bold">
+              Learning
+            </InputLabel>
+            <Select
+              name="learningVideos"
+              value={formData.learningVideos}
+              onChange={handleSelectChange}
+              id="topic"
+              placeholder="Select topic"
+              className="input-size "
+            >
+              <MenuItem value="learning">Learning</MenuItem>
+            </Select>
+          </div>
+        </div >
+        {/* Left Side */}
+        < div className="Side-spacing " >
+          <div className="flex items-center">
+            <div>
+              <div className="ms-4 mb-1 mt-1">
+                <span className="font-bold ">Profile Picture</span>
+              </div>
+              <div className=" ">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleProfileImageChange}
+                />
+                <Image
+                  width={200}
+                  height={200}
+                  className="rounded-full mr-2"
+                  src="/profile.png"
+                  alt="Profile"
+                />
+              </div>
+            </div>
+            <div className=" ps-6 pe-6">
+              <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                <AiOutlineUpload size={20} />
+                <span onClick={handleUploadPictureClick} className="ps-1 pe-1 border-b-2 border-gray-400">
+                  Upload Picture
+                </span>
+              </div>
+              <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                <AiOutlineUpload size={20} />
+                <span className="ps-1 pe-1 border-b-2 border-gray-400">
+                  Select Picture
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="pt-2 pb-2">
+            <InputLabel htmlFor="discord" className="pt-2 pb-2 font-bold">
+              Discord Link
+            </InputLabel>
+            <Input
+              name="discordLink"
+              value={formData.discordLink}
+              onChange={handleInputChange}
+              id="discord"
+              type="text"
+              placeholder="Insert Discord Link"
+              inputRef={discordLinkInputRef}
+              className="py-2 px-3 border  border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
+            />
+            <Button
+              onClick={() => copyToClipboard('discordLink')}
+              title="Copy Link"
+              className="bg-gray-200 border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
+            >
+              
+              <FiCopy />
+            </Button>
+          </div>
+          <div className="pt-2 pb-2">
+            <InputLabel htmlFor="name" className="pt-2 pb-2 font-bold">
+              Video Topic
+            </InputLabel>
+            <Select
+              name="videoTopic"
+              value={formData.videoTopic}
+              onChange={handleSelectChange}
+              id="topic" label="Select topic" className="input-size ">
+
+              <MenuItem value="video">Vidoes</MenuItem>
+
+            </Select>
+          </div>
+        </div >
+        <div></div>
+      </div >
+      <div className="container mx-auto mt-8">
+        <InputLabel className="pt-2 pb-2 font-bold">Outros</InputLabel>
+        <textarea
+          value={textareaValue}
+          onChange={handleTextareaChange}
+          className="border w-full border-gray-300 rounded p-2 mb-4"
+        ></textarea>
+        <div className="flex justify-end items-center pb-8">
+          <span onClick={handleOpenModal} className="cursor-pointer border-black-600 border-b-3 ms-2 me-2">
+            Edit
+          </span>
+          <span
+            onClick={handleOpenModal}
+            className=" text-black cursor-pointer border-black-600 border-b-3 me-2 ms-2"
+          >
+            Change
+          </span>
         </div>
-        <Button
-          sx={{
-            color: "white",
-            width:'200px'
-          }}
-          className="bg-black hover:bg-black place-self-end"
+
+        <div className="pt-6 pb-6 flex justify-end">
+
+          <Button onClick={handleSubmit} className="bg-black hover:bg-white-100 text-white ps-8 pe-8 pt-2 pb-2 " variant="contained">Create</Button>
+        </div>
+        <Modal
+          open={modalOpen}
+          onClose={handleCloseModal}
+          className="flex justify-center items-center"
         >
-          CREATE
-        </Button>
+          <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-3/4">
+            <Typography variant="h6" gutterBottom>
+              Select Outros
+            </Typography>
+            <List className="custom-scrollbar">
+              {Outros.map((item: OutroItems, index) => {
+                return (
+                  <ListItem button key={index}>
+                    <Checkbox color="default" onClick={() => handleSelectOption(item.value)}></Checkbox>
+                    <ListItemText className="border-2 ps-2 pe-2 pt-2 pb-2" primary={item.value} />
+                  </ListItem>
+                );
+              })}
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleCloseModal}
+                  variant="outlined"
+                  color="primary"
+                  className="text-primary px-4 py-2 ms-1 me-1"
+                >
+                  Cancel
+                </Button>
+                <Button className="bg-black bg-black:200 text-white px-4 py-2">
+                  Submit
+                </Button>
+              </div>
+            </List>
+          </div>
+        </Modal>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Script;
+export default Script

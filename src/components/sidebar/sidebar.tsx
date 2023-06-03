@@ -27,7 +27,7 @@ const Sidebar: React.FC = () => {
     }, [isSuccess])
 
     return (
-        <div className="w-48 h-screen flex flex-col text-white">
+        <div className="w-48 h-screen flex flex-col bg-black text-white">
             <div className="p-4">
                 {/* Profile section */}
                 <div className="flex items-center mb-4">
