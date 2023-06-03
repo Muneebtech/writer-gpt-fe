@@ -3,6 +3,7 @@ import { OutroItems, Outros } from "@/constants/outro"
 import {
   Box,
   Button,
+  Checkbox,
   Input,
   InputLabel,
   List,
@@ -13,36 +14,115 @@ import {
   Select,
   Typography
 } from "@mui/material"
-import React, { useRef, useState } from "react"
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
 import { FiCopy } from "react-icons/fi"
 import { AiOutlineUpload } from "react-icons/ai"
 
 import Image from "next/image"
+interface FormData {
+  name: string;
+  categorylist: string;
+  youtubeLink: string;
+  discordLink: string;
+  learningVideos: string;
+  videoTopic: string;
 
+
+  // Add more properties with their respective data types
+}
 const Script = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null);
+  const discordLinkInputRef = useRef<HTMLInputElement>(null);
   const InputRef = useRef<HTMLInputElement>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState("")
   const [textareaValue, setTextareaValue] = useState("")
-  const [isOpen, setIsOpen] = useState(false)
   const [selectedColor, setSelectedColor] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
+  const colors = ['red', 'blue', 'green', 'yellow'];
+  const [profileimage, setProfileImage] = useState<File | null>(null);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    categorylist: '',
+    youtubeLink: "",
+    discordLink: "",
+    learningVideos: "",
+    videoTopic: ""
+  });
 
-  const handleOpenColorModal = () => {
-    setIsOpen(true)
-  }
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+  const [userData, setUserData] = useState<FormData[]>([])
+  const handleInputChange = (event: ChangeEvent<{ name?: string; value: unknown }>) => {
+    const { name, value } = event.target;
 
-  const handleCloseColorModal = () => {
-    setIsOpen(false)
-  }
+    setFormData(prevState => ({
+      ...prevState,
+      [name || '']: value,
+    }));
+  };
+  console.log("UserData", userData)
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
 
-  const copyToClipboard = () => {
-    if (InputRef.current !== null) {
-      InputRef?.current.select()
-      InputRef?.current.setSelectionRange(0, 99999)
+    const newFormData = {
+      name: formData.name,
+      categorylist: formData.categorylist,
+      youtubeLink: formData.youtubeLink,
+      discordLink: formData.discordLink,
+      learningVideos: formData.learningVideos,
+      videoTopic: formData.videoTopic,
+      profileimage: profileimage ? URL.createObjectURL(profileimage) : ''
+    };
+
+    setUserData(prevData => [...prevData, newFormData]);
+    setFormData({
+      name: '',
+      categorylist: '',
+      youtubeLink: '',
+      discordLink: '',
+      learningVideos: '',
+      videoTopic: ''
+    });
+    setProfileImage(null);
+  };
+  const handleUploadPictureClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
-    document.execCommand("copy")
-    alert("Link copied to clipboard!")
-  }
+  };
+  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedImage = event.target.files[0];
+      setProfileImage(selectedImage);
+
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        profileimage: URL.createObjectURL(selectedImage)
+      }));
+    }
+  };
+  const copyToClipboard = (fieldName: string) => {
+    let textToCopy = '';
+
+    if (fieldName === 'discordLink' && discordLinkInputRef.current) {
+      textToCopy = discordLinkInputRef.current.value;
+    } else if (fieldName === 'youtubeLink' && youtubeLinkSelectRef.current) {
+      textToCopy = youtubeLinkSelectRef.current.value;
+    }
+
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          console.log('Text copied to clipboard:', textToCopy);
+        })
+        .catch((error) => {
+          console.error('Error copying text to clipboard:', error);
+        });
+    }
+  };
   const style = {
     position: "absolute" as "absolute",
     // top: "50%",
@@ -73,26 +153,6 @@ const Script = () => {
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextareaValue(e.target.value)
   }
-  function generateRandomColors(count) {
-    const colors = []
-    const letters = "0123456789ABCDEF"
-
-    for (let i = 0; i < count; i++) {
-      let color = "#"
-
-      for (let j = 0; j < 6; j++) {
-        color += letters[Math.floor(Math.random() * 16)]
-      }
-
-      colors.push(color)
-    }
-
-    return colors
-  }
-
-  const colors = generateRandomColors(10)
-  console.log(colors, "Colors")
-
   return (
     <>
       {/* Right-section */}
@@ -103,6 +163,9 @@ const Script = () => {
               Name
             </InputLabel>
             <Input
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
               placeholder="Enter Your Name"
               className="border ps-4 pe-4 pt-3 pb-3 input-size "
             />
@@ -114,7 +177,7 @@ const Script = () => {
               </InputLabel>
               <div
                 className="flex items-center cursor-pointer"
-                onClick={() => handleOpenColorModal()}
+                onClick={() => setIsOpen(true)}
               >
                 <span className="border-b-2 border-gray-400 text-sm ">
                   Select Color
@@ -128,39 +191,36 @@ const Script = () => {
                 </div>
               </div>
             </div>
-
+            <Select
+              name="categorylist"
+              value={formData.categorylist}
+              onChange={handleInputChange}
+              placeholder="Select category"
+              className="input-size"
+            >
+              <MenuItem value="category">Category</MenuItem>
+            </Select>
             {isOpen ? (
-              <div className={`modal ${isOpen ? "open" : ""}`}>
-                <div className="modal-content">
-                  <h2>Colors</h2>
-                  <div className="color-container">
+              <div>
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={toggleModal}
+                >
+                  Open Modal
+                </button>
+                {isOpen && (
+                  <>
                     {colors.map((color, index) => (
                       <div
                         key={index}
-                        className="color-circle"
+                        className="w-10 h-10 rounded-full mr-2"
                         style={{ backgroundColor: color }}
-                        // onClick={() => onColorSelect(color)}
-                      />
+                      ></div>
                     ))}
-                    .
-                  </div>
-                  <button
-                    className="close-button"
-                    onClick={handleCloseColorModal}
-                  >
-                    Close
-                  </button>
-                </div>
+                  </>
+                )}
               </div>
-            ) : (
-              ""
-            )}
-
-            <Select placeholder="Select category" className="input-size ">
-              {categories.map(item => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
-            </Select>
+            ) : ""}
           </div>
           <div className="pt-2 pb-2">
             <InputLabel className="pt-2 pb-2 font-bold" htmlFor="youtube">
@@ -168,13 +228,16 @@ const Script = () => {
             </InputLabel>
             <Input
               id="youtube"
+              name="youtubeLink"
+              value={formData.youtubeLink}
+              onChange={handleInputChange}
               type="text"
               placeholder="Insert Youtube Link"
-              ref={InputRef}
+              inputRef={youtubeLinkSelectRef}
               className="py-2 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
             />
             <Button
-              onClick={copyToClipboard}
+              onClick={() => copyToClipboard('youtubeLink')}
               title="Copy Link"
               className="bg-gray-200 position-btn border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
             >
@@ -186,24 +249,32 @@ const Script = () => {
               Learning
             </InputLabel>
             <Select
+              name="learningVideos"
+              value={formData.learningVideos}
+              onChange={handleInputChange}
               id="topic"
               placeholder="Select topic"
               className="input-size "
             >
-              {categories.map(item => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
+              <MenuItem value="learning">Learning</MenuItem>
             </Select>
           </div>
-        </div>
+        </div >
         {/* Left Side */}
-        <div className="Side-spacing ">
+        < div className="Side-spacing " >
           <div className="flex items-center">
             <div>
               <div className="ms-4 mb-1 mt-1">
                 <span className="font-bold ">Profile Picture</span>
               </div>
               <div className=" ">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleProfileImageChange}
+                />
                 <Image
                   width={200}
                   height={200}
@@ -216,7 +287,7 @@ const Script = () => {
             <div className=" ps-6 pe-6">
               <div className="flex items-center pt-2 pb-2 cursor-pointer">
                 <AiOutlineUpload size={20} />
-                <span className="ps-1 pe-1 border-b-2 border-gray-400">
+                <span onClick={handleUploadPictureClick} className="ps-1 pe-1 border-b-2 border-gray-400">
                   Upload Picture
                 </span>
               </div>
@@ -233,17 +304,21 @@ const Script = () => {
               Discord Link
             </InputLabel>
             <Input
+              name="discordLink"
+              value={formData.discordLink}
+              onChange={handleInputChange}
               id="discord"
               type="text"
               placeholder="Insert Discord Link"
-              ref={InputRef}
+              inputRef={discordLinkInputRef}
               className="py-2 px-3 border  border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
             />
             <Button
-              onClick={copyToClipboard}
+              onClick={() => copyToClipboard('discordLink')}
               title="Copy Link"
               className="bg-gray-200 border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
             >
+              
               <FiCopy />
             </Button>
           </div>
@@ -251,15 +326,19 @@ const Script = () => {
             <InputLabel htmlFor="name" className="pt-2 pb-2 font-bold">
               Video Topic
             </InputLabel>
-            <Select id="topic" label="Select topic" className="input-size ">
-              {categories.map(item => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
+            <Select
+              name="videoTopic"
+              value={formData.videoTopic}
+              onChange={handleInputChange}
+              id="topic" label="Select topic" className="input-size ">
+
+              <MenuItem value="video">Vidoes</MenuItem>
+
             </Select>
           </div>
-        </div>
+        </div >
         <div></div>
-      </div>
+      </div >
       <div className="container mx-auto mt-8">
         <InputLabel className="pt-2 pb-2 font-bold">Outros</InputLabel>
         <textarea
@@ -267,45 +346,50 @@ const Script = () => {
           onChange={handleTextareaChange}
           className="border w-full border-gray-300 rounded p-2 mb-4"
         ></textarea>
-        <span
-          onClick={handleOpenModal}
-          className=" text-black rounded px-4 py-2"
-        >
-          Change
-        </span>
+        <div className="flex justify-end items-center pb-8">
+          <span onClick={handleOpenModal} className="cursor-pointer border-black-600 border-b-3 ms-2 me-2">
+            Edit
+          </span>
+          <span
+            onClick={handleOpenModal}
+            className=" text-black cursor-pointer border-black-600 border-b-3 me-2 ms-2"
+          >
+            Change
+          </span>
+        </div>
+
+        <div className="pt-6 pb-6 flex justify-end">
+
+          <Button onClick={handleSubmit} className="bg-black hover:bg-white-100 text-white ps-8 pe-8 pt-2 pb-2 " variant="contained">Create</Button>
+        </div>
         <Modal
           open={modalOpen}
           onClose={handleCloseModal}
           className="flex justify-center items-center"
         >
-          <div className="bg-white p-4 rounded-lg overflow-y-auto max-h-96 max-w-4xl">
+          <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-3/4">
             <Typography variant="h6" gutterBottom>
               Select Outros
             </Typography>
-            <List>
+            <List className="custom-scrollbar">
               {Outros.map((item: OutroItems, index) => {
                 return (
-                  <ListItem
-                    button
-                    key={index}
-                    onClick={() => handleSelectOption(item.value)}
-                  >
-                    <ListItemText
-                      className="border-2 ps-2 pe-2 pt-2 pb-2"
-                      primary={item.value}
-                    />
+                  <ListItem button key={index}>
+                    <Checkbox color="default" onClick={() => handleSelectOption(item.value)}></Checkbox>
+                    <ListItemText className="border-2 ps-2 pe-2 pt-2 pb-2" primary={item.value} />
                   </ListItem>
-                )
+                );
               })}
               <div className="flex justify-end">
                 <Button
+                  onClick={handleCloseModal}
                   variant="outlined"
                   color="primary"
                   className="text-primary px-4 py-2 ms-1 me-1"
                 >
                   Cancel
                 </Button>
-                <Button className="bg-black hover:bg-black:200 text-white px-4 py-2 ">
+                <Button className="bg-black bg-black:200 text-white px-4 py-2">
                   Submit
                 </Button>
               </div>

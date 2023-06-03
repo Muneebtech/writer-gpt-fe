@@ -1,11 +1,13 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
 .selected {
   background-color: #171717;
   border-color: #404040;
   color: #fff;
 }
+
 .searchBar {
   border-radius: 35px;
   display: flex;
@@ -18,23 +20,33 @@
   top: 23px;
   background: #fbfbfb;
 }
+
 .bgSearch {
   background: #fbfbfb;
   height: 36px;
 }
+
 .table-bb-gray {
   border-bottom: 1px solid #dadada;
 }
+
 .table-b-gray {
   border: 0.5px solid #dadada;
 }
+
 .input-size {
   width: 85% !important;
 }
+
 .Side-spacing {
   width: 50% !important;
 }
+
 textarea {
-  resize: none; 
-  overflow: hidden; 
+  resize: none;
+  overflow: hidden;
+}
+
+.modal-max-height {
+  max-height: 95% !important;
 }
