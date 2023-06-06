@@ -53,5 +53,6 @@ export const Outros = [
 
 export type OutroItems = {
   id: number;
-  value: string;
+  description: string;
+  outro: string;
 };

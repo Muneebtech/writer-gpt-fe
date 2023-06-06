@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import { decryptData } from '@/utils/localStorage';
 import { useLogout } from '@/services/auth';
 import Cookies from 'js-cookie';
-
 const Sidebar: React.FC = () => {
     const router = useRouter();
     const userData = decryptData("userdata")
@@ -37,7 +36,7 @@ const Sidebar: React.FC = () => {
                         src="/profile.png"
                         alt="Profile"
                     />
-                    <span className=" font-semibold">Rana Muneeb Tahir</span>
+                    <span className="font-semibold">Rana Muneeb Tahir</span>
                 </div>
             </div>
             <nav className="px-4 flex-grow">
@@ -78,7 +77,6 @@ const Sidebar: React.FC = () => {
                             <span className={` ${router.pathname === '/script/create' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
                                 <span className="w-6 mr-2">
                                     <FiEdit />
-
                                 </span>
                                 Create
                             </span>
@@ -99,11 +97,23 @@ const Sidebar: React.FC = () => {
             </nav>
             <div className="p-4">
                 {/* Bottom section */}
-                <ul className="space-y-2">
+                <ul className="space-y-1 ">
+                    <li>
+                        <Link href="/settings">
+                            <span className={` ${router.pathname === '/settings' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
+                                <span className="w-6 mr-2">
+                                    <FiSettings />
+                                </span>
+                                Settings
+                            </span>
+                        </Link>
+                    </li>
+                </ul>
+                <ul className="space-y-1 ">
                     <li onClick={handleLogout}>
-                        <span className=" flex items-center cursor-pointer" >
+                        <span className=" flex items-center cursor-pointer font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600" >
                             <FiLogOut className="mr-2" />
-                            Logout
+                            <span className='ps-1 pe-1'> Logout</span>
                         </span>
                     </li>
                 </ul>

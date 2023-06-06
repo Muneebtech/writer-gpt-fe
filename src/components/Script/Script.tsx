@@ -15,13 +15,16 @@ import {
   RadioGroup,
   Select,
   SelectChangeEvent,
-  Typography
+  Typography,
+  Popover
 } from "@mui/material"
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
-import { FiCopy } from "react-icons/fi"
+import { FiCopy, FiCheck } from "react-icons/fi"
 import { AiOutlineUpload } from "react-icons/ai"
-
 import Image from "next/image"
+import { useCreateChannel } from "@/services/channel"
+import Header from "@/common/Header/header"
+import { useOutro } from "@/services/outro"
 interface FormData {
   name: string;
   categorylist: string;
@@ -29,22 +32,28 @@ interface FormData {
   discordLink: string;
   learningVideos: string;
   videoTopic: string;
-
-
   // Add more properties with their respective data types
 }
 const Script = () => {
+  const { isLoading: loading, data: Data, isSuccess: success } = useOutro()
+  console.log(Data, "datadata")
+  const Outrodata = Data?.results
+  console.log("OutrosData", Outrodata)
   const fileInputRef = useRef<HTMLInputElement>(null);
   const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null);
   const discordLinkInputRef = useRef<HTMLInputElement>(null);
   const InputRef = useRef<HTMLInputElement>(null)
   const [modalOpen, setModalOpen] = useState(false)
+  const [popoverOpen, setPopoverOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState("")
   const [textareaValue, setTextareaValue] = useState("")
   const [selectedColor, setSelectedColor] = useState("")
   const [isOpen, setIsOpen] = useState(false)
-  const colors = ['red', 'blue', 'green', 'yellow'];
+  const colors =
+    ['gray', 'indigo', 'purple', 'pink', "silver", "black",
+      "crimson", "Lavender", "Orange", "Cyan", "Gold", "Violet"];
   const [profileimage, setProfileImage] = useState<File | null>(null);
+  const { isLoading, data, isSuccess } = useCreateChannel()
   const [formData, setFormData] = useState<FormData>({
     name: '',
     categorylist: '',
@@ -53,7 +62,6 @@ const Script = () => {
     learningVideos: "",
     videoTopic: ""
   });
-
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
@@ -68,7 +76,7 @@ const Script = () => {
   };
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
-  
+
     setFormData(prevState => ({
       ...prevState,
       [name || '']: value,
@@ -77,7 +85,6 @@ const Script = () => {
   console.log("UserData", userData)
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-
     const newFormData = {
       name: formData.name,
       categorylist: formData.categorylist,
@@ -87,7 +94,6 @@ const Script = () => {
       videoTopic: formData.videoTopic,
       profileimage: profileimage ? URL.createObjectURL(profileimage) : ''
     };
-
     setUserData(prevData => [...prevData, newFormData]);
     setFormData({
       name: '',
@@ -150,24 +156,31 @@ const Script = () => {
   const handleOpenModal = () => {
     setModalOpen(true)
   }
-
   const handleCloseModal = () => {
     setModalOpen(false)
   }
-
+  const handlepopOverOpne = () => {
+    setPopoverOpen(true)
+  }
+  const handlePopoverClose = () => {
+    setPopoverOpen(false)
+  }
   const handleSelectOption = (option: string) => {
     setSelectedOption(option)
-    setTextareaValue(selectedOption)
-    setModalOpen(false)
+    setTextareaValue(option)
   }
-
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextareaValue(e.target.value)
   }
   return (
     <>
+      <div>
+        <Header title="Create CHANNEL" />
+      </div>
+      <div className="table-bb-gray mt-4">
+      </div>
       {/* Right-section */}
-      <div className="flex items-center">
+      <div className="flex items-center pt-4">
         <div className="Side-spacing ">
           <div className="pt-2 pb-2">
             <InputLabel htmlFor="name" className="pt-2 pb-2 font-bold">
@@ -188,7 +201,7 @@ const Script = () => {
               </InputLabel>
               <div
                 className="flex items-center cursor-pointer"
-                onClick={() => setIsOpen(true)}
+                onClick={handlepopOverOpne}
               >
                 <span className="border-b-2 border-gray-400 text-sm ">
                   Select Color
@@ -211,27 +224,18 @@ const Script = () => {
             >
               <MenuItem value="category">Category</MenuItem>
             </Select>
-            {isOpen ? (
-              <div>
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={toggleModal}
-                >
-                  Open Modal
-                </button>
-                {isOpen && (
-                  <>
-                    {colors.map((color, index) => (
-                      <div
-                        key={index}
-                        className="w-10 h-10 rounded-full mr-2"
-                        style={{ backgroundColor: color }}
-                      ></div>
-                    ))}
-                  </>
-                )}
+            <Popover open={popoverOpen} hideBackdrop={true}>
+              <span className="font-bold ps-2 pe-2 pt-4">Select Color</span>
+              <div className="flex justify-between flex-wrap w-11/12 pt-2 pb-2 ps-2 pe-2">
+                {colors.map((color, index) => (
+                  <div
+                    key={index}
+                    className="w-5 h-5 rounded-full mr-2 mt-2 mb-2"
+                    style={{ backgroundColor: color }}
+                  ></div>
+                ))}
               </div>
-            ) : ""}
+            </Popover>
           </div>
           <div className="pt-2 pb-2">
             <InputLabel className="pt-2 pb-2 font-bold" htmlFor="youtube">
@@ -272,7 +276,7 @@ const Script = () => {
           </div>
         </div >
         {/* Left Side */}
-        < div className="Side-spacing " >
+        <div className="Side-spacing " >
           <div className="flex items-center">
             <div>
               <div className="ms-4 mb-1 mt-1">
@@ -287,10 +291,10 @@ const Script = () => {
                   onChange={handleProfileImageChange}
                 />
                 <Image
-                  width={200}
-                  height={200}
+                  width={170}
+                  height={170}
                   className="rounded-full mr-2"
-                  src="/profile.png"
+                  src="/ProfileAvatar.png"
                   alt="Profile"
                 />
               </div>
@@ -327,9 +331,8 @@ const Script = () => {
             <Button
               onClick={() => copyToClipboard('discordLink')}
               title="Copy Link"
-              className="bg-gray-200 border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
+              className="bg-gray-200 position-btn border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
             >
-              
               <FiCopy />
             </Button>
           </div>
@@ -342,9 +345,7 @@ const Script = () => {
               value={formData.videoTopic}
               onChange={handleSelectChange}
               id="topic" label="Select topic" className="input-size ">
-
               <MenuItem value="video">Vidoes</MenuItem>
-
             </Select>
           </div>
         </div >
@@ -358,24 +359,20 @@ const Script = () => {
           className="border w-full border-gray-300 rounded p-2 mb-4"
         ></textarea>
         <div className="flex justify-end items-center pb-8">
-          <span onClick={handleOpenModal} className="cursor-pointer border-black-600 border-b-3 ms-2 me-2">
+          <span onClick={handleOpenModal} className="ps-1 pe-1 border-b-2 border-gray-800 me-2 ms-2">
             Edit
           </span>
-          <span
-            onClick={handleOpenModal}
-            className=" text-black cursor-pointer border-black-600 border-b-3 me-2 ms-2"
-          >
+          <span onClick={handleOpenModal} className="ps-1 pe-1 border-b-2 border-gray-800 me-2 ms-2">
             Change
           </span>
         </div>
-
         <div className="pt-6 pb-6 flex justify-end">
-
-          <Button onClick={handleSubmit} className="bg-black hover:bg-white-100 text-white ps-8 pe-8 pt-2 pb-2 " variant="contained">Create</Button>
+          <Button onClick={handleSubmit}
+            className="bg-black text-white ps-8 pe-8 pt-2 pb-2 "
+            variant="contained">Create</Button>
         </div>
         <Modal
           open={modalOpen}
-          onClose={handleCloseModal}
           className="flex justify-center items-center"
         >
           <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-3/4">
@@ -383,11 +380,11 @@ const Script = () => {
               Select Outros
             </Typography>
             <List className="custom-scrollbar">
-              {Outros.map((item: OutroItems, index) => {
+              {Outrodata?.map((item: OutroItems) => {
                 return (
-                  <ListItem button key={index}>
-                    <Checkbox color="default" onClick={() => handleSelectOption(item.value)}></Checkbox>
-                    <ListItemText className="border-2 ps-2 pe-2 pt-2 pb-2" primary={item.value} />
+                  <ListItem button key={item?.id}>
+                    <Checkbox color="default" onClick={() => handleSelectOption(item.description)}></Checkbox>
+                    <ListItemText className="border-2 ps-2 pe-2 pt-2 pb-2" primary={item.description} />
                   </ListItem>
                 );
               })}
@@ -400,7 +397,7 @@ const Script = () => {
                 >
                   Cancel
                 </Button>
-                <Button className="bg-black bg-black:200 text-white px-4 py-2">
+                <Button onClick={handleCloseModal} className="bg-black  text-white px-4 py-2">
                   Submit
                 </Button>
               </div>

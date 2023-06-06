@@ -20,6 +20,7 @@
   top: 23px;
   background: #fbfbfb;
 }
+
 .bgSearch {
   background: #fbfbfb;
   height: 36px;
@@ -48,4 +49,26 @@ textarea {
 
 .modal-max-height {
   max-height: 95% !important;
+}
+
+.position-btn {
+  position: relative;
+  right: 75px;
+  background-color: transparent;
+  font-size: 20px;
+  color: black;
+}
+
+.css-3bmhjh-MuiPaper-root-MuiPopover-paper {
+  top: 274px !important;
+  left: 500px !important;
+  width: 16% !important;
+}
+
+.bgImage {
+  background-image: url('../../public/Group59.png');
+  background-size: cover;
+  width: 48%;
+  height: 100vh;
+  background-position: center;
 }

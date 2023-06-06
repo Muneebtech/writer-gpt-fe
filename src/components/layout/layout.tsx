@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProp> = ({
       <Sidebar />
       <main className="flex-1 flex-col bg-white p-6 overflow-y-auto">
         <Header title={title} showSearch={showSearch}></Header>
-        <div className="pt-8">{children}</div>
+        <div>{children}</div>
       </main>
     </div>
   );

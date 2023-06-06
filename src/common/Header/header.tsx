@@ -1,20 +1,26 @@
 import SearchBar from "@/common/SearchBar/searchBar";
 import { Container, Typography, Input, Grid, ListItem } from "@mui/material";
 import React from "react";
+import GlobalButton from "./Button/Button";
 interface HeaderProps {
   title: string;
   searchKeyword?: string;
   data?: object;
-  showSearch?:boolean
+  showSearch?: boolean
+  showButton?: boolean
 }
 const Header = (props: HeaderProps) => {
   return (
     <>
-      <div className="flex gap-8 items-center w-full table-bb-gray border-gray-200 py-4">
-        <span className="font-medium text-2xl uppercase font-roboto">
-          {props.title}
-        </span>
-        {props.showSearch && <SearchBar />}
+      <div className="border-gray-200 ">
+        <div className="flex items-center">
+          <span className="font-medium text-2xl uppercase font-roboto pe-4">
+            {props.title}
+          </span>
+          {props.showSearch && <SearchBar />}
+
+          {props.showButton && <GlobalButton />}
+        </div>
       </div>
     </>
   );

@@ -1,13 +1,16 @@
 import { tableData } from "@/constants/library";
+import { useGetJobs } from "@/services/Jobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FiDownload } from "react-icons/fi";
-
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
-
+  const { isLoading: loading, data: Data, isSuccess: success } = useGetJobs()
+  console.log(Data, "Data")
+  const LibraryData = Data?.results
+  console.log(LibraryData,"LibraryData")
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPages);
 
@@ -53,15 +56,14 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((row, index) => {
+          {LibraryData?.map((row, id) => {
             const { backgroundColor } = generateRandomColors();
 
             return (
               <tr
-                key={index}
-                className={`border-b leading-3 ${
-                  index !== tableData.length - 1 ? "table-bb-gray" : ""
-                }`}
+                key={id}
+                className={`border-b leading-3 ${id !== tableData.length - 1 ? "table-bb-gray" : ""
+                  }`}
               >
                 <td className="py-4 px-4 text-center ">
                   <div className="flex items-center">
@@ -113,9 +115,8 @@ const Table = () => {
       {/* Pagination */}
       <div className="flex justify-end m-2 gap-1">
         <button
-          className={`px-2 py-1 border border-gray-300 rounded-md ${
-            currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-          }`}
+          className={`px-2 py-1 border border-gray-300 rounded-md ${currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+            }`}
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
         >
@@ -128,9 +129,8 @@ const Table = () => {
         )}
         {visiblePages.map((page) => (
           <button
-            className={`px-2 py-1 border border-gray-300 rounded-md ${
-              page === currentPage ? "bg-blue-500 text-white" : ""
-            }`}
+            className={`px-2 py-1 border border-gray-300 rounded-md ${page === currentPage ? "bg-blue-500 text-white" : ""
+              }`}
             key={page}
             onClick={() => handlePageChange(page)}
           >
@@ -143,9 +143,8 @@ const Table = () => {
           </button>
         )}
         <button
-          className={`px-2 py-1 border border-gray-300 rounded-md ${
-            currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
-          }`}
+          className={`px-2 py-1 border border-gray-300 rounded-md ${currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
+            }`}
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >
