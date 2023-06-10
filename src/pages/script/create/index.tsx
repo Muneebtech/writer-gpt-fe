@@ -1,4 +1,5 @@
-import Script from "@/components/Script/Script";
+
+import Create from "@/components/create/create";
 import { getAppLayout } from "@/components/layout/layout";
 import { NextPageWithLayout } from "@/utils/types";
 import React from "react";
@@ -6,11 +7,11 @@ import React from "react";
 const index: NextPageWithLayout = () => {
   return (
     <div>
-      <Script></Script>
+      <Create />
     </div>
   );
 };
 
 export default index;
 index.isProtected = true;
-index.getLayout = (page)=> getAppLayout(page,'');
+index.getLayout = (page) => getAppLayout(page, '');
