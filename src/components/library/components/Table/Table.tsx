@@ -1,4 +1,4 @@
-import { tableData } from "@/constants/library";
+import { tableData, TableListData } from "@/constants/library";
 import { useGetJobs } from "@/services/Jobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
@@ -10,7 +10,7 @@ const Table = () => {
   const { isLoading: loading, data: Data, isSuccess: success } = useGetJobs()
   console.log(Data, "Data")
   const LibraryData = Data?.results
-  console.log(LibraryData,"LibraryData")
+  console.log(LibraryData, "LibraryData")
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPages);
 
@@ -56,13 +56,13 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {LibraryData?.map((row, id) => {
+          {LibraryData?.map((row: TableListData) => {
             const { backgroundColor } = generateRandomColors();
 
             return (
               <tr
-                key={id}
-                className={`border-b leading-3 ${id !== tableData.length - 1 ? "table-bb-gray" : ""
+                key={row?.id}
+                className={`border-b leading-3 ${row?.id !== tableData.length - 1 ? "table-bb-gray" : ""
                   }`}
               >
                 <td className="py-4 px-4 text-center ">
@@ -74,7 +74,7 @@ const Table = () => {
                       height={28}
                       className="mr-2 rounded"
                     />
-                    {row.videoName}
+                    {row?.videoName}
                   </div>
                 </td>
                 <td className="py-4 px-4 text-center">{row.language}</td>

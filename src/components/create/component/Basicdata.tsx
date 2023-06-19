@@ -1,5 +1,4 @@
-import Header from '@/common/Header/header'
-import { Button, FormControl, MenuItem, Select } from '@mui/material'
+import { FormControl, MenuItem, Select } from '@mui/material'
 import React from 'react'
 import { FaPlus } from 'react-icons/fa'
 import Image from "next/image"
@@ -15,21 +14,23 @@ interface FormData {
   // Add more properties with their respective data types
 }
 const BasicData = () => {
-  const [profileimage, setProfileImage] = useState<File | null>(null);
-  const [formData, setFormData] = useState<FormData>({
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [formData, setFormData] = useState({
     name: '',
     categorylist: '',
-    youtubeLink: "",
-    discordLink: "",
-    learningVideos: "",
-    videoTopic: ""
+    youtubeLink: '',
+    discordLink: '',
+    learningVideos: '',
+    videoTopic: '',
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleUploadPictureClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
+
   const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedImage = event.target.files[0];
@@ -37,7 +38,7 @@ const BasicData = () => {
 
       setFormData(prevFormData => ({
         ...prevFormData,
-        profileimage: URL.createObjectURL(selectedImage)
+        profileimage: URL.createObjectURL(selectedImage),
       }));
     }
   };
@@ -46,9 +47,9 @@ const BasicData = () => {
       <div className='height-box mt-6 rounded-md border-2'>
         <div>
           <div className='ps-3 pt-2'>
-            <Header title='Basic' />
+            <h4 className='font-bold'>BASIC</h4>
           </div>
-          <div className="table-bb-gray mt-4">
+          <div className="table-bb-gray mt-4 ms-4 me-4">
           </div>
         </div>
         <div className="w-9/12 ps-4 pe-4 flex items-center">
@@ -72,9 +73,9 @@ const BasicData = () => {
         <div className="flex items-center mt-6 ps-6">
           <div>
             <div className="ms-4 mb-1 mt-1">
-              <span className="font-bold ">Icon</span>
+              <span className="font-bold">Icon</span>
             </div>
-            <div className=" ">
+            <div className="">
               <input
                 type="file"
                 accept="image/*"
@@ -82,16 +83,32 @@ const BasicData = () => {
                 style={{ display: 'none' }}
                 onChange={handleProfileImageChange}
               />
-              <Image
-                width={170}
-                height={170}
-                className="rounded-full mr-2"
-                src="/ProfileAvatar.png"
-                alt="Profile"
-              />
+              {profileImage ? (
+                <div className="profileImage">
+                  <Image
+                    width={150}
+                    height={150}
+                    style={{ height: "150px" }}
+                    // className="rounded-full mr-2"
+                    src={URL.createObjectURL(profileImage)}
+                    alt="Profile"
+                  />
+                </div>
+              ) : (
+                <div className="profileImage">
+                  <Image
+                    width={150}
+                    height={150}
+                    style={{ height: "150px" }}
+                    // className="rounded-full mr-2"
+                    src="/ProfileAvatar.png"
+                    alt="Profile"
+                  />
+                </div>
+              )}
             </div>
           </div>
-          <div className=" ps-6 pe-6">
+          <div className="ps-6 pe-6">
             <div className="flex items-center pt-2 pb-2 cursor-pointer">
               <AiOutlineUpload size={20} />
               <span onClick={handleUploadPictureClick} className="ps-1 pe-1 border-b-2 border-gray-400">
@@ -100,14 +117,11 @@ const BasicData = () => {
             </div>
             <div className="flex items-center pt-2 pb-2 cursor-pointer">
               <AiOutlineUpload size={20} />
-              <span className="ps-1 pe-1 border-b-2 border-gray-400">
-                Select Picture
-              </span>
+              <span className="ps-1 pe-1 border-b-2 border-gray-400">Select Picture</span>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   )
 }

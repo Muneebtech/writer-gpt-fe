@@ -368,7 +368,7 @@ const Script = () => {
         </div>
         <div className="pt-6 pb-6 flex justify-end">
           <Button onClick={handleSubmit}
-            className="bg-black text-white ps-8 pe-8 pt-2 pb-2 "
+            className="button-black ps-8 pe-8 pt-2 pb-2 "
             variant="contained">Create</Button>
         </div>
         <Modal
@@ -397,7 +397,7 @@ const Script = () => {
                 >
                   Cancel
                 </Button>
-                <Button onClick={handleCloseModal} className="bg-black  text-white px-4 py-2">
+                <Button onClick={handleCloseModal} className="button-black px-4 py-2">
                   Submit
                 </Button>
               </div>

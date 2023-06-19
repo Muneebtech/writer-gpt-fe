@@ -4,7 +4,7 @@ const apiEndpoint: string = process.env.NEXT_PUBLIC_API_ENDPOINT as string;
 
 const client = axios.create({
   baseURL: apiEndpoint,
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 export async function request(options: AxiosRequestConfig) {

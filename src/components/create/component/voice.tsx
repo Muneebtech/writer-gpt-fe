@@ -1,53 +1,81 @@
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Header from '@/common/Header/header';
-import { ChaneelCategorydata, ChaneelData } from '@/constants/channelcategories';
+import { ChannelCategoryDataMap, ChaneelData } from '@/constants/channelcategories';
+import { useVoices } from '@/services/voices/hooks';
 import Image from 'next/image';
-import { FaPlus } from 'react-icons/fa';
+
+import { useState, useRef } from 'react';
 const Voice = () => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [selectCard, setSelectCard] = useState<number | null>(null)
+  const { isLoading: loading, data: Data, isSuccess: success } = useVoices()
+  console.log(Data,"Data")
+  const HandleShowCard = (id: number) => {
+    if (id === selectCard) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      setSelectCard(null);
+    } else {
+      setSelectCard(id);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+      }
+    }
+  };
+  // console.log("data", Data)
   return (
     <div>
       <div className='mt-6 rounded-md border-2'>
         <div>
           <div className='ps-3 pt-2'>
-            <Header title='Select Your Channel' />
+            <h4 className='font-bold'>SELECT YOUR VOICE</h4>
           </div>
-          <div className="table-bb-gray mt-4">
+          <div className="table-bb-gray mt-4 ms-4 me-4">
           </div>
         </div>
         <div className='flex flex-wrap justify-start mt-4 mb-4'>
-          {ChaneelCategorydata?.map((item: ChaneelData) => {
-            const { id, title, descrp } = item
+
+          {ChannelCategoryDataMap?.map((item: ChaneelData) => {
+            const { id, title, descrp } = item;
             return (
-              <div key={id} className='flex justify-between items-center pt-4 pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card'>
+              <div
+                onClick={() => HandleShowCard(id)}
+                key={id}
+                className={`flex justify-between items-center cursor-pointer pt-4 
+                   pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card 
+            }`}
+              >
                 <div className='flex items-center'>
                   <div>
-                    <Image src="/57.png" alt='channel' width={40} height={40} />
+                    <Image src='/57.png' alt='channel' width={40} height={40} />
                   </div>
-                  <div className='ps-2 '>
+                  <div className='ps-2'>
                     <div className='pt-1 pb-1'>
-                      <p className='font-bold text-sm'>
-                        {title}
-                      </p>
+                      <p className='font-bold text-sm'>{title}</p>
                     </div>
-                    <div >
+                    <div>
                       <p className='text-green-400 text-xs'>{descrp}</p>
                     </div>
                   </div>
                 </div>
-                <div className=' flex items-center'>
+                <div className='flex items-center'>
                   <div className='ps-1 pe-1'>
-                    <Image src="/boy.png" alt='round' width={20} height={20} />
+                    <Image src='/boy.png' alt='round' width={15} height={15} />
                   </div>
-                  <div className='ps-1 pe-1'>  <Image src="/Round.png" alt='round' width={20} height={20} /></div>
+                  <div className='ps-1 pe-1'>
+                    {selectCard === id ? (
+                      <img src='/SelectCard.png' alt='round' width={12} height={12} />
+                    ) : (
+                      <Image src='/Round.png' alt='round' width={12} height={12} />
+                    )}
+                  </div>
                 </div>
               </div>
-            )
+            );
           })}
+          <audio id='clickSound' ref={audioRef} src='/EricLund.mp3' />
         </div>
       </div>
     </div>

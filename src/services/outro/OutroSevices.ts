@@ -8,7 +8,7 @@ export class UseOutroData {
     }
     static postOutroData() {
         return request({
-            url: "",
+            url: "/outro",
             method: "POST"
         })
     }

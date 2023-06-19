@@ -1,5 +1,5 @@
 import Image from "next/image"
-export const ChaneelCategorydata = [
+export const ChannelCategoryDataMap = [
     {
         id: 1,
         title: "Morning Prayer",

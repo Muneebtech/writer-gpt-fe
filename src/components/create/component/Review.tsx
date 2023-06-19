@@ -14,9 +14,9 @@ const Review = () => {
       <div className='height-box mt-6 rounded-md border-2'>
         <div>
           <div className='ps-3 pt-2'>
-            <Header title='Select Your Channel' />
+            <h4 className='font-bold'>REVIEW</h4>
           </div>
-          <div className="table-bb-gray mt-4">
+          <div className="table-bb-gray mt-4 ms-4 me-4">
           </div>
           <div className='flex items-center'>
             <div className='pt-5'>

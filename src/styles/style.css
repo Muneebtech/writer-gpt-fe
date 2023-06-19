@@ -60,8 +60,8 @@ textarea {
 }
 
 .css-3bmhjh-MuiPaper-root-MuiPopover-paper {
-  top: 274px !important;
-  left: 500px !important;
+  top: 261px !important;
+  left: 441px !important;
   width: 16% !important;
 }
 
@@ -74,17 +74,17 @@ textarea {
 }
 
 .border-number {
-  height: 45px;
+  height: 40px;
   border-radius: 100%;
-  padding: 10px 18px;
+  padding: 9px 17px;
 }
 
 .unactive-block {
   background: #cfcfcf;
   color: white;
-  height: 45px;
+  height: 40px;
   border-radius: 100%;
-  padding: 10px 18px;
+  padding: 9px 17px;
 }
 
 .active {
@@ -105,4 +105,59 @@ textarea {
 
 .height-box {
   height: 80vh;
+}
+
+.button-black {
+  background-color: #171717 !important;
+  color: #fff !important;
+  cursor: pointer;
+}
+
+.CompleteTabs {
+  background-color: #1E9030;
+  color: #fff;
+
+}
+
+.css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+  color: #171717 !important;
+}
+
+.Mui-active-incomplete {
+  background-color: #171717 !important;
+}
+
+.Mui-active-complete {
+  background-color: #1E9030 !important;
+}
+
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
+  font-size: 40px;
+}
+
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
+  font-size: 40px;
+}
+
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
+  color: #171717 !important;
+}
+
+.css-1hv8oq8-MuiStepLabel-label.Mui-completed {
+  color: #1E9030 !important;
+}
+
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
+  color: #1E9030 !important;
+}
+
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
+  font-size: 40px;
+}
+
+.profileImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
 }

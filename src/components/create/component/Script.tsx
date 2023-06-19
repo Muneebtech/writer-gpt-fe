@@ -1,4 +1,4 @@
-import Header from "@/common/Header/header"
+import { useModel } from "@/services/Script/hooks/useModel";
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import { useState } from "react"
 import { FaPlus } from "react-icons/fa";
@@ -6,6 +6,9 @@ import { FaPlus } from "react-icons/fa";
 
 const Script = () => {
   const [selectedValues, setSelectedValues] = useState([]);
+  const { isLoading: loading, data: data, isSuccess: success } = useModel()
+  console.log(data, "data");
+
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
 
@@ -16,12 +19,13 @@ const Script = () => {
   };
   return (
     <div>
+
       <div className='height-box mt-6 rounded-md border-2'>
         <div>
           <div className='ps-3 pt-2'>
-            <Header title='Enter Script details' />
+            <h4 className='font-bold'>ENTER SCRIPT DETAILS</h4>
           </div>
-          <div className="table-bb-gray mt-4">
+          <div className="table-bb-gray mt-4 ms-4 me-4">
           </div>
         </div>
         <div className="flex items-center">
