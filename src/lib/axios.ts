@@ -2,7 +2,7 @@ import { decryptData } from "@/utils/localStorage";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const apiEndpoint: string = process.env.NEXT_PUBLIC_API_ENDPOINT as string;
-const authToken = decryptData("token")
+const authToken = decryptData("token")?.access?.token
 const client = axios.create({
   baseURL: apiEndpoint,
   // withCredentials: true,
