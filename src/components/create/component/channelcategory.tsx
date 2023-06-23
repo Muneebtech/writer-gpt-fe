@@ -39,7 +39,51 @@ const ChannelAndCategory = () => {
           </div>
           <div className="table-bb-gray mt-4 ms-4 me-4"></div>
         </div>
-      
+        <div className="flex flex-wrap justify-center mt-4 mb-4">
+          {ChannelCategoryDataMap?.map((item: ChaneelData) => {
+            const { voice_id, name, descrp } = item;
+            return (
+              <div
+                onClick={() => handleClick(voice_id)}
+                key={voice_id}
+                className="flex
+                            cursor-pointer justify-between items-center pt-4 pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
+              >
+                <div className="flex items-center">
+                  <div>
+                    <Image
+                      src="/chaneel.png"
+                      alt="channel"
+                      width={40}
+                      height={40}
+                    />
+                  </div>
+                  <div className="ps-2 ">
+                    <div className="pt-1 pb-1">
+                      <p className=" font-bold text-sm">{name}</p>
+                    </div>
+                    <div>
+                      <p className="text-green-400 text-xs">{descrp}</p>
+                    </div>
+                  </div>
+                </div>
+                {/* SelectCard */}
+                <div className="">
+                  {selectedItemId === item.voice_id ? (
+                    <img
+                      src="/SelectCard.png"
+                      alt="round"
+                      width={12}
+                      height={12}
+                    />
+                  ) : (
+                    <img src="/Round.png" alt="round" width={12} height={12} />
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
         <div className="ps-2 pb-6">
           x
           <div>
