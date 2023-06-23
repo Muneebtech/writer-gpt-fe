@@ -24,10 +24,6 @@ const Script = () => {
   } = useOutro();
   const { data: topicData, isLoading: topicLoading } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
-
-  console.log("====================================");
-  console.log(topicData, "+++++++++++", Outrodata, "----", modelData);
-  console.log("====================================");
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
 

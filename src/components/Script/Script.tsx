@@ -36,9 +36,8 @@ interface FormData {
 }
 const Script = () => {
   const { isLoading: loading, data: Data, isSuccess: success } = useOutro()
-  console.log(Data, "datadata")
   const Outrodata = Data?.results
-  console.log("OutrosData", Outrodata)
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null);
   const discordLinkInputRef = useRef<HTMLInputElement>(null);
