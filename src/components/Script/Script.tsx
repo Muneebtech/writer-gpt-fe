@@ -53,7 +53,7 @@ const Script = () => {
     ['gray', 'indigo', 'purple', 'pink', "silver", "black",
       "crimson", "Lavender", "Orange", "Cyan", "Gold", "Violet"];
   const [profileimage, setProfileImage] = useState<File | null>(null);
-  const { isLoading, data, isSuccess } = useCreateChannel()
+  // const { isLoading, data, isSuccess } = useCreateChannel()
   const [formData, setFormData] = useState<FormData>({
     name: '',
     categorylist: '',
