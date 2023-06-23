@@ -10,6 +10,7 @@ export function useModel() {
       staleTime: 300000,
     }
   );
+  const results = data?.results;
 
-  return { isLoading, data, isSuccess };
+  return { isLoading, data: results, isSuccess };
 }

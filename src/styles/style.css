@@ -64,7 +64,9 @@ textarea {
   left: 441px !important;
   width: 16% !important;
 }
-
+.css-6hp17o-MuiList-root-MuiMenu-list{
+  max-height: 200px;
+}
 .bgImage {
   background-image: url('../../public/Group59.png');
   background-size: cover;

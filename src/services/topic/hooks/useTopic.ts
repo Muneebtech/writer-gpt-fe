@@ -10,5 +10,7 @@ export function useTopic() {
       staleTime: 300000,
     }
   );
-  return { data, isLoading, isSuccess };
+  const results = data?.results;
+
+  return { data: results, isLoading, isSuccess };
 }

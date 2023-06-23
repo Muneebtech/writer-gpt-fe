@@ -1,71 +1,88 @@
+import { Topic } from "@/constants/Topic";
+import { ModelList } from "@/constants/languageModel";
+import { OutroItems } from "@/constants/outro";
 import { useModel } from "@/services/Script/hooks/useModel";
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { useState } from "react"
+import { useOutro } from "@/services/outro";
+import { useTopic } from "@/services/topic";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-
 
 const Script = () => {
   const [selectedValues, setSelectedValues] = useState([]);
-  const { isLoading: loading, data: data, isSuccess: success } = useModel()
-  console.log(data, "data");
+  const {
+    isLoading: loading,
+    data: Outrodata,
+    isSuccess: success,
+  } = useOutro();
+  const { data: topicData, isLoading: topicLoading } = useTopic();
+  const { data: modelData, isLoading: modelLoading } = useModel();
 
+  console.log("====================================");
+  console.log(topicData, "+++++++++++", Outrodata, "----", modelData);
+  console.log("====================================");
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
 
-    setSelectedValues(prevState => ({
+    setSelectedValues((prevState) => ({
       ...prevState,
-      [name || '']: value,
+      [name || ""]: value,
     }));
   };
   return (
     <div>
-
-      <div className='height-box mt-6 rounded-md border-2'>
+      <div className="height-box mt-6 rounded-md border-2">
         <div>
-          <div className='ps-3 pt-2'>
-            <h4 className='font-bold'>ENTER SCRIPT DETAILS</h4>
+          <div className="ps-3 pt-2">
+            <h4 className="font-bold">ENTER SCRIPT DETAILS</h4>
           </div>
-          <div className="table-bb-gray mt-4 ms-4 me-4">
-          </div>
+          <div className="table-bb-gray mt-4 ms-4 me-4"></div>
         </div>
         <div className="flex items-center">
           <div className="w-9/12 ps-4 pe-4 flex items-center">
             <FormControl className="w-full">
-              <label className="pt-2 pb-2 text-lg font-medium">Script Topic</label>
+              <label className="pt-2 pb-2 text-lg font-medium">
+                Script Topic
+              </label>
               {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
               <Select
                 // labelId="multi-input-label"
                 // multiple
                 // value={selectedValues}
                 onChange={handleSelectChange}
-              // renderValue={(selected) => selected.join(', ')}
+                // renderValue={(selected) => selected.join(', ')}
               >
-                <MenuItem value="value1">Value 1</MenuItem>
-                <MenuItem value="value2">Value 2</MenuItem>
-                <MenuItem value="value3">Value 3</MenuItem>
-                <MenuItem value="value4">Value 4</MenuItem>
+                {topicData?.map((obj: Topic) => (
+                  <MenuItem value={obj.id}>{obj.topic}</MenuItem>
+                ))}
               </Select>
             </FormControl>
-
           </div>
           <div className="w-9/12 ps-4 pe-4 flex items-center">
             <FormControl className="w-full">
-              <label className="pt-2 pb-2 text-lg font-medium">Language Models</label>
+              <label className="pt-2 pb-2 text-lg font-medium">
+                Language Models
+              </label>
               {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
               <Select
                 // labelId="multi-input-label"
                 // multiple
                 // value={selectedValues}
                 onChange={handleSelectChange}
-              // renderValue={(selected) => selected.join(', ')}
+                // renderValue={(selected) => selected.join(', ')}
               >
-                <MenuItem value="value1">Value 1</MenuItem>
-                <MenuItem value="value2">Value 2</MenuItem>
-                <MenuItem value="value3">Value 3</MenuItem>
-                <MenuItem value="value4">Value 4</MenuItem>
+                {modelData?.map((obj: ModelList) => (
+                  <MenuItem value={obj.id}>{obj.model}</MenuItem>
+                ))}
               </Select>
             </FormControl>
-
           </div>
         </div>
         <div className="w-9/12 ps-4 pe-4">
@@ -77,18 +94,17 @@ const Script = () => {
               // multiple
               // value={selectedValues}
               onChange={handleSelectChange}
-            // renderValue={(selected) => selected.join(', ')}
+              // renderValue={(selected) => selected.join(', ')}
             >
-              <MenuItem value="value1">Value 1</MenuItem>
-              <MenuItem value="value2">Value 2</MenuItem>
-              <MenuItem value="value3">Value 3</MenuItem>
-              <MenuItem value="value4">Value 4</MenuItem>
+              {Outrodata?.map((obj: OutroItems) => (
+                <MenuItem value={obj.id}>{obj.outro}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Script
+export default Script;

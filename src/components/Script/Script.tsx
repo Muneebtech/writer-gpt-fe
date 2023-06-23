@@ -1,5 +1,5 @@
-import { categories } from "@/constants/categories";
-import { OutroItems, Outros } from "@/constants/outro";
+import { categories } from "@/constants/categories"
+import { OutroItems, Outros } from "@/constants/outro"
 import {
   Box,
   Button,
@@ -16,17 +16,15 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
-  Popover,
-} from "@mui/material";
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { FiCopy, FiCheck } from "react-icons/fi";
-import { AiOutlineUpload } from "react-icons/ai";
-import Image from "next/image";
-import { useCreateChannel } from "@/services/channel";
-import Header from "@/common/Header/header";
-import { useOutro } from "@/services/outro";
-import { useTopic } from "@/services/topic";
-import { useModel } from "@/services/Script/hooks/useModel";
+  Popover
+} from "@mui/material"
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
+import { FiCopy, FiCheck } from "react-icons/fi"
+import { AiOutlineUpload } from "react-icons/ai"
+import Image from "next/image"
+import { useCreateChannel } from "@/services/channel"
+import Header from "@/common/Header/header"
+import { useOutro } from "@/services/outro"
 interface FormData {
   name: string;
   categorylist: string;
@@ -37,73 +35,52 @@ interface FormData {
   // Add more properties with their respective data types
 }
 const Script = () => {
-  const { isLoading: loading, data: Data, isSuccess: success } = useOutro();
-  console.log(Data, "datadata");
-  const Outrodata = Data?.results;
-  console.log("OutrosData", Outrodata);
+  const { isLoading: loading, data: Data, isSuccess: success } = useOutro()
+  console.log(Data, "datadata")
+  const Outrodata = Data?.results
+  console.log("OutrosData", Outrodata)
   const fileInputRef = useRef<HTMLInputElement>(null);
   const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null);
   const discordLinkInputRef = useRef<HTMLInputElement>(null);
-  const InputRef = useRef<HTMLInputElement>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [textareaValue, setTextareaValue] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const colors = [
-    "gray",
-    "indigo",
-    "purple",
-    "pink",
-    "silver",
-    "black",
-    "crimson",
-    "Lavender",
-    "Orange",
-    "Cyan",
-    "Gold",
-    "Violet",
-  ];
+  const InputRef = useRef<HTMLInputElement>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [popoverOpen, setPopoverOpen] = useState(false)
+  const [selectedOption, setSelectedOption] = useState("")
+  const [textareaValue, setTextareaValue] = useState("")
+  const [selectedColor, setSelectedColor] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
+  const colors =
+    ['gray', 'indigo', 'purple', 'pink', "silver", "black",
+      "crimson", "Lavender", "Orange", "Cyan", "Gold", "Violet"];
   const [profileimage, setProfileImage] = useState<File | null>(null);
   // const { isLoading, data, isSuccess } = useCreateChannel()
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    categorylist: "",
+    name: '',
+    categorylist: '',
     youtubeLink: "",
     discordLink: "",
     learningVideos: "",
-    videoTopic: "",
+    videoTopic: ""
   });
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
 
-  const { data: topicData, isLoading: topicLoading } = useTopic();
-  const { data: outroData, isLoading: outroLoading } = useOutro();
-  const { data: modelData, isLoading: modelLoading } = useModel();
-
-  console.log('====================================');
-  console.log(topicData,outroData,modelData);
-  console.log('====================================');
-
-  const [userData, setUserData] = useState<FormData[]>([]);
-  const handleInputChange = (
-    event: ChangeEvent<{ name?: string; value: string }>
-  ) => {
+  const [userData, setUserData] = useState<FormData[]>([])
+  const handleInputChange = (event: ChangeEvent<{ name?: string; value: string }>) => {
     const { name, value } = event.target;
 
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
-      [name || ""]: value,
+      [name || '']: value,
     }));
   };
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
 
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
-      [name || ""]: value,
+      [name || '']: value,
     }));
   };
   const handleSubmit = (event: FormEvent) => {
@@ -115,16 +92,16 @@ const Script = () => {
       discordLink: formData.discordLink,
       learningVideos: formData.learningVideos,
       videoTopic: formData.videoTopic,
-      profileimage: profileimage ? URL.createObjectURL(profileimage) : "",
+      profileimage: profileimage ? URL.createObjectURL(profileimage) : ''
     };
-    setUserData((prevData) => [...prevData, newFormData]);
+    setUserData(prevData => [...prevData, newFormData]);
     setFormData({
-      name: "",
-      categorylist: "",
-      youtubeLink: "",
-      discordLink: "",
-      learningVideos: "",
-      videoTopic: "",
+      name: '',
+      categorylist: '',
+      youtubeLink: '',
+      discordLink: '',
+      learningVideos: '',
+      videoTopic: ''
     });
     setProfileImage(null);
   };
@@ -133,36 +110,33 @@ const Script = () => {
       fileInputRef.current.click();
     }
   };
-  const handleProfileImageChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedImage = event.target.files[0];
       setProfileImage(selectedImage);
 
-      setFormData((prevFormData) => ({
+      setFormData(prevFormData => ({
         ...prevFormData,
-        profileimage: URL.createObjectURL(selectedImage),
+        profileimage: URL.createObjectURL(selectedImage)
       }));
     }
   };
   const copyToClipboard = (fieldName: string) => {
-    let textToCopy = "";
+    let textToCopy = '';
 
-    if (fieldName === "discordLink" && discordLinkInputRef.current) {
+    if (fieldName === 'discordLink' && discordLinkInputRef.current) {
       textToCopy = discordLinkInputRef.current.value;
-    } else if (fieldName === "youtubeLink" && youtubeLinkSelectRef.current) {
+    } else if (fieldName === 'youtubeLink' && youtubeLinkSelectRef.current) {
       textToCopy = youtubeLinkSelectRef.current.value;
     }
 
     if (textToCopy) {
-      navigator.clipboard
-        .writeText(textToCopy)
+      navigator.clipboard.writeText(textToCopy)
         .then(() => {
-          console.log("Text copied to clipboard:", textToCopy);
+          console.log('Text copied to clipboard:', textToCopy);
         })
         .catch((error) => {
-          console.error("Error copying text to clipboard:", error);
+          console.error('Error copying text to clipboard:', error);
         });
     }
   };
@@ -176,34 +150,35 @@ const Script = () => {
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
-  };
+    p: 4
+  }
 
   const handleOpenModal = () => {
-    setModalOpen(true);
-  };
+    setModalOpen(true)
+  }
   const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+    setModalOpen(false)
+  }
   const handlepopOverOpne = () => {
-    setPopoverOpen(true);
-  };
+    setPopoverOpen(true)
+  }
   const handlePopoverClose = () => {
-    setPopoverOpen(false);
-  };
+    setPopoverOpen(false)
+  }
   const handleSelectOption = (option: string) => {
-    setSelectedOption(option);
-    setTextareaValue(option);
-  };
+    setSelectedOption(option)
+    setTextareaValue(option)
+  }
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextareaValue(e.target.value);
-  };
+    setTextareaValue(e.target.value)
+  }
   return (
     <>
       <div>
         <Header title="Create CHANNEL" />
       </div>
-      <div className="table-bb-gray mt-4"></div>
+      <div className="table-bb-gray mt-4">
+      </div>
       {/* Right-section */}
       <div className="flex items-center pt-4">
         <div className="Side-spacing ">
@@ -277,7 +252,7 @@ const Script = () => {
               className="py-2 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
             />
             <Button
-              onClick={() => copyToClipboard("youtubeLink")}
+              onClick={() => copyToClipboard('youtubeLink')}
               title="Copy Link"
               className="bg-gray-200 position-btn border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
             >
@@ -299,9 +274,9 @@ const Script = () => {
               <MenuItem value="learning">Learning</MenuItem>
             </Select>
           </div>
-        </div>
+        </div >
         {/* Left Side */}
-        <div className="Side-spacing ">
+        <div className="Side-spacing " >
           <div className="flex items-center">
             <div>
               <div className="ms-4 mb-1 mt-1">
@@ -312,7 +287,7 @@ const Script = () => {
                   type="file"
                   accept="image/*"
                   ref={fileInputRef}
-                  style={{ display: "none" }}
+                  style={{ display: 'none' }}
                   onChange={handleProfileImageChange}
                 />
                 <Image
@@ -327,10 +302,7 @@ const Script = () => {
             <div className=" ps-6 pe-6">
               <div className="flex items-center pt-2 pb-2 cursor-pointer">
                 <AiOutlineUpload size={20} />
-                <span
-                  onClick={handleUploadPictureClick}
-                  className="ps-1 pe-1 border-b-2 border-gray-400"
-                >
+                <span onClick={handleUploadPictureClick} className="ps-1 pe-1 border-b-2 border-gray-400">
                   Upload Picture
                 </span>
               </div>
@@ -357,7 +329,7 @@ const Script = () => {
               className="py-2 px-3 border  border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
             />
             <Button
-              onClick={() => copyToClipboard("discordLink")}
+              onClick={() => copyToClipboard('discordLink')}
               title="Copy Link"
               className="bg-gray-200 position-btn border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
             >
@@ -372,16 +344,13 @@ const Script = () => {
               name="videoTopic"
               value={formData.videoTopic}
               onChange={handleSelectChange}
-              id="topic"
-              label="Select topic"
-              className="input-size "
-            >
+              id="topic" label="Select topic" className="input-size ">
               <MenuItem value="video">Vidoes</MenuItem>
             </Select>
           </div>
-        </div>
+        </div >
         <div></div>
-      </div>
+      </div >
       <div className="container mx-auto mt-8">
         <InputLabel className="pt-2 pb-2 font-bold">Outros</InputLabel>
         <textarea
@@ -390,29 +359,22 @@ const Script = () => {
           className="border w-full border-gray-300 rounded p-2 mb-4"
         ></textarea>
         <div className="flex justify-end items-center pb-8">
-          <span
-            onClick={handleOpenModal}
-            className="ps-1 pe-1 border-b-2 border-gray-800 me-2 ms-2"
-          >
+          <span onClick={handleOpenModal} className="ps-1 pe-1 border-b-2 border-gray-800 me-2 ms-2">
             Edit
           </span>
-          <span
-            onClick={handleOpenModal}
-            className="ps-1 pe-1 border-b-2 border-gray-800 me-2 ms-2"
-          >
+          <span onClick={handleOpenModal} className="ps-1 pe-1 border-b-2 border-gray-800 me-2 ms-2">
             Change
           </span>
         </div>
         <div className="pt-6 pb-6 flex justify-end">
-          <Button
-            onClick={handleSubmit}
+          <Button onClick={handleSubmit}
             className="button-black ps-8 pe-8 pt-2 pb-2 "
-            variant="contained"
-          >
-            Create
-          </Button>
+            variant="contained">Create</Button>
         </div>
-        <Modal open={modalOpen} className="flex justify-center items-center">
+        <Modal
+          open={modalOpen}
+          className="flex justify-center items-center"
+        >
           <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-3/4">
             <Typography variant="h6" gutterBottom>
               Select Outros
@@ -421,14 +383,8 @@ const Script = () => {
               {Outrodata?.map((item: OutroItems) => {
                 return (
                   <ListItem button key={item?.id}>
-                    <Checkbox
-                      color="default"
-                      onClick={() => handleSelectOption(item.description)}
-                    ></Checkbox>
-                    <ListItemText
-                      className="border-2 ps-2 pe-2 pt-2 pb-2"
-                      primary={item.description}
-                    />
+                    <Checkbox color="default" onClick={() => handleSelectOption(item.description)}></Checkbox>
+                    <ListItemText className="border-2 ps-2 pe-2 pt-2 pb-2" primary={item.description} />
                   </ListItem>
                 );
               })}
@@ -441,10 +397,7 @@ const Script = () => {
                 >
                   Cancel
                 </Button>
-                <Button
-                  onClick={handleCloseModal}
-                  className="button-black px-4 py-2"
-                >
+                <Button onClick={handleCloseModal} className="button-black px-4 py-2">
                   Submit
                 </Button>
               </div>
@@ -453,7 +406,7 @@ const Script = () => {
         </Modal>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Script;
+export default Script

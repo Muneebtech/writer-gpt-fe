@@ -2,7 +2,7 @@ import { request } from "@/lib/axios";
 export class TopicServices {
     static getTopicData() {
         return request({
-            url: "/outrodata",
+            url: "/topic",
             method: "GET"
         })
     }
