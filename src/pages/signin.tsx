@@ -71,7 +71,7 @@ const SignInPage: NextPageWithLayout = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-white-600 transition duration-200"
+                className="w-full button-black py-2 px-4 rounded-md hover:bg-white-600 transition duration-200"
               >
                 Sign In
               </button>

@@ -81,7 +81,7 @@ const Setting = () => {
 
                         </div>
                         <div>
-                            <Button className="bg-black text-white ps-4 pe-4 pt-2 pb-2">Edit</Button>
+                            <Button className="button-black ps-4 pe-4 pt-2 pb-2">Edit</Button>
                         </div>
                     </div>
                     <div className="flex mt-6" >

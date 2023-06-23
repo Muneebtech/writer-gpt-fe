@@ -1,0 +1,1 @@
+// Funtion are Created for using in just this component 
