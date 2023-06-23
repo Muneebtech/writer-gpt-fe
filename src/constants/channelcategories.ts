@@ -63,8 +63,22 @@ export const ChannelCategoryDataMap = [
 
 
 ]
-export type ChaneelData = {
+export type VoiceData = {
     name: string;
     preview_url: string
     voice_id: string
 }
+export type Channel ={
+    channel: string;
+    subscribers: number;
+    photoPath: string;
+    description: string;
+    youtubeUrl: string;
+    discordUrl: string;
+    category: {
+      category: string;
+      id: string;
+    };
+    id: string;
+  }
+  

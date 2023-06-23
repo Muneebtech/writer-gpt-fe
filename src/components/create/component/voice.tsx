@@ -1,11 +1,11 @@
-import { ChannelCategoryDataMap, ChaneelData } from '@/constants/channelcategories';
+import { ChannelCategoryDataMap, VoiceData } from '@/constants/channelcategories';
 import { useVoices } from '@/services/voices/hooks';
 import Image from 'next/image';
 
 import { useState, useRef, useEffect } from 'react';
 
 const Voice = () => {
-  
+
   const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
   const [selectCard, setSelectCard] = useState<string | null>(null);
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
@@ -35,7 +35,7 @@ const Voice = () => {
   };
 
   useEffect(() => {
-    Data?.forEach((item: ChaneelData) => {
+    Data?.forEach((item: VoiceData) => {
       const { voice_id, preview_url } = item;
       const audio = new Audio(preview_url);
       audio.addEventListener('ended', () => {
@@ -65,7 +65,7 @@ const Voice = () => {
           <div className='table-bb-gray mt-4 ms-4 me-4'></div>
         </div>
         <div className='flex flex-wrap justify-start mt-4 mb-4'>
-          {Data?.map((item: ChaneelData) => {
+          {Data?.map((item: VoiceData) => {
             const { name, voice_id } = item;
             return (
               <div

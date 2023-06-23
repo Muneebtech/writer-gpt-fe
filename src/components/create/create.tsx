@@ -10,7 +10,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 const steps = [
-    'CHANNEL AND CATEGORY',
+    'CHANNEL',
     'SCRIPT',
     'VOICE',
     'BASIC DATA',
@@ -68,7 +68,7 @@ const Create = () => {
     return (
         <>
             <div>
-                <Header title="CREATE SCRIPT AND VOICEOVER" />
+                <Header title="CREATE SCRIPT" />
             </div>
             <div className="table-bb-gray mt-4 mb-4">
             </div>
