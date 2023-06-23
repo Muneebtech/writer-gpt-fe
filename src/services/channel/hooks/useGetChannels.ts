@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
-import { UseOutroData } from "../OutroSevices";
+import { ChannelServices } from "../channelServices";
 
-export function useOutro() {
+export function useGetChannels(dataa: any) {
   const { isLoading, data, isSuccess } = useQuery(
-    "useOutro",
-    () => UseOutroData.getOutroData(),
+    "getChannels",
+    () => ChannelServices.getChannels(dataa),
     {
       cacheTime: 300000,
       staleTime: 300000,
