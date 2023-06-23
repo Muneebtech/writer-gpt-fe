@@ -275,3 +275,7 @@ body {
     opacity: 1;
   }
 }
+
+.border-black-btns {
+  border: solid 1px #171717 !important;
+}

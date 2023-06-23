@@ -89,7 +89,7 @@ const ChannelAndCategory = () => {
           <div>
             <Button
               variant="outlined"
-              className="widht-card pt-2 pb-2 text-black"
+              className="widht-card pt-2 pb-2 text-black border-black-btns"
             >
               <FaPlus size={30} className="ps-2 pe-2" /> Add Channel
             </Button>

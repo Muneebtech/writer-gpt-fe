@@ -354,9 +354,10 @@ const Brands = () => {
             <div className="table-bb-gray "></div>
             <div className="flex justify-between items-center pt-4 pb-2">
               <Button
+
                 onClick={handleCloseModal}
                 variant="outlined"
-                className=" black text-black px-4 py-1 ms-1 me-1"
+                className=" black text-black px-4 py-1 ms-1 me-1 border-black-btns"
               >
                 Cancel
               </Button>
