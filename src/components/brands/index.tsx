@@ -25,7 +25,7 @@ interface FormData {
 }
 const Brands = () => {
   const { isLoading: loading, data: Data, isSuccess: success } = useCategories()
-  const { data: ChannelData } = useCreateChannel()
+  const { data: ChannelData, mutate } = useCreateChannel()
   console.log(Data, "data")
   const CategoryData = Data?.results
   console.log(CategoryData, "CategoryData")
@@ -54,6 +54,8 @@ const Brands = () => {
     learningVideos: "",
     videoTopic: ""
   });
+  console.log(formData, "formData");
+
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
@@ -91,7 +93,7 @@ const Brands = () => {
   };
   console.log("UserData", userData)
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
+    console.log("Trigger")
     const newFormData = {
       name: formData.name,
       categorylist: formData.categorylist,
@@ -101,7 +103,7 @@ const Brands = () => {
       videoTopic: formData.videoTopic,
       profileimage: profileimage ? URL.createObjectURL(profileimage) : ''
     };
-    createChannelMutation.mutate(newFormData);
+    mutate(newFormData);
     setFormData({
       name: '',
       categorylist: '',
@@ -358,7 +360,7 @@ const Brands = () => {
               >
                 Cancel
               </Button>
-              <Button onSubmit={handleSubmit} variant="contained" className="button-black ps-4 pe-4">
+              <Button onClick={handleSubmit} variant="contained" className="button-black ps-4 pe-4">
                 <FiPlus size={25} className="pe-1 ps-1" />
                 Create Channel
               </Button>

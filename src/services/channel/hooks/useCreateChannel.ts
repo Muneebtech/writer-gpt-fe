@@ -1,9 +1,9 @@
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { ChannelServices } from "../channelServices";
 
-export function useCreateChannel(dataa: any) {
-    const { isLoading, data, isSuccess } = useQuery("createChannel", () =>
-        ChannelServices.postChannelData(dataa)
+export function useCreateChannel() {
+    const { isLoading, data, isSuccess, mutate } = useMutation("createChannel", (data: any) =>
+        ChannelServices.postChannelData(data)
     )
-    return { data, isLoading, isSuccess }
+    return { data, isLoading, isSuccess, mutate }
 }
