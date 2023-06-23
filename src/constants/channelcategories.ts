@@ -64,7 +64,7 @@ export const ChannelCategoryDataMap = [
 
 ]
 export type ChaneelData = {
-    id: number;
-    title: string;
-    descrp: string
+    name: string;
+    preview_url: string
+    voice_id: number
 }

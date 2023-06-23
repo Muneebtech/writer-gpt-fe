@@ -9,7 +9,7 @@ export const categories = [
   { id: 8, title: "Literature", },
   { id: 9, title: "Information technology", },
 ];
-  
+
 // "Region",
 // "Education",
 // "Art",

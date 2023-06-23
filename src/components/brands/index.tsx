@@ -8,8 +8,13 @@ import { FaTimes } from 'react-icons/fa';
 import { useState } from "react"
 import { AiOutlineLeft, AiOutlineUpload } from "react-icons/ai";
 import Image from "next/image"
+import { categoryDataTypess } from "../Types/category.type";
 // import BrandsLibrary from "../brandsLibrary/brandsLibrary";
 import { CardsData, CardsDatatype } from "@/constants/Cards";
+import { useCategories } from "@/services/category";
+import { ChannelServices, useCreateChannel } from "@/services/channel";
+import { useMutation } from "react-query";
+
 interface FormData {
   name: string;
   categorylist: string;
@@ -19,6 +24,11 @@ interface FormData {
   videoTopic: string;
 }
 const Brands = () => {
+  const { isLoading: loading, data: Data, isSuccess: success } = useCategories()
+  const { data: ChannelData } = useCreateChannel()
+  console.log(Data, "data")
+  const CategoryData = Data?.results
+  console.log(CategoryData, "CategoryData")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   console.log(selectedCategory, "categoriesData")
   const [showBrands, setShowBrands] = useState<boolean>(false)
@@ -30,24 +40,25 @@ const Brands = () => {
   const [userData, setUserData] = useState<FormData[]>([])
   const [selectedColor, setSelectedColor] = useState("")
   const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const createChannelMutation = useMutation(ChannelServices.postChannelData);
   const colors =
     ['gray', 'indigo', 'purple', 'pink', "silver", "black",
       "crimson", "Lavender", "Orange", "Cyan", "Gold", "Violet"];
   const [profileimage, setProfileImage] = useState<File | null>(null);
-  // const { isLoading, data, isSuccess } = useCreateChannel()
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     categorylist: '',
-    youtubeLink: "",
     discordLink: "",
+    youtubeLink: "",
     learningVideos: "",
     videoTopic: ""
   });
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
-  const handleCategoryFilter = (title: string) => {
-    setSelectedCategory(title === "All categories" ? null : title)
+  const handleCategoryFilter = (category: string) => {
+    setSelectedCategory(category === "All categories" ? null : category)
   };
   const filteredData = useMemo(() => {
     let filtered = CardsData;
@@ -90,7 +101,7 @@ const Brands = () => {
       videoTopic: formData.videoTopic,
       profileimage: profileimage ? URL.createObjectURL(profileimage) : ''
     };
-    setUserData(prevData => [...prevData, newFormData]);
+    createChannelMutation.mutate(newFormData);
     setFormData({
       name: '',
       categorylist: '',
@@ -183,7 +194,7 @@ const Brands = () => {
           open={openModal}
           onClose={handleCloseModal}
           className="flex justify-center items-center"
-        >  
+        >
           <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-11/12">
             <Typography className="" variant="h6" gutterBottom>
               <div className="table-bb-gray flex items-center justify-between">
@@ -347,7 +358,7 @@ const Brands = () => {
               >
                 Cancel
               </Button>
-              <Button variant="contained" className="button-black ps-4 pe-4">
+              <Button onSubmit={handleSubmit} variant="contained" className="button-black ps-4 pe-4">
                 <FiPlus size={25} className="pe-1 ps-1" />
                 Create Channel
               </Button>
@@ -355,14 +366,14 @@ const Brands = () => {
           </div>
         </Modal>
         <div className="flex flex-wrap gap-2 justify-between cursor-pointer">
-          {categories.map((obj) => (
+          {CategoryData?.map((obj: categoryDataTypess) => (
             <span
-              onClick={() => handleCategoryFilter(obj?.title)}
-              className={`px-4 py-2 border rounded-3xl text-xs text-center ${selectedCategory === obj?.title ? 'bg-blue-500 text-white' : ''
+              onClick={() => handleCategoryFilter(obj?.category)}
+              className={`px-4 py-2 border rounded-3xl text-xs text-center ${selectedCategory === obj?.category ? 'bg-blue-500 text-white' : ''
                 }`}
-              key={obj?.title}
+              key={obj?.id}
             >
-              {obj?.title}
+              {obj?.category}
             </span>
           ))}
         </div>

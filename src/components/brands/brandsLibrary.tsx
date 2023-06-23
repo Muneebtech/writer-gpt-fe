@@ -4,6 +4,7 @@ import { useGetJobs } from "@/services/Jobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import { Button } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import { FiDownload, FiPlus } from "react-icons/fi";
@@ -41,12 +42,17 @@ const BrandsLibrary = () => {
     }
   };
 
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/brands`);
+  };
   return (
     <>
       <div className="flex items-center justify-between fade-out">
         <div className="flex items-center">
           <div className="flex items-center ">
-            <div className="ps-1 pe-1 cursor-pointer">
+            <div onClick={handleCardClick} className="ps-1 pe-1 cursor-pointer">
               <AiOutlineLeft />
             </div>
             <div className="ps-1 pe-1"><Image src="/chaneel.png" alt="chnaeel" width={30} height={30} /></div>
