@@ -131,18 +131,33 @@ export const tableData = [
   },
 ];
 
-
 export type TableListData = {
-  id: number;
-  videoName: string;
+  id: string;
+  channel: {
+    channel: string;
+    subscribers: number;
+    photoPath: null | string;
+    youtubeUrl: string;
+    discordUrl: string;
+    category: string;
+    id: string;
+  
+  };
   language: string;
-  model: string;
-  topic: string;
-  outro: string;
+  model: {
+    id: string;
+    model: string;
+    description: string;
+  };
+  topic: { id: string; topic: string; description: string };
+  outro: {
+    id: string;
+    outro: string;
+    description: string;
+  };
   gptLogs: string;
   wordCount: string;
   script: string;
-  voiceover: string;
-  date: string
-
-}
+  // voiceover: string;
+  date: string;
+};

@@ -106,14 +106,14 @@ const BrandsLibrary = () => {
                 </tr>
               </thead>
               <tbody>
-                {LibraryData?.map((row: TableListData) => {
+                {LibraryData?.map((row: TableListData,index:number) => {
                   const { backgroundColor } = generateRandomColors();
 
                   return (
                     <tr
                       key={row?.id}
                       className={`border-b leading-3 ${
-                        row?.id !== tableData.length - 1 ? "table-bb-gray" : ""
+                        index !== LibraryData.length - 1 ? "table-bb-gray" : ""
                       }`}
                     >
                       <td className="py-4 px-4 text-center ">
@@ -125,15 +125,15 @@ const BrandsLibrary = () => {
                             height={28}
                             className="mr-2 rounded"
                           />
-                          {row?.videoName}
+                          {row?.channel.channel}
                         </div>
                       </td>
                       <td className="py-4 px-4 text-center">{row.language}</td>
-                      <td className="py-4 px-4 text-center">{row.model}</td>
+                      <td className="py-4 px-4 text-center">{row?.model?.model}</td>
                       <td className="py-4 px-4 text-center">
-                        {row.topic}
+                        {row.topic?.topic}
                       </td>
-                      <td className="py-4 px-4 text-center">{row.outro}</td>
+                      <td className="py-4 px-4 text-center">{row.outro?.outro}</td>
                       <td className="py-4 px-4">
                         <div className="flex justify-center">
                           <FiDownload />
