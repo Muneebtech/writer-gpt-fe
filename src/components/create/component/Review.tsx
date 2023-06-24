@@ -29,7 +29,7 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
 
   const { data: topicData, isLoading: topicLoading } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
-  const { data: channelData, isLoading: channelLoading } = useGetChannels("");
+  const { data: channelData, isLoading: channelLoading } = useGetChannels();
 
   let topic = topicData?.find((obj: Topic) => obj.id === ScriptData?.videoTopic);
   let outro = Outrodata?.find((obj: OutroItems) => obj.id === ScriptData?.outro);
