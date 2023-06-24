@@ -7,13 +7,16 @@ import Typography from "@mui/material/Typography";
 import Header from "@/common/Header/header";
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa";
-import {
-  Channel,
-} from "@/constants/channelcategories";
+import { Channel } from "@/constants/channelcategories";
 import { useState } from "react";
 import { useGetChannels } from "@/services/channel";
-
-const ChannelAndCategory = () => {
+import { Job } from "@/components/Types/job.type";
+interface ChildComponentProps {
+  setScriptData: (updatedState: Partial<Job>) => void;
+}
+const ChannelAndCategory: React.FC<ChildComponentProps> = ({
+  setScriptData,
+}) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const {
     isLoading: loading,
@@ -23,6 +26,7 @@ const ChannelAndCategory = () => {
 
   const handleClick = (id: string) => {
     setSelectedItemId(id === selectedItemId ? null : id);
+    setScriptData({ channel: id });
   };
   return (
     <div>

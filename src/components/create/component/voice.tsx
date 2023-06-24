@@ -3,8 +3,10 @@ import { useVoices } from '@/services/voices/hooks';
 import Image from 'next/image';
 
 import { useState, useRef, useEffect } from 'react';
-
-const Voice = () => {
+interface ChildComponentProps {
+  setScriptData: React.Dispatch<React.SetStateAction<number>>;
+}
+const Voice = ({setScriptData}:ChildComponentProps) => {
 
   const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
   const [selectCard, setSelectCard] = useState<string | null>(null);
