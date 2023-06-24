@@ -52,7 +52,7 @@ export const Outros = [
 ];
 
 export type OutroItems = {
-  id: number;
+  id: string;
   description: string;
   outro: string;
 };

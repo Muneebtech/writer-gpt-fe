@@ -1,3 +1,4 @@
+import { Job } from "@/components/Types/job.type";
 import { Topic } from "@/constants/Topic";
 import { ModelList } from "@/constants/languageModel";
 import { OutroItems } from "@/constants/outro";
@@ -15,14 +16,21 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-
-const Script = () => {
-  const [selectedValues, setSelectedValues] = useState([]);
+interface ChildComponentProps {
+  setScriptData: (updatedState: Partial<Job>) => void;
+}
+const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
+  const [selectedValues, setSelectedValues] = useState({
+    outro: "",
+    model: "",
+    videoTopic: "",
+  });
   const {
     isLoading: loading,
     data: Outrodata,
     isSuccess: success,
   } = useOutro();
+  
   const { data: topicData, isLoading: topicLoading } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
@@ -30,8 +38,9 @@ const Script = () => {
 
     setSelectedValues((prevState) => ({
       ...prevState,
-      [name || ""]: value,
+      [name]: value,
     }));
+    setScriptData({ ...selectedValues, [name]: value });
   };
   return (
     <div>

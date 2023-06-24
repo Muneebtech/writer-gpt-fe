@@ -12,7 +12,13 @@ import { useState } from "react";
 import { useGetChannels } from "@/services/channel";
 import Spinner from "@/modules/spinner/spinner";
 
-const ChannelAndCategory = () => {
+import { Job } from "@/components/Types/job.type";
+interface ChildComponentProps {
+  setScriptData: (updatedState: Partial<Job>) => void;
+}
+const ChannelAndCategory: React.FC<ChildComponentProps> = ({
+  setScriptData,
+}) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const {
     isLoading: loading,
@@ -22,6 +28,7 @@ const ChannelAndCategory = () => {
 
   const handleClick = (id: string) => {
     setSelectedItemId(id === selectedItemId ? null : id);
+    setScriptData({ channel: id });
   };
   return (
     <div>
