@@ -11,6 +11,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { Job } from "../Types/job.type";
 import { useCreateJob } from "@/services/Jobs/hooks/createJob";
+import ReviewData from "./component/ReviewData";
 
 const steps = ["CHANNEL", "SCRIPT", "BASIC DATA", "REVIEW"];
 
@@ -37,7 +38,6 @@ const Create = () => {
       setActiveStep(parseInt(storedValue, 10));
     }
   }, []);
-
   // Save the active step value to local storage whenever it changes
   useEffect(() => {
     localStorage.setItem("activeStep", activeStep.toString());
@@ -95,6 +95,8 @@ const Create = () => {
       //     return <Voice setScriptData={handleStateUpdate}/>;
       case 3:
         return <Review ScriptData={ScriptData} />;
+      case 4:
+        return <ReviewData Jobdata={data} ScriptData={ScriptData} />;
     }
   };
 
@@ -118,7 +120,6 @@ const Create = () => {
       <div className="mt-2 mb-2">{renderStepContent(activeStep)}</div>
       {activeStep > 3 && (
         <>
-          <div>The generted Script</div>
           {isLoading ? <span>Loading</span> : null}
           {isSuccess ? <span>Data is here</span> : null}
         </>

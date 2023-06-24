@@ -1,6 +1,6 @@
 import { StringLiteralType } from "typescript";
 
-export const ReviewData = [{
+export const CreateReviewData = [{
     id: 1,
     VideoScriptName: "A Morning Prayer To Break Through Every Obstacle",
     Channel: "Morning Prayer",
