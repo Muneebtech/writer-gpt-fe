@@ -47,7 +47,7 @@ const Brands = () => {
     isSuccess: success,
   } = useCategories();
   const { data: ChannelData, mutate } = useCreateChannel();
-  const { isLoading, isSuccess, data: DataChannels } = useGetChannels();
+  const { isLoading, isSuccess, data: DataChannels } = useGetChannels({});
   // console.log(DataChannels, "DataChannels");
 
   console.log(Data, "data");

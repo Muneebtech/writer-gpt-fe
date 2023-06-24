@@ -26,27 +26,21 @@ interface ChildComponentProps {
 }
 const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
   const {
-    isLoading: loading,
     data: Outrodata,
-    isSuccess: success,
   } = useOutro();
 
-  const { data: topicData, isLoading: topicLoading } = useTopic();
-  const { data: modelData, isLoading: modelLoading } = useModel();
-  const { data: channelData, isLoading: channelLoading } = useGetChannels();
+  const { data: topicData } = useTopic();
+  const { data: modelData} = useModel();
+  const { data: channelData } = useGetChannels();
 
-  let topic = topicData?.find(
-    (obj: Topic) => obj.id === ScriptData?.videoTopic
-  );
+  let topic = topicData?.find((obj: Topic) => obj.id === ScriptData?.topic);
   let outro = Outrodata?.find(
     (obj: OutroItems) => obj.id === ScriptData?.outro
   );
   let model = modelData?.find((obj: ModelList) => obj.id === ScriptData?.model);
-  let channel = channelData?.results?.find(
+  let channel = channelData?.find(
     (obj: Channel) => obj.id === ScriptData?.channel
   );
-  console.log(Jobdata, "Jobdata::Jobdata");
-
   return (
     <div>
       <div className="height-box mt-6 rounded-md border-2">
@@ -96,7 +90,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                 </div> */}
                 <div className="flex items-center pt-1 pb-1">
                   <div className="pt-1 pb-1">
-                    <p className="font-bold pe-3" >
+                    <p className="font-bold pe-3">
                       {topic?.topic ? "Topic :" : "Topic :"}
                     </p>
                   </div>
@@ -132,46 +126,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                     <p className="font-bold pe-3">Script</p>
                   </div>
                   <div className="pt-2 pb-2 border ps-2 pe-2 scriptData me-3">
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Donec egestas convallis orci et sagittis. Vivamus vitae
-                      urna cursus ipsum iaculis venenatis eget vel massa. In
-                      lobortis semper faucibus. Ut quis enim est. Sed venenatis
-                      ipsum eros, vitae porttitor orci faucibus ut. Mauris
-                      finibus bibendum lacinia. Quisque ut interdum lorem, et
-                      mattis risus. Vestibulum tristique et purus ac ornare.
-                      Etiam viverra ante nec suscipit condimentum. Sed libero
-                      sem, pulvinar et tempus semper, placerat sit amet risus.
-                      Nunc vulputate dignissim orci, nec lacinia diam laoreet
-                      in. Donec orci ex, ullamcorper quis erat non, aliquet
-                      pellentesque nisl. In hac habitasse platea dictumst.
-                      Suspendisse bibendum dignissim ultricies. Ut eu risus
-                      erat. Vestibulum at tristique sem. Etiam mi tellus,
-                      feugiat at gravida vitae, placerat eu mi. Maecenas
-                      consectetur velit a massa commodo porta. Ut non mauris a
-                      tortor pharetra accumsan. Maecenas maximus tempor leo ut
-                      facilisis. Donec eu dignissim nibh. Nunc placerat, libero
-                      aliquam vestibulum luctus, lectus nibh gravida lacus, id
-                      eleifend ipsum dolor sed nulla. Ut molestie dolor vitae
-                      lacinia commodo. Vivamus in risus in nisi sollicitudin
-                      suscipit. Quisque a mauris dui. Nam tempus, nisl in
-                      tincidunt vestibulum, velit elit mattis sapien, vel
-                      euismod magna ante non lectus. Phasellus mi mi, ultricies
-                      id orci egestas, euismod molestie lacus. Pellentesque
-                      luctus, sapien tempor rutrum condimentum, mauris felis
-                      volutpat odio, ut elementum leo tortor ut nulla. Aliquam
-                      pellentesque justo consectetur ante vestibulum, imperdiet
-                      aliquam purus tempus. Pellentesque id nisl sapien.
-                      Praesent vel eros tincidunt eros malesuada gravida. Ut
-                      imperdiet id tellus rhoncus semper. Nam urna leo, eleifend
-                      quis enim vitae, malesuada lacinia sapien. Morbi sit amet
-                      sollicitudin massa, congue fermentum velit. Cras a lacus
-                      turpis. Suspendisse maximus pharetra nunc nec
-                      pellentesque. Nam ante elit, fermentum sit amet malesuada
-                      sed, accumsan nec lacus. Sed sit amet ex quis odio
-                      consequat pellentesque eu eget leo. Fusce dignissim tortor
-                      eget turpis porttitor egestas.
-                    </p>
+                    <p>{Jobdata?.script}</p>
                   </div>
                 </div>
               </div>

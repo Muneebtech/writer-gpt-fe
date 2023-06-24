@@ -12,6 +12,7 @@ import StepLabel from "@mui/material/StepLabel";
 import { Job } from "../Types/job.type";
 import { useCreateJob } from "@/services/Jobs/hooks/createJob";
 import ReviewData from "./component/ReviewData";
+import Spinner from "@/modules/spinner/spinner";
 
 const steps = ["CHANNEL", "SCRIPT", "BASIC DATA", "REVIEW"];
 
@@ -82,7 +83,6 @@ const Create = () => {
     formdata.append("channel", data.channel as string);
     mutate(formdata);
   };
-console.log(ScriptData,'In script data');
 
   const renderStepContent = (step: number) => {
     switch (step) {
@@ -121,8 +121,7 @@ console.log(ScriptData,'In script data');
       <div className="mt-2 mb-2">{renderStepContent(activeStep)}</div>
       {activeStep > 3 && (
         <>
-          {isLoading ? <span>Loading</span> : null}
-          {isSuccess ? <span>Data is here</span> : null}
+          {isLoading ? <Spinner></Spinner> : null}
         </>
       )}
       <div className="table-bb-gray mt-6 mb-4"></div>

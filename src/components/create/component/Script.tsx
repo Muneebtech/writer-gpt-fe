@@ -25,15 +25,10 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     model: "",
     topic: "",
   });
-  console.log(selectedValues,'selegcasdhvb');
-  
-  const {
-    isLoading: loading,
-    data: Outrodata,
-    isSuccess: success,
-  } = useOutro();
-  
-  const { data: topicData, isLoading: topicLoading } = useTopic();
+
+  const { data: Outrodata } = useOutro();
+
+  const { data: topicData } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
@@ -44,9 +39,11 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     }));
     setScriptData({ ...selectedValues, [name]: value });
   };
+  console.log(topicData, modelData, Outrodata, "dataaaaaaaaaa");
+
   return (
     <div>
-      {loading ? (
+      {modelLoading ? (
         <>
           <Spinner />
         </>
@@ -65,17 +62,16 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                   <label className="pt-2 pb-2 text-lg font-medium">
                     Script Topic
                   </label>
-                  {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
+
                   <Select
-                    // labelId="multi-input-label"
-                    // multiple
                     value={selectedValues.topic}
                     name="topic"
                     onChange={handleSelectChange}
-                    // renderValue={(selected) => selected.join(', ')}
                   >
                     {topicData?.map((obj: Topic) => (
-                      <MenuItem value={obj.id}>{obj.topic}</MenuItem>
+                      <MenuItem value={obj.id} key={obj.id}>
+                        {obj.topic}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -85,17 +81,16 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                   <label className="pt-2 pb-2 text-lg font-medium">
                     Language Models
                   </label>
-                  {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
+
                   <Select
-                    // labelId="multi-input-label"
-                    // multiple
                     value={selectedValues.model}
                     name="model"
                     onChange={handleSelectChange}
-                    // renderValue={(selected) => selected.join(', ')}
                   >
                     {modelData?.map((obj: ModelList) => (
-                      <MenuItem value={obj.id}>{obj.model}</MenuItem>
+                      <MenuItem key={obj.id} value={obj.id}>
+                        {obj.model}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -104,17 +99,16 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
             <div className="w-9/12 ps-4 pe-4">
               <FormControl className="w-4/6">
                 <label className="pt-2 pb-2 text-lg font-medium">Outros</label>
-                {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
+
                 <Select
-                  // labelId="multi-input-label"
-                  // multiple
                   value={selectedValues.outro}
                   name="outro"
                   onChange={handleSelectChange}
-                  // renderValue={(selected) => selected.join(', ')}
                 >
                   {Outrodata?.map((obj: OutroItems) => (
-                    <MenuItem value={obj.id}>{obj.outro}</MenuItem>
+                    <MenuItem key={obj.id} value={obj.id}>
+                      {obj.outro}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>

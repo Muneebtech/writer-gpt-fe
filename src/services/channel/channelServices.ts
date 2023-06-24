@@ -1,3 +1,4 @@
+import { QueryData } from "@/components/Types/queryData.type";
 import { request } from "@/lib/axios";
 
 export class ChannelServices {
@@ -8,7 +9,7 @@ export class ChannelServices {
       data: data,
     });
   }
-  static getChannels(data: any) {
+  static getChannels(data: QueryData) {
     return request({
       url: "/channels",
       method: "GET",
