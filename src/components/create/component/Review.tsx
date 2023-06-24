@@ -21,6 +21,8 @@ interface ChildComponentProps {
   ScriptData: Job | null;
 }
 const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
+  console.log(ScriptData,"hahah");
+  
   const {
     isLoading: loading,
     data: Outrodata,
@@ -34,9 +36,11 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
   let topic = topicData?.find((obj: Topic) => obj.id === ScriptData?.topic);
   let outro = Outrodata?.find((obj: OutroItems) => obj.id === ScriptData?.outro);
   let model = modelData?.find((obj: ModelList) => obj.id === ScriptData?.model);
-  let channel = channelData?.results?.find(
+  let channel = channelData?.find(
     (obj: Channel) => obj.id === ScriptData?.channel
   );
+  console.log(topic,outro,model,channel);
+  
   return (
     <div>
       <div className="height-box mt-6 rounded-md border-2">

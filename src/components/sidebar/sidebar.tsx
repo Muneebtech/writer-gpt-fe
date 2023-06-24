@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
             <nav className="px-4 flex-grow">
                 {/* Navigation section */}
                 <ul className="">
-                    <li>
+                    {/* <li>
                         <Link href="/">
                             <span className={` ${router.pathname === '/' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
                                 <span className="w-6 mr-2">
@@ -51,7 +51,7 @@ const Sidebar: React.FC = () => {
                                 Home
                             </span>
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link href="/brands">
                             <span className={` ${router.pathname === '/brands' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
@@ -82,7 +82,7 @@ const Sidebar: React.FC = () => {
                             </span>
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link href="/topics">
                             <span className={` ${router.pathname === '/topics' ? 'selected' : ''} font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}>
                                 <span className="w-6 mr-2">
@@ -91,7 +91,7 @@ const Sidebar: React.FC = () => {
                                 Topics
                             </span>
                         </Link>
-                    </li>
+                    </li> */}
                     {/* Add more navigation options here */}
                 </ul>
             </nav>

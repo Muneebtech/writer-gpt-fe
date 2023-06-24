@@ -82,6 +82,7 @@ const Create = () => {
     formdata.append("channel", data.channel as string);
     mutate(formdata);
   };
+console.log(ScriptData,'In script data');
 
   const renderStepContent = (step: number) => {
     switch (step) {

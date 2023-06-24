@@ -51,7 +51,7 @@ const Brands = () => {
   // console.log(DataChannels, "DataChannels");
 
   console.log(Data, "data");
-  const CategoryData = Data?.results;
+  const CategoryData = Data?.results ?? [];
   console.log(CategoryData, "CategoryData");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   console.log(selectedCategory, "categoriesData");
@@ -93,13 +93,17 @@ const Brands = () => {
     setSearchKeyword(keyword);
   };
   const handleCategoryFilter = (category: string) => {
-    setSelectedCategory(category === "All categories" ? null : category);
+    console.log(category,'haha');
+    
+    setSelectedCategory(category === "All" ? null : category);
   };
   const filteredData = useMemo(() => {
     let filtered = DataChannels;
     console.log(DataChannels, "GetChannelsData");
     console.log(filtered, "filtered::123");
     if (searchKeyword) {
+      console.log(searchKeyword,'search keyag');
+      
       filtered = filtered.filter((data: getChannelTypes) =>
         data?.channel?.toLowerCase().includes(searchKeyword.toLowerCase())
       );
@@ -464,19 +468,21 @@ const Brands = () => {
               </div>
             </Modal>
             <div className="flex flex-wrap gap-2 justify-between cursor-pointer">
-              {CategoryData?.map((obj: categoryDataTypess) => (
-                <span
-                  onClick={() => handleCategoryFilter(obj?.id)}
-                  className={`px-4 py-2 border rounded-3xl text-xs text-center ${
-                    selectedCategory === obj?.category
-                      ? "bg-blue-500 text-white"
-                      : ""
-                  }`}
-                  key={obj?.id}
-                >
-                  {obj?.category}
-                </span>
-              ))}
+              {[{ category: "All", id: "4234" }, ...CategoryData]?.map(
+                (obj: categoryDataTypess) => (
+                  <span
+                    onClick={() => handleCategoryFilter(obj?.category)}
+                    className={`px-4 py-2 border rounded-3xl text-xs text-center ${
+                      selectedCategory === obj?.category
+                        ? "bg-blue-500 text-white"
+                        : ""
+                    }`}
+                    key={obj?.id}
+                  >
+                    {obj?.category}
+                  </span>
+                )
+              )}
             </div>
             <div className="flex flex-wrap justify-center gap-2 cursor-pointer">
               {filteredData?.map((data: getChannelTypes) => {

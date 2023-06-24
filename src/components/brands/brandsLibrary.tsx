@@ -95,14 +95,13 @@ const BrandsLibrary = () => {
                 <tr className="">
                   <th className="py-4 px-4 text-center">Video Name</th>
                   <th className="py-4 px-4 text-center">Language</th>
-                  <th className="py-4 px-4 text-center">Model</th>
                   <th className="py-4 px-4 text-center">Video Topic</th>
                   <th className="py-4 px-4 text-center">Outro</th>
                   <th className="py-4 px-4 text-center">GPT Logs</th>
                   <th className="py-4 px-4 text-center">Word Count</th>
                   <th className="py-4 px-4 text-center">Script</th>
                   <th className="py-4 px-4 text-center">Voiceover</th>
-                  <th className="py-4 px-4 text-center">Date</th>
+                  {/* <th className="py-4 px-4 text-center">Date</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -128,7 +127,6 @@ const BrandsLibrary = () => {
                           {row?.channel.channel}
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-center">{row.language}</td>
                       <td className="py-4 px-4 text-center">{row?.model?.model}</td>
                       <td className="py-4 px-4 text-center">
                         {row.topic?.topic}
@@ -159,7 +157,7 @@ const BrandsLibrary = () => {
                           <FiDownload />
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-center">{row.date}</td>
+                      {/* <td className="py-4 px-4 text-center">{row.date}</td> */}
                     </tr>
                   );
                 })}

@@ -21,7 +21,7 @@ const SignInPage: NextPageWithLayout = () => {
 
     encryptData(data?.user, 'userdata')
     encryptData(data?.tokens, 'token')
-    router.push('/')
+    router.push('/brands')
   }
   const styles = `
   .bgImage {

@@ -25,6 +25,8 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     model: "",
     topic: "",
   });
+  console.log(selectedValues,'selegcasdhvb');
+  
   const {
     isLoading: loading,
     data: Outrodata,
@@ -67,7 +69,8 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                   <Select
                     // labelId="multi-input-label"
                     // multiple
-                    // value={selectedValues}
+                    value={selectedValues.topic}
+                    name="topic"
                     onChange={handleSelectChange}
                     // renderValue={(selected) => selected.join(', ')}
                   >
@@ -86,7 +89,8 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                   <Select
                     // labelId="multi-input-label"
                     // multiple
-                    // value={selectedValues}
+                    value={selectedValues.model}
+                    name="model"
                     onChange={handleSelectChange}
                     // renderValue={(selected) => selected.join(', ')}
                   >
@@ -104,7 +108,8 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                 <Select
                   // labelId="multi-input-label"
                   // multiple
-                  // value={selectedValues}
+                  value={selectedValues.outro}
+                  name="outro"
                   onChange={handleSelectChange}
                   // renderValue={(selected) => selected.join(', ')}
                 >
