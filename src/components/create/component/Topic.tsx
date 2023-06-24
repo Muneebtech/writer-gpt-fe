@@ -1,9 +1,12 @@
+import { Job } from "@/components/Types/job.type";
 import { TopicData, TopicModalData } from "@/constants/Topic"
 import { Button } from "@mui/material"
 import Image from "next/image"
+interface ChildComponentProps {
+    setScriptData: (updatedState: Partial<Job>) => void;
+  }
 
-
-const Topic = () => {
+const Topic: React.FC<ChildComponentProps> = ({setScriptData}) => {
     return (
         <div>
             <div className='mt-6 rounded-md border-2'>
