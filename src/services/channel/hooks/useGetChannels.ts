@@ -1,14 +1,15 @@
 import { useQuery } from "react-query";
 import { ChannelServices } from "../channelServices";
 
-export function useGetChannels(dataa: any) {
+export function useGetChannels() {
   const { isLoading, data, isSuccess } = useQuery(
     "getChannels",
-    () => ChannelServices.getChannels(dataa),
+    (dataa: any) => ChannelServices.getChannels(dataa),
     {
       cacheTime: 300000,
       staleTime: 300000,
     }
   );
-  return { data, isLoading, isSuccess };
+  const results = data?.results
+  return { data :results, isLoading, isSuccess };
 }

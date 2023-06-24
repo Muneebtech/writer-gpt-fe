@@ -2,6 +2,7 @@ import { Job } from "@/components/Types/job.type";
 import { Topic } from "@/constants/Topic";
 import { ModelList } from "@/constants/languageModel";
 import { OutroItems } from "@/constants/outro";
+import Spinner from "@/modules/spinner/spinner";
 import { useModel } from "@/services/Script/hooks/useModel";
 import { useOutro } from "@/services/outro";
 import { useTopic } from "@/services/topic";
@@ -43,77 +44,79 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
   };
   return (
     <div>
-      <div className="height-box mt-6 rounded-md border-2">
-        <div>
-          <div className="ps-3 pt-2">
-            <h4 className="font-bold">ENTER SCRIPT DETAILS</h4>
+      {loading ? (
+        <>
+          <Spinner />
+        </>
+      ) : (
+        <>
+          <div className="height-box mt-6 rounded-md border-2">
+            <div>
+              <div className="ps-3 pt-2">
+                <h4 className="font-bold">ENTER SCRIPT DETAILS</h4>
+              </div>
+              <div className="table-bb-gray mt-4 ms-4 me-4"></div>
+            </div>
+            <div className="flex items-center">
+              <div className="w-9/12 ps-4 pe-4 flex items-center">
+                <FormControl className="w-full">
+                  <label className="pt-2 pb-2 text-lg font-medium">
+                    Script Topic
+                  </label>
+                  {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
+                  <Select
+                    // labelId="multi-input-label"
+                    // multiple
+                    // value={selectedValues}
+                    onChange={handleSelectChange}
+                    // renderValue={(selected) => selected.join(', ')}
+                  >
+                    {topicData?.map((obj: Topic) => (
+                      <MenuItem value={obj.id}>{obj.topic}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="w-9/12 ps-4 pe-4 flex items-center">
+                <FormControl className="w-full">
+                  <label className="pt-2 pb-2 text-lg font-medium">
+                    Language Models
+                  </label>
+                  {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
+                  <Select
+                    // labelId="multi-input-label"
+                    // multiple
+                    // value={selectedValues}
+                    onChange={handleSelectChange}
+                    // renderValue={(selected) => selected.join(', ')}
+                  >
+                    {modelData?.map((obj: ModelList) => (
+                      <MenuItem value={obj.id}>{obj.model}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
+            <div className="w-9/12 ps-4 pe-4">
+              <FormControl className="w-4/6">
+                <label className="pt-2 pb-2 text-lg font-medium">Outros</label>
+                {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
+                <Select
+                  // labelId="multi-input-label"
+                  // multiple
+                  // value={selectedValues}
+                  onChange={handleSelectChange}
+                  // renderValue={(selected) => selected.join(', ')}
+                >
+                  {Outrodata?.map((obj: OutroItems) => (
+                    <MenuItem value={obj.id}>{obj.outro}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
           </div>
-          <div className="table-bb-gray mt-4 ms-4 me-4"></div>
-        </div>
-        <div className="flex items-center">
-          <div className="w-9/12 ps-4 pe-4 flex items-center">
-            <FormControl className="w-full">
-              <label className="pt-2 pb-2 text-lg font-medium">
-                Script Topic
-              </label>
-              {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
-              <Select
-                // labelId="multi-input-label"
-                // multiple
-                value={selectedValues.videoTopic}
-                placeholder="Select video topic"
-                name="videoTopic"
-                onChange={handleSelectChange}
-                // renderValue={(selected) => selected.join(', ')}
-              >
-                {topicData?.map((obj: Topic) => (
-                  <MenuItem value={obj.id}>{obj.topic}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-          <div className="w-9/12 ps-4 pe-4 flex items-center">
-            <FormControl className="w-full">
-              <label className="pt-2 pb-2 text-lg font-medium">
-                Language Models
-              </label>
-              {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
-              <Select
-                // labelId="multi-input-label"
-                placeholder="Select Language Model"
-                // multiple
-                value={selectedValues.model}
-                name="model"
-                onChange={handleSelectChange}
-                // renderValue={(selected) => selected.join(', ')}
-              >
-                {modelData?.map((obj: ModelList) => (
-                  <MenuItem value={obj.id}>{obj.model}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-        </div>
-        <div className="w-9/12 ps-4 pe-4">
-          <FormControl className="w-4/6">
-            <label className="pt-2 pb-2 text-lg font-medium">Outros</label>
-            {/* <InputLabel id="multi-input-label">Search and add Topic</InputLabel> */}
-            <Select
-              // labelId="multi-input-label"
-              // multiple
-              placeholder="Select outro"
-              value={selectedValues.outro}
-              name="outro"
-              onChange={handleSelectChange}
-              // renderValue={(selected) => selected.join(', ')}
-            >
-              {Outrodata?.map((obj: OutroItems) => (
-                <MenuItem value={obj.id}>{obj.outro}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
