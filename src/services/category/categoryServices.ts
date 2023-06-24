@@ -4,7 +4,7 @@ export class GetCategoriesData {
     static getCategories() {
         return request({
             url: `/category`,
-            method: "POST",
+            method: "GET",
         })
     }
 }

@@ -89,13 +89,13 @@ const Create = () => {
             <div className="table-bb-gray mt-6 mb-4">
             </div>
             <div className="flex justify-between mt-6">
-                <Button className="text-black"
+                <Button className="text-black border-black-btn"
                     variant="outlined">
                     Cancel
                 </Button>
                 <div className="flex items-center ">
                     <Button
-                        className="text-black ms-2 me-2"
+                        className="text-black ms-2 me-2 border-black-btn"
                         variant="outlined"
                         onClick={handleBack}
                     >

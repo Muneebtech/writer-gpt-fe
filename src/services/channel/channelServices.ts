@@ -15,4 +15,13 @@ export class ChannelServices {
       params: data,
     });
   }
+
+  static getBrandsChanneldata(id: string) {
+    console.log(id, "id::hittt")
+    return request({
+      url: `/job`,
+      method: "GET",
+      params: { channel: id }
+    });
+  }
 }
