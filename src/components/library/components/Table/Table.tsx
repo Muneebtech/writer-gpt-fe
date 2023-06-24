@@ -93,7 +93,7 @@ const Table = () => {
                       <td className="py-4 px-4 text-center">{row.language}</td>
                       <td className="py-4 px-4 text-center">{row.model}</td>
                       <td className="py-4 px-4 text-center">
-                        {row.videoTopic}
+                        {row.topic}
                       </td>
                       <td className="py-4 px-4 text-center">{row.outro}</td>
                       <td className="py-4 px-4">

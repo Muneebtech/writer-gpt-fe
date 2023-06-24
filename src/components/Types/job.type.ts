@@ -1,5 +1,5 @@
 export type Job ={
-    videoTopic: string;
+    topic: string;
     name: string;
     photoPath?: File;
     model: string;

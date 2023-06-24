@@ -1,5 +1,5 @@
 export type createJob = {
-  videoTopic: string;
+  topic: string;
   name: string;
   photoPath?: File | undefined;
   model: string;

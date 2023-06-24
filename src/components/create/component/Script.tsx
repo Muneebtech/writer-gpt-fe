@@ -23,7 +23,7 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
   const [selectedValues, setSelectedValues] = useState({
     outro: "",
     model: "",
-    videoTopic: "",
+    topic: "",
   });
   const {
     isLoading: loading,

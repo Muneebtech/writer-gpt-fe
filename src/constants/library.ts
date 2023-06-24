@@ -4,7 +4,7 @@ export const tableData = [
     videoName: "Video 1",
     language: "English",
     model: "Model 1",
-    videoTopic: "Topic 1",
+    topic: "Topic 1",
     outro: "Outro 1",
     gptLogs: "Logs 1",
     wordCount: "100",
@@ -17,7 +17,7 @@ export const tableData = [
     videoName: "Video 2",
     language: "English",
     model: "Model 2",
-    videoTopic: "Topic 2",
+    topic: "Topic 2",
     outro: "Outro 2",
     gptLogs: "Logs 2",
     wordCount: "200",
@@ -30,7 +30,7 @@ export const tableData = [
     videoName: "Video 3",
     language: "English",
     model: "Model 3",
-    videoTopic: "Topic 3",
+    topic: "Topic 3",
     outro: "Outro 3",
     gptLogs: "Logs 3",
     wordCount: "300",
@@ -43,7 +43,7 @@ export const tableData = [
     videoName: "Video 4",
     language: "English",
     model: "Model 4",
-    videoTopic: "Topic 4",
+    topic: "Topic 4",
     outro: "Outro 4",
     gptLogs: "Logs 4",
     wordCount: "400",
@@ -56,7 +56,7 @@ export const tableData = [
     videoName: "Video 5",
     language: "English",
     model: "Model 5",
-    videoTopic: "Topic 5",
+    topic: "Topic 5",
     outro: "Outro 5",
     gptLogs: "Logs 5",
     wordCount: "500",
@@ -69,7 +69,7 @@ export const tableData = [
     videoName: "Video 6",
     language: "English",
     model: "Model 6",
-    videoTopic: "Topic 6",
+    topic: "Topic 6",
     outro: "Outro 6",
     gptLogs: "Logs 6",
     wordCount: "600",
@@ -82,7 +82,7 @@ export const tableData = [
     videoName: "Video 7",
     language: "English",
     model: "Model 7",
-    videoTopic: "Topic 7",
+    topic: "Topic 7",
     outro: "Outro 7",
     gptLogs: "Logs 7",
     wordCount: "700",
@@ -95,7 +95,7 @@ export const tableData = [
     videoName: "Video 8",
     language: "English",
     model: "Model 8",
-    videoTopic: "Topic 8",
+    topic: "Topic 8",
     outro: "Outro 8",
     gptLogs: "Logs 8",
     wordCount: "800",
@@ -108,7 +108,7 @@ export const tableData = [
     videoName: "Video 9",
     language: "English",
     model: "Model 9",
-    videoTopic: "Topic 9",
+    topic: "Topic 9",
     outro: "Outro 9",
     gptLogs: "Logs 9",
     wordCount: "900",
@@ -121,7 +121,7 @@ export const tableData = [
     videoName: "Video 10",
     language: "English",
     model: "Model 10",
-    videoTopic: "Topic 10",
+    topic: "Topic 10",
     outro: "Outro 10",
     gptLogs: "Logs 10",
     wordCount: "1000",
@@ -137,7 +137,7 @@ export type TableListData = {
   videoName: string;
   language: string;
   model: string;
-  videoTopic: string;
+  topic: string;
   outro: string;
   gptLogs: string;
   wordCount: string;

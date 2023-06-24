@@ -31,7 +31,7 @@ interface FormData {
   youtubeLink: string;
   discordLink: string;
   learningVideos: string;
-  videoTopic: string;
+  topic: string;
   // Add more properties with their respective data types
 }
 const Script = () => {
@@ -59,7 +59,7 @@ const Script = () => {
     youtubeLink: "",
     discordLink: "",
     learningVideos: "",
-    videoTopic: ""
+    topic: ""
   });
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -90,7 +90,7 @@ const Script = () => {
       youtubeLink: formData.youtubeLink,
       discordLink: formData.discordLink,
       learningVideos: formData.learningVideos,
-      videoTopic: formData.videoTopic,
+      topic: formData.topic,
       profileimage: profileimage ? URL.createObjectURL(profileimage) : ''
     };
     setUserData(prevData => [...prevData, newFormData]);
@@ -100,7 +100,7 @@ const Script = () => {
       youtubeLink: '',
       discordLink: '',
       learningVideos: '',
-      videoTopic: ''
+      topic: ''
     });
     setProfileImage(null);
   };
@@ -340,8 +340,8 @@ const Script = () => {
               Video Topic
             </InputLabel>
             <Select
-              name="videoTopic"
-              value={formData.videoTopic}
+              name="topic"
+              value={formData.topic}
               onChange={handleSelectChange}
               id="topic" label="Select topic" className="input-size ">
               <MenuItem value="video">Vidoes</MenuItem>

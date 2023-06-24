@@ -18,7 +18,7 @@ const Create = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [ScriptData, setScriptData] = useState<Job>({
-    videoTopic: "",
+    topic: "",
     name: "",
     photoPath: undefined,
     model: "",
@@ -66,7 +66,7 @@ const Create = () => {
   };
   const handleSubmit = () => {
     const data = {
-      videoTopic: ScriptData.videoTopic ?? undefined,
+      topic: ScriptData.topic ?? undefined,
       name: ScriptData.name ?? undefined,
       photoPath: ScriptData.photoPath ?? undefined,
       model: ScriptData.model ?? undefined,
@@ -75,7 +75,7 @@ const Create = () => {
     };
     const formdata = new FormData();
     formdata.append("photoPath", data.photoPath as File);
-    formdata.append("videoTopic", data.videoTopic as string);
+    formdata.append("topic", data.topic as string);
     formdata.append("name", data.name as string);
     formdata.append("model", data.model as string);
     formdata.append("outro", data.outro as string);
