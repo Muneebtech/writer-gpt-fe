@@ -24,7 +24,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
     isLoading: loading,
     data: Data,
     isSuccess: success,
-  } = useGetChannels("");
+  } = useGetChannels();
 
   const handleClick = (id: string) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -47,7 +47,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
             <div className="flex flex-wrap justify-center mt-4 mb-4">
-              {Data?.results?.map((item: Channel) => {
+              {Data?.map((item: Channel) => {
                 const { id, channel, description } = item;
                 return (
                   <div
