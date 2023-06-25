@@ -161,7 +161,12 @@ textarea {
 .css-1rwt2y5-MuiButtonBase-root-MuiButton-root{
   border-color: gray !important;
 }
-
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+  color: black !important;
+}
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26) !important;
+}
 .profileImage {
   width: 150px;
   height: 150px;

@@ -13,13 +13,10 @@ import { FiDownload, FiPlus } from "react-icons/fi";
 const BrandsLibrary = () => {
   const router = useRouter();
   const { id } = router.query;
-  console.log(id, "data::Number:123:testing");
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
   const [totalPagesCount, setTotalPages] = useState(data?.totalPages);
-  console.log(data, "Data");
   const LibraryData = data?.results;
-  console.log(LibraryData, "LibraryData");
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
 
