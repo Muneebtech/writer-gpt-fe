@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { UseOutroData } from "../OutroSevices";
+import { UseOutroData } from "../OutroServices";
 
 
 export function postOutro() {

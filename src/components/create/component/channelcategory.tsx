@@ -1,10 +1,5 @@
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
+
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Header from "@/common/Header/header";
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa";
 import { Channel } from "@/constants/channelcategories";
@@ -24,7 +19,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
     isLoading: loading,
     data: Data,
     isSuccess: success,
-  } = useGetChannels();
+  } = useGetChannels({});
 
   const handleClick = (id: string) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -98,7 +93,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                 );
               })}
             </div>
-            <div className="ps-2 pb-6">
+            {/* <div className="ps-2 pb-6">
               <div>
                 <Button
                   variant="outlined"
@@ -107,7 +102,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                   <FaPlus size={30} className="ps-2 pe-2" /> Add Channel
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
         </>
       )}

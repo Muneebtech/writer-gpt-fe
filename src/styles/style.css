@@ -158,6 +158,9 @@ textarea {
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
   font-size: 40px;
 }
+.css-1rwt2y5-MuiButtonBase-root-MuiButton-root{
+  border-color: gray !important;
+}
 
 .profileImage {
   width: 150px;

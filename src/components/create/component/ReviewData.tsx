@@ -11,7 +11,7 @@ import { FaPlus } from "react-icons/fa";
 import { Job } from "@/components/Types/job.type";
 import { useTopic } from "@/services/topic";
 import { useModel } from "@/services/Script/hooks/useModel";
-import { useOutro } from "@/services/outro";
+import { useGetOutro } from "@/services/outro";
 import { Topic } from "@/constants/Topic";
 import { OutroItems } from "@/constants/outro";
 import { ModelList } from "@/constants/languageModel";
@@ -25,13 +25,11 @@ interface ChildComponentProps {
   };
 }
 const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
-  const {
-    data: Outrodata,
-  } = useOutro();
-
+  const { data: Outrodata } = useGetOutro();
+  const profileImage = ScriptData?.photoPath;
   const { data: topicData } = useTopic();
-  const { data: modelData} = useModel();
-  const { data: channelData } = useGetChannels();
+  const { data: modelData } = useModel();
+  const { data: channelData } = useGetChannels({});
 
   let topic = topicData?.find((obj: Topic) => obj.id === ScriptData?.topic);
   let outro = Outrodata?.find(
@@ -68,7 +66,11 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                   </div>
                   <div className=" pt-1 pb-1">
                     <Image
-                      src="/ground.png"
+                      src={
+                        ScriptData?.photoPath
+                          ? URL?.createObjectURL(profileImage as any)
+                          : ""
+                      }
                       alt="ground"
                       width={45}
                       height={45}
@@ -123,7 +125,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                 </div> */}
                 <div className="pt-1 pb-1">
                   <div>
-                    <p className="font-bold pe-3">Script</p>
+                    <p className="font-bold pe-3">Script :</p>
                   </div>
                   <div className="pt-2 pb-2 border ps-2 pe-2 scriptData me-3">
                     <p>{Jobdata?.script}</p>

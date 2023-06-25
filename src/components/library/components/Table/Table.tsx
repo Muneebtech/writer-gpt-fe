@@ -3,15 +3,19 @@ import Spinner from "../../../../modules/spinner/spinner";
 import { useGetJobs } from "@/services/Jobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiDownload } from "react-icons/fi";
+import { Button } from "@mui/material";
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading: loading, data: Data, isSuccess: success } = useGetJobs();
   const [totalPagesData, setTotalPages] = useState(Data?.totalPages);
-  console.log(Data, "Data");
-  // const LibraryData = Data?.results
-  // console.log(LibraryData, "LibraryData")
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    setData(Data?.results);
+  }, [Data]);
+
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesData);
 
@@ -38,7 +42,15 @@ const Table = () => {
       handlePageChange(currentPage + 1);
     }
   };
-
+  function downloadTextAsFile(text: string, filename: string) {
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
   return (
     <>
       {loading ? (
@@ -69,9 +81,18 @@ const Table = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {Data?.results?.map((row: TableListData, index: number) => {
+                  {data?.map((row: TableListData, index: number) => {
                     const { backgroundColor } = generateRandomColors();
-
+                    const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${row.photoPath}`;
+                    const currentDate = new Date();
+                    const formattedDate = currentDate
+                      .toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                      .replace(/\//g, "-");
+                    const filename = `${formattedDate}_${row?.channel?.channel}`;
                     return (
                       <tr
                         key={row?.id}
@@ -82,16 +103,17 @@ const Table = () => {
                         <td className="py-4 px-4 text-center ">
                           <div className="flex items-center">
                             <Image
-                              src="/Library.png"
+                              loader={() => src}
+                              src={src}
                               alt="Thumbnail"
                               width={43}
                               height={28}
-                              className="mr-2 rounded"
+                              className="mr-2 rounded max-w-[43px] max-h-[28px]"
                             />
                             {row?.channel?.channel}
                           </div>
                         </td>
-                    
+
                         <td className="py-4 px-4 text-center">
                           {row?.model?.model}
                         </td>
@@ -103,7 +125,15 @@ const Table = () => {
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex justify-center">
-                            <FiDownload />
+                            <Button
+                              disabled={row?.gptLogs ? false : true}
+                              onClick={() =>
+                                downloadTextAsFile(row.gptLogs, `GPT_LOG_${filename}`)
+                              }
+                              className="text-black"
+                            >
+                              <FiDownload />
+                            </Button>
                           </div>
                         </td>
                         <td className="py-4 px-4 text-center">
@@ -118,12 +148,28 @@ const Table = () => {
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex justify-center">
-                            <FiDownload />
+                            <Button
+                              disabled={row?.script ? false : true}
+                              onClick={() =>
+                                downloadTextAsFile(row.script, `SCRIPT_${filename}`)
+                              }
+                              className="text-black"
+                            >
+                              <FiDownload />
+                            </Button>
                           </div>
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex justify-center">
-                            <FiDownload />
+                            <Button
+                              disabled={true}
+                              onClick={() =>
+                                downloadTextAsFile(row.gptLogs, filename)
+                              }
+                              className="text-black"
+                            >
+                              <FiDownload />
+                            </Button>
                           </div>
                         </td>
                         {/* <td className="py-4 px-4 text-center">{row.date}</td> */}

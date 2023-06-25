@@ -5,7 +5,7 @@ import Script from "./component/Script";
 import Voice from "./component/voice";
 import BasicData from "./component/Basicdata";
 import Review from "./component/Review";
-import { Button } from "@mui/material";
+import { Alert, Button, Slide, SlideProps, Snackbar } from "@mui/material";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -13,13 +13,16 @@ import { Job } from "../Types/job.type";
 import { useCreateJob } from "@/services/Jobs/hooks/createJob";
 import ReviewData from "./component/ReviewData";
 import Spinner from "@/modules/spinner/spinner";
+import { useRouter } from "next/router";
+import { FiBook } from "react-icons/fi";
 
 const steps = ["CHANNEL", "SCRIPT", "BASIC DATA", "REVIEW"];
 
 const Create = () => {
+  const router = useRouter();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [ScriptData, setScriptData] = useState<Job>({
+  const initialValue = {
     topic: "",
     name: "",
     photoPath: undefined,
@@ -29,8 +32,10 @@ const Create = () => {
     wordCount: 0,
     voice: "",
     channel: "",
-  });
-
+  };
+  const [ScriptData, setScriptData] = useState<Job>(initialValue);
+  const [Open, setOpen] = useState(false);
+  const [dataFlag, setDataFlag] = useState(false);
   const { data, isLoading, isSuccess, mutate } = useCreateJob();
   // Load the active step value from local storage on component mount
   useEffect(() => {
@@ -100,12 +105,32 @@ const Create = () => {
         return <ReviewData Jobdata={data} ScriptData={ScriptData} />;
     }
   };
+  const SlideTransition = (props: SlideProps) => {
+    return <Slide {...props} direction="left" />;
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      setOpen(true);
+      setDataFlag(true)
+    }
+  }, [isSuccess]);
 
   return (
     <>
       <div>
         <Header title="CREATE SCRIPT" />
       </div>
+      <Snackbar
+        open={Open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+        TransitionComponent={SlideTransition}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert elevation={6} variant="filled" severity="success">
+          Script Generated Succsesfully!
+        </Alert>
+      </Snackbar>
       <div className="table-bb-gray mt-4 mb-4"></div>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
@@ -119,40 +144,59 @@ const Create = () => {
         })}
       </Stepper>
       <div className="mt-2 mb-2">{renderStepContent(activeStep)}</div>
-      {activeStep > 3 && (
-        <>
-          {isLoading ? <Spinner></Spinner> : null}
-        </>
-      )}
+      {activeStep > 3 && <>{isLoading ? <Spinner></Spinner> : null}</>}
       <div className="table-bb-gray mt-6 mb-4"></div>
       <div className="flex justify-between mt-6">
-        <Button className="text-black" variant="outlined">
+        <Button
+          onClick={() => {
+            setScriptData(initialValue);
+            setActiveStep(0);
+            setDataFlag(false);
+          }}
+          className="text-black ms-2 me-2"
+          variant="outlined"
+        >
           Cancel
         </Button>
-        <div className="flex items-center ">
-          <Button
-            className="text-black ms-2 me-2"
-            variant="outlined"
-            onClick={handleBack}
-          >
-            Back
-          </Button>
-          {activeStep > 3 ? (
+        {}
+        <div className="flex items-center gap-2 ">
+          {dataFlag ? (
             <Button
-              variant="contained"
-              className="button-black ms-2 me-2"
-              onClick={handleSubmit}
+              className="text-black ms-2 me-2"
+              variant="outlined"
+              onClick={() => router.push("/library")}
             >
-              Finish
+              <FiBook /> <span className="ml-2">Library</span>
             </Button>
           ) : (
-            <Button
-              variant="contained"
-              className="button-black ms-2 me-2"
-              onClick={handleNext}
-            >
-              Next
-            </Button>
+            <>
+              {activeStep > 0 && (
+                <Button
+                  className="text-black ms-2 me-2"
+                  variant="outlined"
+                  onClick={handleBack}
+                >
+                  Back
+                </Button>
+              )}
+              {activeStep > 3 ? (
+                <Button
+                  variant="contained"
+                  className="button-black ms-2 me-2"
+                  onClick={handleSubmit}
+                >
+                  Generate
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  className="button-black ms-2 me-2"
+                  onClick={handleNext}
+                >
+                  Next
+                </Button>
+              )}
+            </>
           )}
         </div>
       </div>

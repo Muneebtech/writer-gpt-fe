@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
-import { UseOutroData } from "../OutroSevices";
+import { UseOutroData } from "../OutroServices";
 
-export function useOutro() {
+export function useGetOutro() {
   const { isLoading, data, isSuccess } = useQuery(
     "useOutro",
     () => UseOutroData.getOutroData(),

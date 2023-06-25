@@ -4,7 +4,7 @@ import { ModelList } from "@/constants/languageModel";
 import { OutroItems } from "@/constants/outro";
 import Spinner from "@/modules/spinner/spinner";
 import { useModel } from "@/services/Script/hooks/useModel";
-import { useOutro } from "@/services/outro";
+import { useGetOutro } from "@/services/outro";
 import { useTopic } from "@/services/topic";
 import {
   Button,
@@ -26,10 +26,10 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     topic: "",
   });
 
-  const { data: Outrodata } = useOutro();
-
-  const { data: topicData } = useTopic();
+  
+  const { data: topicData, isLoading: topicLoading } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
+  const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
 
@@ -43,7 +43,7 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
 
   return (
     <div>
-      {modelLoading ? (
+      {modelLoading || outroLoading || topicLoading ? (
         <>
           <Spinner />
         </>

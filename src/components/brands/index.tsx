@@ -50,11 +50,8 @@ const Brands = () => {
   const { isLoading, isSuccess, data: DataChannels } = useGetChannels({});
   // console.log(DataChannels, "DataChannels");
 
-  console.log(Data, "data");
   const CategoryData = Data?.results ?? [];
-  console.log(CategoryData, "CategoryData");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  console.log(selectedCategory, "categoriesData");
   const [showBrands, setShowBrands] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -88,22 +85,15 @@ const Brands = () => {
     photoPath: "",
   });
 
-  console.log(formData.category, "FormData :: categoryf");
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
   const handleCategoryFilter = (category: string) => {
-    console.log(category,'haha');
-    
     setSelectedCategory(category === "All" ? null : category);
   };
   const filteredData = useMemo(() => {
     let filtered = DataChannels;
-    console.log(DataChannels, "GetChannelsData");
-    console.log(filtered, "filtered::123");
     if (searchKeyword) {
-      console.log(searchKeyword,'search keyag');
-      
       filtered = filtered.filter((data: getChannelTypes) =>
         data?.channel?.toLowerCase().includes(searchKeyword.toLowerCase())
       );
@@ -114,11 +104,9 @@ const Brands = () => {
           data?.category?.category?.toLowerCase() ===
           selectedCategory.toLowerCase()
       );
-      console.log(selectedCategory, Data, "matchValue");
     }
     return filtered;
   }, [searchKeyword, selectedCategory, DataChannels]);
-  console.log(filteredData, "filteredData");
   // modal funtionality on Add channel
   const handleInputChange = (
     event: ChangeEvent<{ name?: string; value: string }>
@@ -131,14 +119,11 @@ const Brands = () => {
   };
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
-    console.log(name, "Selectore name", value);
-
     setFormData((prevState) => ({
       ...prevState,
       [name || ""]: value,
     }));
   };
-  console.log("UserData", userData);
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const newFormData = {

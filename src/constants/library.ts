@@ -133,6 +133,7 @@ export const tableData = [
 
 export type TableListData = {
   id: string;
+  photoPath: string;
   channel: {
     channel: string;
     subscribers: number;
@@ -141,7 +142,6 @@ export type TableListData = {
     discordUrl: string;
     category: string;
     id: string;
-  
   };
   language: string;
   model: {

@@ -1,2 +1,2 @@
-export * from "./OutroSevices"
+export * from "./OutroServices"
 export * from "./hooks/index"
