@@ -51,7 +51,6 @@ const Brands = () => {
   // console.log(DataChannels, "DataChannels");
 
   const CategoryData = Data?.results ?? [];
-  console.log(DataChannels, "data::::Hahahahah");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showBrands, setShowBrands] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
@@ -458,7 +457,7 @@ const Brands = () => {
                 )
               )}
             </div>
-            <div className="flex flex-wrap justify-start gap-2 cursor-pointer ms-4 me-4">
+            <div className="grid grid-cols-5 gap-2 ">
               {filteredData?.map((data: getChannelTypes) => {
                 return <Cards data={data} key={data.id} />;
               })}
