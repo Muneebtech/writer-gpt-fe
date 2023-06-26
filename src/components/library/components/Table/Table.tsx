@@ -65,7 +65,10 @@ const Table = () => {
         <>
           <div className="table-bb-gray mt-4 ms-4 me-4"></div>
           <div className="bg-white table-b-gray rounded-lg">
-            <>
+            <div
+              className="table-container"
+              style={{ height: "440px", overflow: "auto" }}
+            >
               <table className="min-w-full divide-y divide-gray-300 text-sm">
                 <thead>
                   <tr className="">
@@ -128,7 +131,10 @@ const Table = () => {
                             <Button
                               disabled={row?.gptLogs ? false : true}
                               onClick={() =>
-                                downloadTextAsFile(row.gptLogs, `GPT_LOG_${filename}`)
+                                downloadTextAsFile(
+                                  row.gptLogs,
+                                  `GPT_LOG_${filename}`
+                                )
                               }
                               className="text-black"
                             >
@@ -151,7 +157,10 @@ const Table = () => {
                             <Button
                               disabled={row?.script ? false : true}
                               onClick={() =>
-                                downloadTextAsFile(row.script, `SCRIPT_${filename}`)
+                                downloadTextAsFile(
+                                  row.script,
+                                  `SCRIPT_${filename}`
+                                )
                               }
                               className="text-black"
                             >
@@ -179,50 +188,52 @@ const Table = () => {
                 </tbody>
               </table>
               {/* Pagination */}
-              <div className="flex justify-end m-2 gap-1">
-                <button
-                  className={`px-2 py-1 border border-gray-300 rounded-md ${
-                    currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                  }`}
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </button>
-                {startPage > 1 && (
-                  <button className="px-2 py-1 border border-gray-300 rounded-md">
-                    ...
-                  </button>
-                )}
-                {visiblePages.map((page) => (
+              <div className="postion-Pagination ">
+                <div className="flex justify-end m-2 gap-1">
                   <button
                     className={`px-2 py-1 border border-gray-300 rounded-md ${
-                      page === currentPage ? "bg-blue-500 text-white" : ""
+                      currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
                     }`}
-                    key={page}
-                    onClick={() => handlePageChange(page)}
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
                   >
-                    {page}
+                    Previous
                   </button>
-                ))}
-                {endPage < totalPagesData && (
-                  <button className="px-2 py-1 border border-gray-300 rounded-md">
-                    ...
+                  {startPage > 1 && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  {visiblePages.map((page) => (
+                    <button
+                      className={`px-2 py-1 border border-gray-300 rounded-md ${
+                        page === currentPage ? "bg-blue-500 text-white" : ""
+                      }`}
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  {endPage < totalPagesData && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  <button
+                    className={`px-2 py-1 border border-gray-300 rounded-md ${
+                      currentPage === totalPagesData
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPagesData}
+                  >
+                    Next
                   </button>
-                )}
-                <button
-                  className={`px-2 py-1 border border-gray-300 rounded-md ${
-                    currentPage === totalPagesData
-                      ? "cursor-not-allowed opacity-50"
-                      : ""
-                  }`}
-                  onClick={handleNextPage}
-                  disabled={currentPage === totalPagesData}
-                >
-                  Next
-                </button>
+                </div>
               </div>
-            </>
+            </div>
           </div>
         </>
       )}

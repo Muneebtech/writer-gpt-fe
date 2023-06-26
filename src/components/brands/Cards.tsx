@@ -13,7 +13,7 @@ interface CardProps {
     youtubeLink: string;
     discordLink: string;
     photoPath: File | any;
-    subscribers:string
+    subscribers: string;
   };
   key: string;
 }
@@ -33,8 +33,10 @@ const Cards: React.FC<CardProps> = ({ data, key }) => {
   };
   return (
     <div
+      onClick={() => handleCardClick(data?.id)}
       key={key}
-      className="h-60 w-52 flex flex-col justify-center items-center border border-gray-200 gap-2 rounded-lg"
+      className="h-60 w-52 flex flex-col justify-center items-center border 
+      border-gray-200 gap-2 rounded-lg ms-4 me-4 mt-2 mb-2"
     >
       <span
         style={{ backgroundColor: `${backgroundColor}`, color: `${textColor}` }}
@@ -51,7 +53,7 @@ const Cards: React.FC<CardProps> = ({ data, key }) => {
         </span>
       </div>
       <div className="flex gap-2">
-      <div className="rounded-2xl px-2 py-1 flex justify-center items-center border-gray-200 border">
+        <div className="rounded-2xl px-2 py-1 flex justify-center items-center border-gray-200 border">
           <Image width={20} height={20} src="/youtube.png" alt="" />
         </div>
         <div className="rounded-2xl px-2 py-1 flex justify-center items-center border-gray-200 border">

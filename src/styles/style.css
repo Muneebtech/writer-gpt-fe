@@ -108,7 +108,7 @@ textarea {
 }
 
 .height-box {
-  height: 80vh;
+  height: 60vh;
 }
 
 .button-black {
@@ -136,11 +136,11 @@ textarea {
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
-  font-size: 40px;
+  font-size: 36px;
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
-  font-size: 40px;
+  font-size: 36px;
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
@@ -156,17 +156,21 @@ textarea {
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
-  font-size: 40px;
+  font-size: 36px;
 }
-.css-1rwt2y5-MuiButtonBase-root-MuiButton-root{
+
+.css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
   border-color: gray !important;
 }
+
 .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
   color: black !important;
 }
+
 .css-1e6y48t-MuiButtonBase-root-MuiButton-root.Mui-disabled {
   color: rgba(0, 0, 0, 0.26) !important;
 }
+
 .profileImage {
   width: 150px;
   height: 150px;
@@ -445,4 +449,43 @@ html {
 .scriptData {
   height: 24.7vh;
   overflow: scroll;
+}
+
+.table-container {
+  position: relative;
+}
+
+.table-container thead {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  /* Set the desired background color for the sticky header */
+  z-index: 1;
+  /* Ensure the header appears above the table body */
+}
+
+.postion-Pagination {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  /* Set the desired background color for the sticky header */
+  z-index: 1;
+  /* Ensure the header appears above the table body */
+}
+
+.height-table {
+  height: 50vh;
+  overflow: scroll;
+}
+
+label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
+  margin: 5px;
+}
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 8.5px 14px;
+}
+
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+  color: #171717 !important;
 }

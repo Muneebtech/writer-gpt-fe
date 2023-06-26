@@ -41,7 +41,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
               </div>
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
-            <div className="flex flex-wrap justify-center mt-4 mb-4">
+            <div className="flex flex-wrap justify-center mt-4 mb-4 height-table">
               {Data?.map((item: Channel) => {
                 const { id, channel, description } = item;
                 return (
@@ -49,15 +49,15 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                     onClick={() => handleClick(id)}
                     key={id}
                     className="flex
-                            cursor-pointer justify-between items-center pt-4 pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
+                            cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
                   >
                     <div className="flex items-center">
                       <div>
                         <Image
                           src="/chaneel.png"
                           alt="channel"
-                          width={40}
-                          height={40}
+                          width={30}
+                          height={30}
                         />
                       </div>
                       <div className="ps-2 ">

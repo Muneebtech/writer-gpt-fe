@@ -131,7 +131,7 @@ const Create = () => {
           Script Generated Succsesfully!
         </Alert>
       </Snackbar>
-      <div className="table-bb-gray mt-4 mb-4"></div>
+      <div className="table-bb-gray mt-3 mb-3"></div>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
@@ -143,10 +143,10 @@ const Create = () => {
           );
         })}
       </Stepper>
-      <div className="mt-2 mb-2">{renderStepContent(activeStep)}</div>
+      <div className="mt-1 mb-1">{renderStepContent(activeStep)}</div>
       {activeStep > 3 && <>{isLoading ? <Spinner></Spinner> : null}</>}
       <div className="table-bb-gray mt-6 mb-4"></div>
-      <div className="flex justify-between mt-6">
+      <div className="flex justify-between mt-3">
         <Button
           onClick={() => {
             setScriptData(initialValue);

@@ -64,7 +64,7 @@ const BasicData: React.FC<ChildComponentProps> = ({ setScriptData }) => {
         </div>
         <div className="w-9/12 ps-4 pe-4 flex items-center">
           <FormControl className="w-4/6">
-            <label className="pt-2 pb-2 text-lg font-medium">
+            <label className="pt-2 text-lg font-medium">
               Video/Script Name
             </label>
             <Input
@@ -77,7 +77,7 @@ const BasicData: React.FC<ChildComponentProps> = ({ setScriptData }) => {
             />
           </FormControl>
         </div>
-        <div className="flex items-center mt-6 ps-6">
+        <div className="flex items-center mt-3 ps-6">
           <div>
             <div className="ms-4 mb-1 mt-1">
               <span className="font-bold">Icon</span>
@@ -93,8 +93,8 @@ const BasicData: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               {profileImage ? (
                 <div className="profileImage">
                   <Image
-                    width={150}
-                    height={150}
+                    width={170}
+                    height={90}
                     style={{ height: "150px" }}
                     // className="rounded-full mr-2"
                     src={URL.createObjectURL(profileImage)}
@@ -104,8 +104,8 @@ const BasicData: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               ) : (
                 <div className="profileImage">
                   <Image
-                    width={150}
-                    height={150}
+                    width={170}
+                    height={90}
                     style={{ height: "150px" }}
                     // className="rounded-full mr-2"
                     src="/ProfileAvatar.png"

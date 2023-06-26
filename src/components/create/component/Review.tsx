@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Header from "@/common/Header/header";
-import {  ReviewDataTypes } from "@/constants/ReviewConstant";
+import { ReviewDataTypes } from "@/constants/ReviewConstant";
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa";
 import { Job } from "@/components/Types/job.type";
@@ -21,7 +21,7 @@ interface ChildComponentProps {
   ScriptData: Job | null;
 }
 const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
-  const profileImage  = ScriptData?.photoPath;
+  const profileImage = ScriptData?.photoPath;
   const {
     isLoading: loading,
     data: Outrodata,
@@ -50,80 +50,80 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
             <h4 className="font-bold">REVIEW</h4>
           </div>
           <div className="table-bb-gray mt-4 ms-4 me-4"></div>
-          <div className="flex items-center">
-            <div className="pt-5">
-              <div className="">
-                <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Script Name :
-                  </p>
-                </div>
-                <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Thumbnail :
-                  </p>
-                </div>
-                <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Channel :
-                  </p>
-                </div>
-                {/* <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Category :
-                  </p>
-                </div> */}
-                <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Topic :
-                  </p>
-                </div>
-                <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Language modal :
-                  </p>
-                </div>
-                <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Outros :
-                  </p>
-                </div>
-                {/* <div className="">
-                  <p className="ps-3 pe-6 text-md font-bold pt-1 pb-1">
-                    Voice :
-                  </p>
-                </div> */}
-              </div>
-            </div>
-            <div className="mt-6">
+          <div className="ps-4">
+            <div className="">
               <div key={"3234"} className="">
-                <div className=" pt-1 pb-1">
-                  <p>{ScriptData?.name}</p>
+                <div className="flex items-center pt-1 pb-1">
+                  <div className=" pt-1 pb-1">
+                    <p className="font-bold pe-3">
+                      {ScriptData?.name ? "Script Name :" : "Script Name :"}
+                    </p>
+                  </div>
+                  <div className=" pt-1 pb-1">
+                    <p>{ScriptData?.name}</p>
+                  </div>
                 </div>
-                <div className=" pt-1 pb-1">
-                  <Image
-                    src={ ScriptData?.photoPath
-                      ? URL?.createObjectURL(profileImage as any)
-                      : ""}
-                    alt="ground"
-                    width={45}
-                    height={45}
-                  />
+                <div className=" flex items-center pt-1 pb-1">
+                  <div>
+                    <p className="font-bold pe-3">
+                      {ScriptData?.photoPath ? "Thumbnail :" : "Thumbnail :"}
+                    </p>
+                  </div>
+                  <div>
+                    <Image
+                      src={
+                        ScriptData?.photoPath
+                          ? URL?.createObjectURL(profileImage as any)
+                          : ""
+                      }
+                      alt="ground"
+                      width={45}
+                      height={45}
+                    />
+                  </div>
                 </div>
-                <div className=" pt-1 pb-1">
-                  <p>{channel?.channel}</p>
+                <div className="flex items-center pt-1 pb-1">
+                  <div>
+                    <p className="font-bold pe-3">
+                      {channel?.channel ? "Channel" : "Channel"}
+                    </p>
+                  </div>
+                  <div className=" pt-1 pb-1">
+                    <p>{channel?.channel}</p>
+                  </div>
                 </div>
                 {/* <div className="pt-1 pb-1">
                   <p>{ScriptData?.}</p>
                 </div> */}
-                <div className="pt-1 pb-1">
-                  <p>{topic?.topic}</p>
+                <div className="flex items-center">
+                  <div className="pt-1 pb-1">
+                    <p className="font-bold pe-3">
+                      {topic?.topic ? "Topic :" : "Topic :"}
+                    </p>
+                  </div>
+                  <div className="pt-1 pb-1">
+                    <p>{topic?.topic}</p>
+                  </div>
                 </div>
-                <div className="pt-1 pb-1">
-                  <p>{model?.model}</p>
+                <div>
+                  <div className="flex items-center pt-1 pb-1">
+                    <p className="font-bold pe-3">
+                      {model?.model ? "Model :" : "Model :"}
+                    </p>
+                  </div>
+                  <div className="pt-1 pb-1">
+                    <p>{model?.model}</p>
+                  </div>
                 </div>
-                <div className="pt-1 pb-1">
-                  <p>{outro?.outro}</p>
+                <div>
+                  <div className="flex items-center pt-1 pb-1">
+                    <p className="font-bold pe-3">
+                      {outro?.outro ? "Outro :" : "Outro :"}
+                    </p>
+                  </div>
+                  <div className="pt-1 pb-1">
+                    <p>{outro?.outro}</p>
+                  </div>
                 </div>
                 {/* <div className="pt-1 pb-1">
                   <p>{ScriptData?.Voice}</p>
