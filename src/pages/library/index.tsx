@@ -13,4 +13,4 @@ const Index: NextPageWithLayout = () => {
 
 export default Index;
 Index.isProtected = true;
-Index.getLayout = (page) => getAppLayout(page, "Library", true); // Set showSearch to true
+Index.getLayout = (page) => getAppLayout(page,""); // Set showSearch to true

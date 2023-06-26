@@ -25,7 +25,6 @@ const Cards: React.FC<CardProps> = ({ data, key }) => {
   //     data.description.toLocaleLowerCase().includes(filterText) ||
   //     data.title.toLocaleLowerCase().includes(filterText)
   // );
-  console.log(data, "data");
   const router = useRouter();
 
   const handleCardClick = (id: string) => {
