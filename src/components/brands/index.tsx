@@ -504,6 +504,7 @@ const Brands = () => {
               )}
               {isSuccess ? (
                 <div>
+                  
                   <div role="status">
                     <svg
                       aria-hidden="true"
