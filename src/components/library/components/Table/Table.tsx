@@ -82,7 +82,7 @@ const Table = () => {
             searchKeyword="Search"
             onSearch={handleSearch}
           />
-          <div className="table-bb-gray mt-1 ms-4 me-4"></div>
+          <div className="table-bb-gray mt-1 ms-2 me-2"></div>
           <div className="bg-white table-b-gray rounded-lg">
             <div
               className="table-container h-[calc(100vh-11.6rem)] rounded-lg"
