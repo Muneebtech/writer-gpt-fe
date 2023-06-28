@@ -77,7 +77,7 @@ const Table = () => {
       ) : (
         <>
           <Header
-            title="Library"
+            title="LIBRARY"
             showSearch={true}
             searchKeyword="Search"
             onSearch={handleSearch}

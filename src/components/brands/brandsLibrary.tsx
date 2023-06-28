@@ -84,7 +84,7 @@ const BrandsLibrary = () => {
               Create
             </Button>
           </div>
-          <div className=" table-bb-gray mt-4 "></div>
+          <div className="table-bb-gray mt-1 ms-4 me-4"></div>
           <div className="mt-4"></div>
           <div className="bg-white table-b-gray rounded-lg">
             <table className="min-w-full divide-y divide-gray-300 text-sm">

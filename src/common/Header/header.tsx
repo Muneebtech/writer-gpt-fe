@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     <>
       <div className="border-gray-200 ">
         <div className="flex items-center">
-          <span className="font-medium text-2xl uppercase font-roboto pe-4">
+          <span className="font-medium text-lg uppercase font-roboto pe-4">
             {props.title}
           </span>
           {props.showSearch && <SearchBar onSearch={handleSearch}  /> }
