@@ -14,7 +14,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
@@ -25,8 +25,29 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     model: "",
     topic: "",
   });
+  const [zoomLevel, setZoomLevel] = useState("");
+  useEffect(() => {
+    const detectZoomLevel = () => {
+      const devicePixelRatio = window.devicePixelRatio;
 
-  
+      if (devicePixelRatio === 0.25) {
+        setZoomLevel("25%");
+      } else if (devicePixelRatio === 0.75) {
+        setZoomLevel("75%");
+      } else {
+        setZoomLevel("Something else");
+      }
+    };
+
+    detectZoomLevel();
+
+    window.addEventListener("resize", detectZoomLevel);
+
+    return () => {
+      window.removeEventListener("resize", detectZoomLevel);
+    };
+  }, []);
+  console.log(zoomLevel, "ZoomLevel");
   const { data: topicData, isLoading: topicLoading } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
   const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
@@ -49,7 +70,7 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
         </>
       ) : (
         <>
-          <div className="height-box mt-6 rounded-md border-2">
+          <div className="h-[calc(100vh-14.5rem)] mt-6 rounded-md border-2">
             <div>
               <div className="ps-3 pt-2">
                 <h4 className="font-bold">ENTER SCRIPT DETAILS</h4>

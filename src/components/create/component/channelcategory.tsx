@@ -1,9 +1,8 @@
-
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa";
 import { Channel } from "@/constants/channelcategories";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetChannels } from "@/services/channel";
 import Spinner from "@/modules/spinner/spinner";
 
@@ -25,6 +24,12 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
     setSelectedItemId(id === selectedItemId ? null : id);
     setScriptData({ channel: id });
   };
+  const [divHeight, setDivHeight] = useState(300);
+
+  useEffect(() => {
+    console.log((document.body.style.fontSize = "90%"), "Height");
+  }, []);
+
   return (
     <div>
       {loading ? (
@@ -34,7 +39,10 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
       ) : (
         <>
           {" "}
-          <div className="mt-6 rounded-md border-2">
+          <div
+            // style={{ height: `${divHeight}px` }}
+            className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)]"
+          >
             <div>
               <div className="ps-3 pt-2">
                 <h4 className="font-bold">SELECT YOUR CHANNEL</h4>

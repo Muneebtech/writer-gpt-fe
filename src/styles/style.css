@@ -111,6 +111,11 @@ textarea {
   height: 60vh;
 }
 
+.btn-position {
+  position: relative !important;
+  top: 60px !important;
+}
+
 .button-black {
   background-color: #171717 !important;
   color: #fff !important;
@@ -136,11 +141,13 @@ textarea {
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
-  font-size: 36px;
+  font-size: 25px;
+
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
-  font-size: 36px;
+  font-size: 25px;
+
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
@@ -156,7 +163,8 @@ textarea {
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
-  font-size: 36px;
+  font-size: 25px;
+
 }
 
 .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
@@ -447,7 +455,8 @@ html {
 
 /* Optional: show position indicator in red */
 .scriptData {
-  height: 24.7vh;
+  width: 100%;
+  height: 16.5vh;
   overflow: scroll;
 }
 
@@ -484,4 +493,8 @@ label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
 
 .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 8.5px 14px;
+}
+
+.font-text {
+  font-size: 14px;
 }

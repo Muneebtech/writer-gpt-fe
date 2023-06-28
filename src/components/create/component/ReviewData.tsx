@@ -41,18 +41,18 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
   );
   return (
     <div>
-      <div className="height-box mt-6 rounded-md border-2">
+      <div className="h-[calc(100vh-14.5rem)] mt-6 rounded-md border-2">
         <div>
           <div className="ps-3 pt-2">
             <h4 className="font-bold">REVIEW</h4>
           </div>
           <div className="table-bb-gray mt-4 ms-4 me-4"></div>
-          <div className="ps-4 pt-2">
+          <div className="ps-4 p">
             <div className="mt-1">
               <div key={"3234"} className="">
                 <div className="flex items-center pt-1 pb-1">
                   <div className=" pt-1 pb-1">
-                    <p className="font-bold pe-3">
+                    <p className="font-bold pe-3 font-text">
                       {ScriptData?.name ? "Script Name :" : "Script Name :"}
                     </p>
                   </div>
@@ -60,26 +60,26 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                     <p>{ScriptData?.name}</p>
                   </div>
                 </div>
-                <div className="flex items-center pt-1 pb-1">
+                <div className="flex items-center">
                   <div>
-                    <p className="font-bold  pe-3"> Thumbnail : </p>
+                    <p className="font-bold  pe-3 font-text"> Thumbnail : </p>
                   </div>
-                  <div className=" pt-1 pb-1">
+                  <div >
                     <Image
                       src={
                         ScriptData?.photoPath
                           ? URL?.createObjectURL(profileImage as any)
                           : ""
                       }
-                      alt="ground"
-                      width={45}
-                      height={45}
+                      alt=""
+                      width={25}
+                      height={25}
                     />
                   </div>
                 </div>
                 <div className="flex items-center pt-1 pb-1">
                   <div>
-                    <p className="font-bold pe-3">
+                    <p className="font-bold pe-3 font-text">
                       {channel?.channel ? "Channel :" : "Channel :"}
                     </p>
                   </div>
@@ -92,7 +92,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                 </div> */}
                 <div className="flex items-center pt-1 pb-1">
                   <div className="pt-1 pb-1">
-                    <p className="font-bold pe-3">
+                    <p className="font-bold pe-3 font-text">
                       {topic?.topic ? "Topic :" : "Topic :"}
                     </p>
                   </div>
@@ -102,7 +102,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                 </div>
                 <div className="flex items-center pt-1 pb-1">
                   <div>
-                    <p className="font-bold pe-3">
+                    <p className="font-bold pe-3 font-text">
                       {model?.model ? "Model :" : "Model :"}
                     </p>
                   </div>
@@ -112,7 +112,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                 </div>
                 <div className="flex items-center pt-1 pb-1">
                   <div className="pt-1 pb-1">
-                    <p className="font-bold pe-3">
+                    <p className="font-bold pe-3 font-text">
                       {outro?.outro ? "Outro :" : "Outro :"}
                     </p>
                   </div>
@@ -123,9 +123,9 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                 {/* <div className="pt-2 pb-2 border ps-2 pe-2">
                   <p>{Jobdata?.script}</p>
                 </div> */}
-                <div className="pt-1 pb-1">
+                <div className=" flex pt-1 pb-1">
                   <div>
-                    <p className="font-bold pe-3">Script :</p>
+                    <p className="font-bold pe-3 font-text">Script </p>
                   </div>
                   <div className="pt-2 pb-2 border ps-2 pe-2 scriptData me-3">
                     <p>{Jobdata?.script}</p>

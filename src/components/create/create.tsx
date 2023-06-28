@@ -92,7 +92,7 @@ const Create = () => {
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <ChannelAndCategory setScriptData={handleStateUpdate} />;
+      return <ChannelAndCategory setScriptData={handleStateUpdate} />;
       case 1:
         return <Script setScriptData={handleStateUpdate} />;
       case 2:
@@ -111,12 +111,12 @@ const Create = () => {
   useEffect(() => {
     if (isSuccess) {
       setOpen(true);
-      setDataFlag(true)
+      setDataFlag(true);
     }
   }, [isSuccess]);
-
+  useEffect(() => {}, []);
   return (
-    <>
+    <div>
       <div>
         <Header title="CREATE SCRIPT" />
       </div>
@@ -145,62 +145,64 @@ const Create = () => {
       </Stepper>
       <div className="mt-1 mb-1">{renderStepContent(activeStep)}</div>
       {activeStep > 3 && <>{isLoading ? <Spinner></Spinner> : null}</>}
-      <div className="table-bb-gray mt-6 mb-4"></div>
-      <div className="flex justify-between mt-3">
-        <Button
-          onClick={() => {
-            setScriptData(initialValue);
-            setActiveStep(0);
-            setDataFlag(false);
-          }}
-          className="text-black ms-2 me-2"
-          variant="outlined"
-        >
-          Cancel
-        </Button>
-        {}
-        <div className="flex items-center gap-2 ">
-          {dataFlag ? (
-            <Button
-              className="text-black ms-2 me-2"
-              variant="outlined"
-              onClick={() => router.push("/library")}
-            >
-              <FiBook /> <span className="ml-2">Library</span>
-            </Button>
-          ) : (
-            <>
-              {activeStep > 0 && (
-                <Button
-                  className="text-black ms-2 me-2"
-                  variant="outlined"
-                  onClick={handleBack}
-                >
-                  Back
-                </Button>
-              )}
-              {activeStep > 3 ? (
-                <Button
-                  variant="contained"
-                  className="button-black ms-2 me-2"
-                  onClick={handleSubmit}
-                >
-                  Generate
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  className="button-black ms-2 me-2"
-                  onClick={handleNext}
-                >
-                  Next
-                </Button>
-              )}
-            </>
-          )}
+      <div className="btn-postion">
+        <div className="table-bb-gray mt-6 mb-4"></div>
+        <div className="flex justify-between mt-3">
+          <Button
+            onClick={() => {
+              setScriptData(initialValue);
+              setActiveStep(0);
+              setDataFlag(false);
+            }}
+            className="text-black ms-2 me-2"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          {}
+          <div className="flex items-center gap-2 ">
+            {dataFlag ? (
+              <Button
+                className="text-black ms-2 me-2"
+                variant="outlined"
+                onClick={() => router.push("/library")}
+              >
+                <FiBook /> <span className="ml-2">Library</span>
+              </Button>
+            ) : (
+              <>
+                {activeStep > 0 && (
+                  <Button
+                    className="text-black ms-2 me-2"
+                    variant="outlined"
+                    onClick={handleBack}
+                  >
+                    Back
+                  </Button>
+                )}
+                {activeStep > 3 ? (
+                  <Button
+                    variant="contained"
+                    className="button-black ms-2 me-2"
+                    onClick={handleSubmit}
+                  >
+                    Generate
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    className="button-black ms-2 me-2"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

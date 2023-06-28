@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { FiCopy, FiPlus } from "react-icons/fi";
 import { FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { AiOutlineLeft, AiOutlineUpload } from "react-icons/ai";
 import Image from "next/image";
 import { categoryDataTypess } from "../Types/category.type";
@@ -41,16 +41,28 @@ interface FormData {
   photoPath: File | any;
 }
 const Brands = () => {
+  const divRef = useRef<HTMLDivElement>(null);
+  const limit = 10;
   const {
     isLoading: loading,
     data: Data,
     isSuccess: success,
   } = useCategories();
   const { data: ChannelData, mutate } = useCreateChannel();
-  const { isLoading, isSuccess, data: DataChannels } = useGetChannels({});
+  const {
+    data: DataChannels,
+    isLoading,
+    isSuccess,
+    fetchNextPage,
+  } = useGetChannels({ page: 1, limit: 10 });
   // console.log(DataChannels, "DataChannels");
 
   const CategoryData = Data?.results ?? [];
+  // const TotalPages = DataChannels?.flatMap((page) => page.pages) ?? [];
+  // const pages = DataChannels?.flatMap((page) => page.totalPages) ?? [];
+  // console.log(TotalPages,"PagesCount",pages)
+
+  console.log(DataChannels, "data::::Hahahahah");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showBrands, setShowBrands] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
@@ -107,7 +119,26 @@ const Brands = () => {
     }
     return filtered;
   }, [searchKeyword, selectedCategory, DataChannels]);
-  // modal funtionality on Add channel
+  const handleScroll = () => {
+    const div = divRef.current;
+    if (div) {
+      if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+        console.log("trigger");
+        // Reach the bottom of the div
+        fetchNextPage();
+      }
+    }
+  };
+
+  useEffect(() => {
+    const div = divRef.current;
+    div?.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      div?.removeEventListener("scroll", handleScroll);
+    };
+  }, [isLoading]);
   const handleInputChange = (
     event: ChangeEvent<{ name?: string; value: string }>
   ) => {
@@ -181,6 +212,7 @@ const Brands = () => {
         });
     }
   };
+
   const handlepopOverOpne = () => {
     setPopoverOpen(true);
   };
@@ -457,10 +489,44 @@ const Brands = () => {
                 )
               )}
             </div>
-            <div className="grid grid-cols-5 gap-2 ">
-              {filteredData?.map((data: getChannelTypes) => {
-                return <Cards data={data} key={data.id} />;
-              })}
+            <div
+              ref={divRef}
+              id="Cards-channel"
+              style={{ overflow: "scroll" }}
+              className="grid grid-cols-5 gap-2 h-[calc(100vh-13rem)] "
+            >
+              {isLoading ? (
+                <div></div>
+              ) : (
+                filteredData?.map((data: getChannelTypes) => (
+                  <Cards data={data} key={data.id} />
+                ))
+              )}
+              {isSuccess ? (
+                <div>
+                  <div role="status">
+                    <svg
+                      aria-hidden="true"
+                      className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                      />
+                    </svg>
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </>
