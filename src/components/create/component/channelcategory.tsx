@@ -82,14 +82,14 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                     {/* SelectCard */}
                     <div className="">
                       {selectedItemId === item.id ? (
-                        <img
+                        <Image
                           src="/SelectCard.png"
                           alt="round"
                           width={12}
                           height={12}
                         />
                       ) : (
-                        <img
+                        <Image
                           src="/Round.png"
                           alt="round"
                           width={12}

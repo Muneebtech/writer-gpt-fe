@@ -26,7 +26,8 @@ const Cards: React.FC<CardProps> = ({ data, key }) => {
   //     data.title.toLocaleLowerCase().includes(filterText)
   // );
   const router = useRouter()
-
+  
+  const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${data?.photoPath}`
   const handleCardClick = (id: string) => {
     router.push(`/brands/${id}`)
   }
@@ -46,8 +47,9 @@ const Cards: React.FC<CardProps> = ({ data, key }) => {
         <Image
           fill
           style={{ objectFit: "cover" }}
-          src="/profile.png"
-          alt="none"
+          src={src}
+          loader={() => src}
+          alt="no image"
         />
       </div>
       <div className="flex flex-col justify-center items-center mb-5">

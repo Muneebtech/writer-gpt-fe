@@ -4,7 +4,7 @@ import Header from "@/common/Header/header";
 interface LayoutProp {
   children: ReactNode;
   showSearch?: boolean;
-  title: string;
+  title?: string;
 }
 const Layout: React.FC<LayoutProp> = ({
   children,
@@ -24,8 +24,8 @@ const Layout: React.FC<LayoutProp> = ({
 
 export default Layout;
 export function getAppLayout(
-  page: ReactElement,
-  title: string,
+  page?: ReactElement,
+  title?: string,
   showSearch?: boolean,
 ) {
   return (

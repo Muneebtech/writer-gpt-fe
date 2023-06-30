@@ -8,10 +8,10 @@ export function useGetChannels(params: QueryData) {
     isSuccess,
     fetchNextPage,
     isFetchingNextPage
+    ,isFetching
   } = useInfiniteQuery(
     ["useGetChannels", params],
     ({ pageParam = 1 }) => {
-      console.log(params?.page, "Pageparam")
       return (
 
         ChannelServices.getChannels({
@@ -30,5 +30,5 @@ export function useGetChannels(params: QueryData) {
   const totalCount = data?.pages[0]?.totalCount || 0;
   const currentPage = data?.pages[data.pages.length - 1]?.page || 0;
   const totalPages = data?.pages[data.pages.length - 1]?.totalPages || 0;
-  return { data: mergedData, isLoading, isSuccess, totalCount, fetchNextPage, currentPage, totalPages, isFetchingNextPage };
+  return { data: mergedData, isLoading, isSuccess, totalCount, fetchNextPage, currentPage, totalPages, isFetchingNextPage,isFetching };
 }

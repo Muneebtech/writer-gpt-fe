@@ -24,7 +24,7 @@ import { AiOutlineUpload } from "react-icons/ai";
 import Image from "next/image";
 import { useCreateChannel } from "@/services/channel";
 import Header from "@/common/Header/header";
-import { useOutro } from "@/services/outro";
+import { useGetOutro } from "@/services/outro";
 interface FormData {
   name: string;
   categorylist: string;
@@ -35,7 +35,7 @@ interface FormData {
   // Add more properties with their respective data types
 }
 const Script = () => {
-  const { isLoading: loading, data: Data, isSuccess: success } = useOutro();
+  const { isLoading: loading, data: Data, isSuccess: success } = useGetOutro();
   const Outrodata = Data?.results;
 
   const fileInputRef = useRef<HTMLInputElement>(null);

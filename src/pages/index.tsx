@@ -21,7 +21,7 @@ const Home: NextPageWithLayout = () => {
       // Clean up the event listener on component unmount
       window.removeEventListener("beforeunload", handleAppRestart)
     }
-  }, [])
+  }, [router])
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
@@ -32,4 +32,4 @@ const Home: NextPageWithLayout = () => {
 }
 export default Home
 Home.isProtected = true
-Home.getLayout = getAppLayout
+// Home.getLayout = getAppLayout(null,"Home")

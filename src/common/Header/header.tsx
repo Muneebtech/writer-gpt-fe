@@ -3,7 +3,7 @@ import { Container, Typography, Input, Grid, ListItem } from "@mui/material";
 import React from "react";
 import GlobalButton from "./Button/Button";
 interface HeaderProps {
-  title: string;
+  title?: string;
   searchKeyword?: string;
   data?: object;
   showSearch?: boolean;
