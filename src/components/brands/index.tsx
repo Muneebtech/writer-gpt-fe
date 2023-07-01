@@ -504,18 +504,13 @@ const Brands = () => {
               className="grid grid-cols-5 gap-2 h-[calc(100vh-13rem)] "
             >
               {isLoading ? (
-                <div></div>
+                <div className="flex justify-center items-center h-screen">
+                  <ScrollSpinner />
+                </div>
               ) : (
                 filteredData?.map((data: getChannelTypes) => (
                   <Cards data={data} key={data.id} />
                 ))
-              )}
-              {successChaneel ? (
-                <div className="flex justify-center">
-                  <ScrollSpinner />
-                </div>
-              ) : (
-                ""
               )}
             </div>
           </div>

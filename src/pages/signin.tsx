@@ -75,12 +75,12 @@ const SignInPage: NextPageWithLayout = () => {
               >
                 Sign In
               </button>
-              <div className='flex justify-end cursor-pointer'>
+              {/* <div className='flex justify-end cursor-pointer'>
                 <span className='ps-1 pe-1 border-b-2 border-black pt-1 text-sm'>Forget Passowrd</span>
-              </div>
-              <div className='absolute bottom-2 right-3 cursor-pointer'>
+              </div> */}
+              {/* <div className='absolute bottom-2 right-3 cursor-pointer'>
                 <span className='ps-1 pe-1 border-b-2 border-black pt-1 text-sm'>Continue As Admin</span>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>
