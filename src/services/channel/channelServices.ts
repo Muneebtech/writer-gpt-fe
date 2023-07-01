@@ -2,7 +2,7 @@ import { QueryData } from "@/components/Types/queryData.type";
 import { request } from "@/lib/axios";
 
 export class ChannelServices {
-  static postChannelData(data: any) {
+  static postChannelData(data: FormData) {
     return request({
       url: "/channels",
       method: "POST",

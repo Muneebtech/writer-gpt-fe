@@ -91,7 +91,7 @@ const Voice = ({setScriptData}:ChildComponentProps) => {
                   </div>
                   <div className='ps-1 pe-1'>
                     {selectCard === voice_id ? (
-                      <img src='/SelectCard.png' alt='round' width={12} height={12} />
+                      <Image src='/SelectCard.png' alt='round' width={12} height={12} />
                     ) : (
                       <Image src='/Round.png' alt='round' width={12} height={12} />
                     )}

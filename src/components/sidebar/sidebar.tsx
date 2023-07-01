@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
         if (isSuccess) {
             router.push('/signin')
         }
-    }, [isSuccess])
+    }, [isSuccess,router])
 
     return (
         <div className="w-48 h-screen flex flex-col bg-black text-white ">

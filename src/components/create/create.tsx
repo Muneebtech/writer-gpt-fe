@@ -117,7 +117,7 @@ const Create = () => {
   useEffect(() => {}, []);
   return (
     <div>
-      <div>
+      <div className="mb-7 mt-1">
         <Header title="CREATE SCRIPT" />
       </div>
       <Snackbar
@@ -146,7 +146,7 @@ const Create = () => {
       <div className="mt-1 mb-1">{renderStepContent(activeStep)}</div>
       {activeStep > 3 && <>{isLoading ? <Spinner></Spinner> : null}</>}
       <div className="btn-postion">
-        <div className="table-bb-gray mt-6 mb-4"></div>
+        <div className="table-bb-gray mt-3 mb-3"></div>
         <div className="flex justify-between mt-3">
           <Button
             onClick={() => {
