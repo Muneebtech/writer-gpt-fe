@@ -105,7 +105,7 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                     <p>{topic?.topic}</p>
                   </div>
                 </div>
-                <div className="flex items-center pt-1 pb-1">
+                <div  className="flex items-center pt-1 pb-1">
                   <div>
                     <p className="font-bold pe-3 font-text">
                       {model?.model ? "Model :" : "Model :"}
