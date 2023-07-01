@@ -73,7 +73,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                           ? URL?.createObjectURL(profileImage as any)
                           : ""
                       }
-                      alt=""
+                      alt="No Image"
                       width={25}
                       height={25}
                     />
@@ -133,7 +133,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                     <p className="font-bold pe-3 font-text">{"Script "}</p>
                   </div>
           
-                  <div className="pt-2 pb-2 w-[90%] ml-1 border me-2 pe-3 scriptData ">
+                  <div className="pt-2 pb-2 w-[90%] ml-1 border me-2 pe-3 scriptData whitespace-pre-line">
                     <p>{Jobdata?.script}</p>
                   </div>
                 </div>
