@@ -56,7 +56,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {ScriptData?.name ? "Script Name" : "Script Name"}
                     </p>
                   </div>
-                  {": "}
+        
                   <div className=" pt-1 pb-1 flex  ml-1  w-[90%]">
                     <p>{ScriptData?.name}</p>
                   </div>
@@ -65,7 +65,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                   <div className="w-[10%] flex  pt-1 pb-1">
                     <p className="font-bold  pe-3 font-text"> Thumbnail </p>
                   </div>
-                  {": "}
+               
                   <div className=" ml-1 w-[90%] flex  pt-1 pb-1">
                     <Image
                       src={
@@ -85,7 +85,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {channel?.channel ? "Channel " : "Channel "}
                     </p>
                   </div>
-                  {": "}
+             
                   <div className=" pt-1 pb-1  ml-1  w-[90%]">
                     <p>{channel?.channel}</p>
                   </div>
@@ -96,7 +96,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {topic?.topic ? "Topic " : "Topic "}
                     </p>
                   </div>
-                  {": "}
+            
                   <div className="pt-1 pb-1  ml-1  w-[90%]">
                     <p>{topic?.topic}</p>
                   </div>
@@ -107,7 +107,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {model?.model ? "Model " : "Model "}
                     </p>
                   </div>
-                  {": "}
+  
                   <div className="pt-1 pb-1  ml-1  w-[90%]">
                     <p>{model?.model}</p>
                   </div>
@@ -118,7 +118,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {outro?.outro ? "Outro " : "Outro "}
                     </p>
                   </div>
-                      {": "}
+    
                   <div className="pt-1 pb-1  ml-1  w-[90%]">
                     <p>
                       {outro?.outro}
@@ -132,7 +132,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                   <div className="w-[10%] flex">
                     <p className="font-bold pe-3 font-text">{"Script "}</p>
                   </div>
-                  {": "}
+          
                   <div className="pt-2 pb-2 w-[90%] ml-1 border me-2 pe-3 scriptData ">
                     <p>{Jobdata?.script}</p>
                   </div>

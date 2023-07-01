@@ -88,19 +88,19 @@ const BrandsLibrary = () => {
           <div className="mt-4"></div>
           <div className="bg-white table-b-gray rounded-lg">
             <table className="min-w-full divide-y divide-gray-300 text-sm">
-              <thead>
-                <tr className="">
-                  <th className="py-4 px-4 text-center">Video Name</th>
-                  <th className="py-4 px-4 text-center">Language</th>
-                  <th className="py-4 px-4 text-center">Video Topic</th>
-                  <th className="py-4 px-4 text-center">Outro</th>
-                  <th className="py-4 px-4 text-center">GPT Logs</th>
-                  <th className="py-4 px-4 text-center">Word Count</th>
-                  <th className="py-4 px-4 text-center">Script</th>
-                  <th className="py-4 px-4 text-center">Voiceover</th>
-                  {/* <th className="py-4 px-4 text-center">Date</th> */}
-                </tr>
-              </thead>
+            <thead>
+                  <tr className="">
+                    <th className="py-4 px-4 text-left">Video Name</th>
+                    <th className="py-4 px-4 text-left">Language</th>
+                    <th className="py-4 px-4 text-left">Video Topic</th>
+                    <th className="py-4 px-4 text-left">Outro</th>
+                    <th className="py-4 px-4 text-center">GPT Logs</th>
+                    <th className="py-4 px-4 text-center">Word Count</th>
+                    <th className="py-4 px-4 text-center">Script</th>
+                    {/* <th className="py-4 px-4 text-center">Voiceover</th> */}
+                    {/* <th className="py-4 px-4 text-center">Date</th> */}
+                  </tr>
+                </thead>
               <tbody>
                 {LibraryData?.map((row: TableListData,index:number) => {
                   const { backgroundColor } = generateRandomColors();

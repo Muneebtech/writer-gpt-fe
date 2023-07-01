@@ -54,9 +54,9 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
             <div className="">
               <div key={"3234"} className="">
                 <div className="flex items-center pt-1 pb-1">
-                  <div className=" pt-1 pb-1">
+                  <div className=" w-[10%] pt-1 pb-1">
                     <p className="font-bold pe-3 font-text">
-                      {ScriptData?.name ? "Script Name :" : "Script Name :"}
+                      {ScriptData?.name ? "Script Name " : "Script Name "}
                     </p>
                   </div>
                   <div className=" pt-1 pb-1">
@@ -64,9 +64,9 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <div>
+                  <div className="w-[10%]">
                     <p className="font-bold pe-3 font-text">
-                      {ScriptData?.photoPath ? "Thumbnail :" : "Thumbnail :"}
+                      {ScriptData?.photoPath ? "Thumbnail " : "Thumbnail "}
                     </p>
                   </div>
                   <div>
@@ -83,7 +83,7 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                   </div>
                 </div>
                 <div className="flex items-center pt-1 pb-1">
-                  <div>
+                  <div className="w-[10%]">
                     <p className="font-bold pe-3 font-text ">
                       {channel?.channel ? "Channel" : "Channel"}
                     </p>
@@ -96,9 +96,9 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                   <p>{ScriptData?.}</p>
                 </div> */}
                 <div className="flex items-center pt-1 pb-1">
-                  <div className="pt-1 pb-1">
+                  <div className=" w-[10%] pt-1 pb-1">
                     <p className="font-bold pe-3 font-text">
-                      {topic?.topic ? "Topic :" : "Topic :"}
+                      {topic?.topic ? "Topic " : "Topic "}
                     </p>
                   </div>
                   <div className="pt-1 pb-1">
@@ -106,9 +106,9 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                   </div>
                 </div>
                 <div  className="flex items-center pt-1 pb-1">
-                  <div>
+                  <div className="w-[10%]">
                     <p className="font-bold pe-3 font-text">
-                      {model?.model ? "Model :" : "Model :"}
+                      {model?.model ? "Model " : "Model "}
                     </p>
                   </div>
                   <div className="pt-1 pb-1">
@@ -116,9 +116,9 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                   </div>
                 </div>
                 <div className="flex items-center pt-1 pb-1">
-                  <div>
+                  <div className="w-[10%]">
                     <p className="font-bold pe-3 font-text">
-                      {outro?.outro ? "Outro :" : "Outro :"}
+                      {outro?.outro ? "Outro " : "Outro "}
                     </p>
                   </div>
                   <div className="pt-1 pb-1">

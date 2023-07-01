@@ -77,7 +77,7 @@ const BasicData: React.FC<ChildComponentProps> = ({ setScriptData }) => {
             />
           </FormControl>
         </div>
-        <div className="flex items-center mt-3 ps-6">
+        <div className="flex items-center mt-3 ps-2">
           <div>
             <div className="ms-4 mb-1 mt-1">
               <span className="font-bold">Icon</span>
