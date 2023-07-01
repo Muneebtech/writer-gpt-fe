@@ -314,23 +314,7 @@ const Brands = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                        <Popover
-                          onClose={handlePopoverClose}
-                          open={popoverOpen}
-                        >
-                          <span className="font-bold ps-2 pe-2 pt-4">
-                            Select Color
-                          </span>
-                          <div className="flex justify-between flex-wrap w-11/12 pt-2 pb-2 ps-2 pe-2">
-                            {colors.map((color, index) => (
-                              <div
-                                key={index}
-                                className="w-5 h-5 rounded-full mr-2 mt-2 mb-2"
-                                style={{ backgroundColor: color }}
-                              ></div>
-                            ))}
-                          </div>
-                        </Popover>
+
                       </div>
                       <div className="pt-2 pb-2">
                         <InputLabel

@@ -51,25 +51,25 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
           </div>
           <div className="table-bb-gray mt-4 ms-4 me-4"></div>
           <div className="ps-4">
-            <div className="">
+            <div className="mt-1">
               <div key={"3234"} className="">
-                <div className="flex items-center pt-1 pb-1">
-                  <div className=" w-[10%] pt-1 pb-1">
+                <div className="flex items-center pt-1 pb-1 w-full">
+                  <div className=" pt-1 pb-1 w-[10%]">
                     <p className="font-bold pe-3 font-text">
-                      {ScriptData?.name ? "Script Name " : "Script Name "}
+                      {ScriptData?.name ? "Script Name" : "Script Name"}
                     </p>
                   </div>
-                  <div className=" pt-1 pb-1">
+
+                  <div className=" pt-1 pb-1 flex  ml-1  w-[90%]">
                     <p>{ScriptData?.name}</p>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <div className="w-[10%]">
-                    <p className="font-bold pe-3 font-text">
-                      {ScriptData?.photoPath ? "Thumbnail " : "Thumbnail "}
-                    </p>
+                <div className="flex items-center w-full">
+                  <div className="w-[10%] flex  pt-1 pb-1">
+                    <p className="font-bold  pe-3 font-text"> Thumbnail </p>
                   </div>
-                  <div>
+
+                  <div className=" ml-1 w-[90%] flex  pt-1 pb-1">
                     <Image
                       src={
                         ScriptData?.photoPath
@@ -82,36 +82,39 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                     />
                   </div>
                 </div>
-                <div className="flex items-center pt-1 pb-1">
-                  <div className="w-[10%]">
+                <div className="flex items-center pt-1 pb-1 w-full ">
+                  <div className="w-[10%] flex">
                     <p className="font-bold pe-3 font-text ">
-                      {channel?.channel ? "Channel" : "Channel"}
+                      {channel?.channel ? "Channel " : "Channel "}
                     </p>
                   </div>
-                  <div className=" pt-1 pb-1">
+
+                  <div className=" pt-1 pb-1  ml-1  w-[90%]">
                     <p>{channel?.channel}</p>
                   </div>
                 </div>
                 {/* <div className="pt-1 pb-1">
                   <p>{ScriptData?.}</p>
                 </div> */}
-                <div className="flex items-center pt-1 pb-1">
-                  <div className=" w-[10%] pt-1 pb-1">
+                <div className="flex items-center pt-1 pb-1 w-full">
+                  <div className="pt-1 pb-1 w-[10%]">
                     <p className="font-bold pe-3 font-text">
                       {topic?.topic ? "Topic " : "Topic "}
                     </p>
                   </div>
-                  <div className="pt-1 pb-1">
+
+                  <div className="pt-1 pb-1  ml-1  w-[90%]">
                     <p>{topic?.topic}</p>
                   </div>
                 </div>
-                <div  className="flex items-center pt-1 pb-1">
-                  <div className="w-[10%]">
+                <div className="flex items-center pt-1 pb-1 w-full">
+                  <div className="w-[10%] flex pt-1 pb-1">
                     <p className="font-bold pe-3 font-text">
                       {model?.model ? "Model " : "Model "}
                     </p>
                   </div>
-                  <div className="pt-1 pb-1">
+
+                  <div className="pt-1 pb-1  ml-1  w-[90%]">
                     <p>{model?.model}</p>
                   </div>
                 </div>
