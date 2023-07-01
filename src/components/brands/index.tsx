@@ -487,7 +487,7 @@ const Brands = () => {
               ref={divRef}
               id="Cards-channel"
               style={{ overflow: "scroll" }}
-              className="grid grid-cols-5 gap-2 h-[calc(100vh-11rem)] "
+              className="grid grid-cols-5 gap-2 h-[calc(100vh-11.5rem)] "
             >
               {isLoading ? (
                 <div className="flex justify-center items-center h-screen">

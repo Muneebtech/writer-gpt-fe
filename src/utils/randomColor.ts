@@ -4,7 +4,7 @@ export function generateRandomColors() {
   const lightness = Math.floor(Math.random() * 11) + 80; // Random lightness value between 70 and 90
 
   const backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-  const textColor = `hsl(${hue}, ${saturation}%, ${lightness - 15}%)`; // Darker shade for text
+  const textColor = `hsl(${hue}, ${saturation}%, ${lightness - 35}%)`; // Darker shade for text
 
   return { backgroundColor, textColor };
 }
