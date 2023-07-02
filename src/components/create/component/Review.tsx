@@ -40,7 +40,6 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
   let channel = channelData?.find(
     (obj: Channel) => obj.id === ScriptData?.channel
   );
-  console.log(topic, outro, model, channel);
 
   return (
     <div>

@@ -18,7 +18,6 @@ export class ChannelServices {
   }
 
   static getBrandsChanneldata(id: string) {
-    console.log(id, "id::hittt")
     return request({
       url: `/job`,
       method: "GET",

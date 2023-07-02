@@ -12,7 +12,6 @@ const Sidebar: React.FC = () => {
     const router = useRouter();
     const userData = decryptData("userdata")
     const token = decryptData("token")
-    console.log(userData, '------', token);
     const { mutate, isSuccess } = useLogout()
     const handleLogout = () => {
         mutate({ refreshToken: token?.refresh?.token })

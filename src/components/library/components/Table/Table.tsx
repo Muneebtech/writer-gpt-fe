@@ -1,17 +1,16 @@
-import { tableData, TableListData } from "@/constants/library"
+import {  TableListData } from "@/constants/library"
 import Spinner from "../../../../modules/spinner/spinner"
 import { useGetJobs } from "@/services/Jobs"
 import { generateRandomColors } from "@/utils/randomColor"
 import Image from "next/image"
-import React, { useState, useEffect ,useMemo} from "react"
+import React, { useState ,useMemo} from "react"
 import { FiDownload } from "react-icons/fi"
 import { Button } from "@mui/material"
 import Header from "@/common/Header/header"
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const { isLoading: loading, data: Data, isSuccess: success } = useGetJobs()
+  const { isLoading: loading, data: Data } = useGetJobs()
   const [totalPagesData, setTotalPages] = useState(Data?.totalPages)
-  const [data, setData] = useState([])
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
 
@@ -126,6 +125,7 @@ const Table = () => {
                           <div className="flex items-center">
                             <Image
                               loader={() => src}
+                              loading="lazy"
                               src={src}
                               alt="Thumbnail"
                               width={43}

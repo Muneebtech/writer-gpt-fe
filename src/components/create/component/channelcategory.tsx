@@ -24,11 +24,6 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
     setSelectedItemId(id === selectedItemId ? null : id);
     setScriptData({ channel: id });
   };
-  const [divHeight, setDivHeight] = useState(300);
-
-  useEffect(() => {
-    console.log((document.body.style.fontSize = "90%"), "Height");
-  }, []);
 
   return (
     <div>

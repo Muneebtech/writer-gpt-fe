@@ -47,7 +47,6 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
       window.removeEventListener("resize", detectZoomLevel);
     };
   }, []);
-  console.log(zoomLevel, "ZoomLevel");
   const { data: topicData, isLoading: topicLoading } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
   const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
@@ -60,7 +59,6 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     }));
     setScriptData({ ...selectedValues, [name]: value });
   };
-  console.log(topicData, modelData, Outrodata, "dataaaaaaaaaa");
 
   return (
     <div>

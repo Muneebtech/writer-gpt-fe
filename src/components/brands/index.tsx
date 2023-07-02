@@ -154,9 +154,9 @@ const Brands = () => {
     const formdata = new FormData()
     formdata.append("channel", formData.channel as string)
     formdata.append("category", formData.category as string)
-    formdata.append("youtubeLink", formData.youtubeLink as string)
-    formdata.append("discordLink", formData.discordLink as string)
-    formdata.append("outro", profileImage as File)
+    formdata.append("youtubeUrl", formData.youtubeLink as string)
+    formdata.append("discordUrl", formData.discordLink as string)
+    formdata.append("photoPath", profileImage as File)
 
     mutate(formdata)
     setFormData({
