@@ -59,6 +59,11 @@ textarea {
   color: black;
 }
 
+.button-black-modal{
+background-color: #171717 !important;
+color: #fff !important;
+}
+
 .css-3bmhjh-MuiPaper-root-MuiPopover-paper {
   top: 261px !important;
   left: 441px !important;
@@ -344,6 +349,9 @@ body {
 
 .border-black-btn {
   border: 1px solid #171717;
+}
+.border-btn-red{
+  border: 1px solid red !important;
 }
 
 .spinner-container {

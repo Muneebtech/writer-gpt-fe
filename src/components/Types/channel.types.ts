@@ -13,8 +13,8 @@ export type getChannelTypes = {
           category: string;
           id: string;
         };
-        youtubeLink: string;
-        discordLink: string;
+        youtubeUrl: string;
+        discordUrl: string;
         photoPath: File | any;
         subscribers:string
       

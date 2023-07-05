@@ -4,9 +4,9 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-} from "react"
-import Cards from "./Cards"
-import Header from "@/common/Header/header"
+} from "react";
+import Cards from "./Cards";
+import Header from "@/common/Header/header";
 import {
   Box,
   Button,
@@ -18,32 +18,37 @@ import {
   Input,
   SelectChangeEvent,
   Popover,
-} from "@mui/material"
-import { FiCopy, FiPlus } from "react-icons/fi"
-import { FaTimes } from "react-icons/fa"
-import { useState } from "react"
-import { AiOutlineUpload } from "react-icons/ai"
-import Image from "next/image"
-import { categoryDataTypess } from "../Types/category.type"
+} from "@mui/material";
+import { FiCopy, FiPlus } from "react-icons/fi";
+import { FaTimes } from "react-icons/fa";
+import { useState } from "react";
+import { AiOutlineUpload } from "react-icons/ai";
+import Image from "next/image";
+import { categoryDataTypess } from "../Types/category.type";
 // import BrandsLibrary from "../brandsLibrary/brandsLibrary";
-import { useCategories } from "@/services/category/hooks/useCategories"
-import { ChannelServices, useCreateChannel } from "@/services/channel"
-import { useGetChannels } from "@/services/channel/hooks/useGetChannels"
-import { getChannelTypes } from "../Types/channel.types"
-import Spinner from "@/modules/spinner/spinner"
-import ScrollSpinner from "@/modules/spinner/ScrollSpinner"
+import { useCategories } from "@/services/category/hooks/useCategories";
+import { ChannelServices, useCreateChannel } from "@/services/channel";
+import { useGetChannels } from "@/services/channel/hooks/useGetChannels";
+import { getChannelTypes } from "../Types/channel.types";
+import Spinner from "@/modules/spinner/spinner";
+import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
+import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 interface FormData {
-  channel: string
-  category: string
-  youtubeLink: string
-  discordLink: string
-  photoPath: File | any
+  channel: string;
+  category: string;
+  youtubeLink: string;
+  discordLink: string;
+  photoPath: File | any;
 }
 const Brands = () => {
-  const divRef = useRef<HTMLDivElement>(null)
-  const limit = 10
-  const { isLoading: loading, data: Data, isSuccess: success } = useCategories()
-  const { data: ChannelData, mutate } = useCreateChannel()
+  const divRef = useRef<HTMLDivElement>(null);
+  const limit = 10;
+  const {
+    isLoading: loading,
+    data: Data,
+    isSuccess: success,
+  } = useCategories();
+  const { data: ChannelData, mutate } = useCreateChannel();
   const {
     data: DataChannels,
     isLoading,
@@ -53,17 +58,16 @@ const Brands = () => {
     totalPages,
     isFetchingNextPage,
     isFetching,
-  } = useGetChannels({ page: 1, limit: 10 })
-
-  const CategoryData = Data?.results ?? []
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [openModal, setOpenModal] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null)
-  const discordLinkInputRef = useRef<HTMLInputElement>(null)
-  const [popoverOpen, setPopoverOpen] = useState(false)
-  const [selectedColor, setSelectedColor] = useState("")
-  const [searchKeyword, setSearchKeyword] = useState<string>("")
+  } = useGetChannels({ page: 1, limit: 10 });
+  const CategoryData = Data?.results ?? [];
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null);
+  const discordLinkInputRef = useRef<HTMLInputElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const colors = [
     "gray",
     "indigo",
@@ -77,148 +81,167 @@ const Brands = () => {
     "Cyan",
     "Gold",
     "Violet",
-  ]
-  const [profileImage, setProfileImage] = useState<File | null>(null)
-
+  ];
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const {
+    mutate: mutateChannel,
+    isLoading: isLoadingDelete,
+    isSuccess: isSuccessDelete,
+  } = useDeletechannels();
   const [formData, setFormData] = useState<FormData>({
     channel: "",
     category: "",
     discordLink: "",
     youtubeLink: "",
     photoPath: "",
-  })
+  });
 
   const handleSearch = (keyword: string) => {
-    setSearchKeyword(keyword)
-  }
+    setSearchKeyword(keyword);
+  };
   const handleCategoryFilter = (category: string) => {
-    setSelectedCategory(category === "All" ? null : category)
-  }
+    setSelectedCategory(category === "All" ? null : category);
+  };
+  console.log(DataChannels, "DataChannels::HEHEHEHHEHEHE");
   const filteredData = useMemo(() => {
-    let filtered = DataChannels
+    let filtered = DataChannels;
     if (searchKeyword) {
       filtered = filtered.filter((data: getChannelTypes) =>
         data?.channel?.toLowerCase().includes(searchKeyword.toLowerCase())
-      )
+      );
     }
     if (selectedCategory) {
       filtered = filtered.filter(
         (data: getChannelTypes) =>
           data?.category?.category?.toLowerCase() ===
           selectedCategory.toLowerCase()
-      )
+      );
     }
-    return filtered
-  }, [searchKeyword, selectedCategory, DataChannels])
+    return filtered;
+  }, [searchKeyword, selectedCategory, DataChannels]);
 
   const handleScroll = () => {
-    const div = divRef.current
+    const div = divRef.current;
     if (div) {
       if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
         // Reach the bottom of the div
         if (!isFetchingNextPage && currentPage !== totalPages) {
-          fetchNextPage()
+          fetchNextPage();
         }
       }
     }
-  }
+  };
   /* eslint-disable */
   useEffect(() => {
-    const div = divRef.current
-    div?.addEventListener("scroll", handleScroll)
+    const div = divRef.current;
+    div?.addEventListener("scroll", handleScroll);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      div?.removeEventListener("scroll", handleScroll)
-    }
-  }, [isFetchingNextPage, currentPage, totalPages])
+      div?.removeEventListener("scroll", handleScroll);
+    };
+  }, [isFetchingNextPage, currentPage, totalPages]);
   const handleInputChange = (
     event: ChangeEvent<{ name?: string; value: string }>
   ) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setFormData((prevState) => ({
       ...prevState,
       [name || ""]: value,
-    }))
-  }
+    }));
+  };
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setFormData((prevState) => ({
       ...prevState,
       [name || ""]: value,
-    }))
-  }
+    }));
+  };
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault()
-
-    const formdata = new FormData()
-    formdata.append("channel", formData.channel as string)
-    formdata.append("category", formData.category as string)
-    formdata.append("youtubeUrl", formData.youtubeLink as string)
-    formdata.append("discordUrl", formData.discordLink as string)
-    formdata.append("photoPath", profileImage as File)
-
-    mutate(formdata)
+    event.preventDefault();
+    const formdata = new FormData();
+    formdata.append("channel", formData.channel as string);
+    formdata.append("category", formData.category as string);
+    formdata.append("youtubeUrl", formData.youtubeLink as string);
+    formdata.append("discordUrl", formData.discordLink as string);
+    formdata.append("photoPath", profileImage as File);
+    mutate(formdata);
     setFormData({
       channel: "",
       category: "",
       discordLink: "",
       youtubeLink: "",
       photoPath: "",
-    })
-    setProfileImage(null)
-  }
-
+    });
+    setProfileImage(null);
+  };
   const handleUploadPictureClick = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click()
+      fileInputRef.current.click();
     }
-  }
-
+  };
   const handleProfileImageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files && event.target.files[0]) {
-      const selectedImage = event.target.files[0]
-      setProfileImage(selectedImage)
+      const selectedImage = event.target.files[0];
+      setProfileImage(selectedImage);
       setFormData((prevFormData) => ({
         ...prevFormData,
         photoPath: selectedImage,
-      }))
+      }));
     }
-  }
-
+  };
   const copyToClipboard = (fieldName: string) => {
-    let textToCopy = ""
+    let textToCopy = "";
     if (fieldName === "discordLink" && discordLinkInputRef.current) {
-      textToCopy = discordLinkInputRef.current.value
+      textToCopy = discordLinkInputRef.current.value;
     } else if (fieldName === "youtubeLink" && youtubeLinkSelectRef.current) {
-      textToCopy = youtubeLinkSelectRef.current.value
+      textToCopy = youtubeLinkSelectRef.current.value;
     }
     if (textToCopy) {
       navigator.clipboard
         .writeText(textToCopy)
         .then(() => {
-          console.log("Text copied to clipboard:", textToCopy)
+          console.log("Text copied to clipboard:", textToCopy);
         })
         .catch((error) => {
-          console.error("Error copying text to clipboard:", error)
-        })
+          console.error("Error copying text to clipboard:", error);
+        });
     }
-  }
-
+  };
   const handlepopOverOpne = () => {
-    setPopoverOpen(true)
-  }
+    setPopoverOpen(true);
+  };
   const handlePopoverClose = () => {
-    setPopoverOpen(false)
-  }
+    setPopoverOpen(false);
+  };
   const handleOpenModal = () => {
-    setOpenModal(true)
-  }
+    setOpenModal(true);
+  };
   const handleCloseModal = () => {
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
+  const HandleDeleteChannel = (id: string) => {
+    console.log(id, "Id::trigger:on:Delete");
+    const updatedData = DataChannels?.filter((channel) => channel?.id !== id);
+    console.log(
+      updatedData,
+      "DataChannels?.filter((channel) => channel?.id !== id)"
+    );
+
+    console.log(updatedData, "UpdatedData");
+
+    console.log("I am triggered");
+    const newFormData: FormData = {
+      ...formData,
+      channel: updatedData?.map((channel) => channel.channel).join(","),
+    };
+
+    setFormData(newFormData);
+    mutateChannel(id);
+  };
+
   return (
     <>
       {isLoading ? (
@@ -285,21 +308,6 @@ const Brands = () => {
                           >
                             Category
                           </InputLabel>
-                          <div
-                            className="flex items-center cursor-pointer"
-                            onClick={handlepopOverOpne}
-                          >
-                            <span className="border-b-2 border-gray-400 text-sm ">
-                              Select Color
-                            </span>
-                            <div className="bg-gray-600 rounded-full ps-2 pe-2 pt-2 pb-2  ms-1 me-1">
-                              <div>
-                                <span style={{ color: selectedColor }}>
-                                  {selectedColor}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                         <Select
                           name="category"
@@ -314,7 +322,6 @@ const Brands = () => {
                             </MenuItem>
                           ))}
                         </Select>
-
                       </div>
                       <div className="pt-2 pb-2">
                         <InputLabel
@@ -479,7 +486,11 @@ const Brands = () => {
                 </div>
               ) : (
                 filteredData?.map((data: getChannelTypes) => (
-                  <Cards data={data} key={data.id} />
+                  <Cards
+                    HandleDeleteChannel={HandleDeleteChannel}
+                    data={data}
+                    key={data.id}
+                  />
                 ))
               )}
             </div>
@@ -494,6 +505,6 @@ const Brands = () => {
         </>
       )}
     </>
-  )
-}
-export default Brands
+  );
+};
+export default Brands;

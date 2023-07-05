@@ -24,4 +24,20 @@ export class ChannelServices {
       params: { channel: id }
     });
   }
+  static getDeleteChannels(id: string) {
+    console.log(id, 'id::LELELLEELEL')
+    return request({
+      url: `/channels/${id}`,
+      method: "DELETE",
+    })
+
+  }
+  static getUpdateChannels(id: string) {
+    console.log(id, 'id::LELELLEELEL')
+    return request({
+      url: `/channels/${id}`,
+      method: "PUT",
+    })
+
+  }
 }

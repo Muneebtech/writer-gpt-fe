@@ -15,7 +15,7 @@ import ReviewData from "./component/ReviewData";
 import Spinner from "@/modules/spinner/spinner";
 import { useRouter } from "next/router";
 import { FiBook } from "react-icons/fi";
-
+import LanguageModel from "./component/LanguageModel";
 const steps = ["CHANNEL", "SCRIPT", "BASIC DATA", "REVIEW"];
 
 const Create = () => {

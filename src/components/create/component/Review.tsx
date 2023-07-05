@@ -67,7 +67,6 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                   <div className="w-[10%] flex  pt-1 pb-1">
                     <p className="font-bold  pe-3 font-text"> Thumbnail </p>
                   </div>
-
                   <div className=" ml-1 w-[90%] flex  pt-1 pb-1">
                     <Image
                       src={
