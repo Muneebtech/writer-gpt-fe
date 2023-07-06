@@ -63,12 +63,6 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
   const handleHideEditModal = () => {
     setShowEditModal(false);
   };
-  // const HandleDeleteChannel = (id: string) => {
-  //   const updatedData = data?.id?.filter((channelId) => channelId?.id !== id);
-  //   console.log("I am triggered");
-  //   // mutate(updatedData);
-  // };
-  // console.log(Data, "DeleteData");
   return (
     <>
       <Modal
