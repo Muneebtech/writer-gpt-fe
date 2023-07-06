@@ -6,6 +6,7 @@ import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { FaTrash } from "react-icons/fa";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { getChannelTypes } from "../Types/channel.types";
+import EditChannel from "./EditChannel";
 interface CardProps {
   data: {
     id: string;
@@ -65,6 +66,7 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
   };
   return (
     <>
+      <EditChannel />
       <Modal
         open={showdeleteModal}
         onClose={handleCloseDeleteModal}
