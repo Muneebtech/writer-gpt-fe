@@ -1,6 +1,6 @@
 import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { FaTrash } from "react-icons/fa";
@@ -61,12 +61,20 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
     setSelectedData(data);
     setShowEditModal(true);
   };
+  useEffect(() => {
+    
+  }, []);
   const handleHideEditModal = () => {
     setShowEditModal(false);
   };
   return (
     <>
-      <EditChannel />
+      <EditChannel
+        handleShowEditModal={handleShowEditModal}
+        handleHideEditModal={handleHideEditModal}
+        showeditModal={showeditModal}
+        selectedData={selectedData}
+      />
       <Modal
         open={showdeleteModal}
         onClose={handleCloseDeleteModal}
@@ -183,6 +191,7 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
             >
               <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
                 <Typography
+                  onClick={() => handleShowEditModal(data?.id, data)}
                   className="cursor-pointer"
                   id="modal-modal-description"
                   sx={{ mt: 1 }}
