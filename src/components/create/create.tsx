@@ -16,7 +16,9 @@ import Spinner from "@/modules/spinner/spinner";
 import { useRouter } from "next/router";
 import { FiBook } from "react-icons/fi";
 import LanguageModel from "./component/LanguageModel";
-const steps = ["CHANNEL", "SCRIPT", "BASIC DATA", "REVIEW"];
+import Topic from "./component/Topic";
+import Outro from "./component/Outro";
+const steps = ["CHANNEL", "BASIC", "LANGUAGEMODEL", "TOPIC", "OUTRO", "REVIEW"];
 
 const Create = () => {
   const router = useRouter();
@@ -53,7 +55,7 @@ const Create = () => {
     let newSkipped = skipped;
     newSkipped = new Set(newSkipped.values());
     newSkipped.delete(activeStep);
-    if (activeStep < 4) {
+    if (activeStep < 6) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     setSkipped(newSkipped);
@@ -92,16 +94,24 @@ const Create = () => {
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-      return <ChannelAndCategory setScriptData={handleStateUpdate} />;
+        return <ChannelAndCategory setScriptData={handleStateUpdate} />;
       case 1:
-        return <Script setScriptData={handleStateUpdate} />;
-      case 2:
         return <BasicData setScriptData={handleStateUpdate} />;
+      // return <Script setScriptData={handleStateUpdate} />;
+      case 2:
+        return <LanguageModel setScriptData={handleStateUpdate} />;
+
+      case 3:
+        return <Topic setScriptData={handleStateUpdate} />;
+      case 4:
+        return <Outro />;
       //   case 3:
       //     return <Voice setScriptData={handleStateUpdate}/>;
-      case 3:
+
+    
+      case 5:
         return <Review ScriptData={ScriptData} />;
-      case 4:
+      case 6:
         return <ReviewData Jobdata={data} ScriptData={ScriptData} />;
     }
   };
@@ -159,7 +169,7 @@ const Create = () => {
           >
             Cancel
           </Button>
-          {}
+
           <div className="flex items-center gap-2 ">
             {dataFlag ? (
               <Button
@@ -180,7 +190,7 @@ const Create = () => {
                     Back
                   </Button>
                 )}
-                {activeStep > 3 ? (
+                {activeStep > 5 ? (
                   <Button
                     variant="contained"
                     className="button-black ms-2 me-2"

@@ -344,7 +344,9 @@ body {
 
 
 
-
+.height-outro{
+  height: 27.5vh;
+}
 
 
 .border-black-btn {
@@ -582,4 +584,10 @@ label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
   100% {
     transform: rotate(1turn);
   }
+}
+
+.css-85zwa9-MuiInputBase-root-MuiFilledInput-root{
+  border: 1px solid !important;
+  border-radius: 8px !important;
+  background-color: #fff !important;
 }
