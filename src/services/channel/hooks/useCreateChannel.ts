@@ -1,8 +1,9 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { ChannelServices } from "../channelServices";
-import { createChannelTypes } from "@/components/Types/channel.types";
 import useNotification from "@/hooks/useNotificaitons";
 export function useCreateChannel() {
+  const queryClient = useQueryClient();
+
   const { isLoading, data, isSuccess, mutate } = useMutation(
     "createChannel",
     (data: FormData) => ChannelServices.postChannelData(data),
@@ -20,6 +21,7 @@ export function useCreateChannel() {
           duration: 3000,
           type: "success",
         });
+        queryClient.invalidateQueries("useGetChannels"); // Assuming the query key for the list is "channelList"
       },
     }
   );

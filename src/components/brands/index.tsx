@@ -102,7 +102,6 @@ const Brands = () => {
   const handleCategoryFilter = (category: string) => {
     setSelectedCategory(category === "All" ? null : category);
   };
-  console.log(DataChannels, "DataChannels::HEHEHEHHEHEHE");
   const filteredData = useMemo(() => {
     let filtered = DataChannels;
     if (searchKeyword) {
@@ -145,14 +144,14 @@ const Brands = () => {
     event: ChangeEvent<{ name?: string; value: string }>
   ) => {
     const { name, value } = event.target;
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       [name || ""]: value,
     }));
   };
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       [name || ""]: value,
     }));
@@ -186,7 +185,7 @@ const Brands = () => {
     if (event.target.files && event.target.files[0]) {
       const selectedImage = event.target.files[0];
       setProfileImage(selectedImage);
-      setFormData((prevFormData) => ({
+      setFormData(prevFormData => ({
         ...prevFormData,
         photoPath: selectedImage,
       }));
@@ -205,7 +204,7 @@ const Brands = () => {
         .then(() => {
           console.log("Text copied to clipboard:", textToCopy);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("Error copying text to clipboard:", error);
         });
     }
@@ -223,19 +222,11 @@ const Brands = () => {
     setOpenModal(false);
   };
   const HandleDeleteChannel = (id: string) => {
-    console.log(id, "Id::trigger:on:Delete");
-    const updatedData = DataChannels?.filter((channel) => channel?.id !== id);
-    console.log(
-      updatedData,
-      "DataChannels?.filter((channel) => channel?.id !== id)"
-    );
+    const updatedData = DataChannels?.filter(channel => channel?.id !== id);
 
-    console.log(updatedData, "UpdatedData");
-
-    console.log("I am triggered");
     const newFormData: FormData = {
       ...formData,
-      channel: updatedData?.map((channel) => channel.channel).join(","),
+      channel: updatedData?.map(channel => channel.channel).join(","),
     };
 
     setFormData(newFormData);
@@ -478,7 +469,7 @@ const Brands = () => {
               ref={divRef}
               id="Cards-channel"
               style={{ overflow: "scroll" }}
-              className="grid grid-cols-5 gap-2 h-[calc(100vh-11.5rem)] "
+              className="flex flex-wrap items-start w-full h-[calc(100vh-11.5rem)] "
             >
               {isLoading ? (
                 <div className="flex justify-center items-center h-screen">

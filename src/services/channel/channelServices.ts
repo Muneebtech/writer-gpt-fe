@@ -1,3 +1,4 @@
+import { getChannelTypes } from "@/components/Types/channel.types";
 import { QueryData } from "@/components/Types/queryData.type";
 import { request } from "@/lib/axios";
 
@@ -21,23 +22,20 @@ export class ChannelServices {
     return request({
       url: `/job`,
       method: "GET",
-      params: { channel: id }
+      params: { channel: id },
     });
   }
   static getDeleteChannels(id: string) {
-    console.log(id, 'id::LELELLEELEL')
     return request({
       url: `/channels/${id}`,
       method: "DELETE",
-    })
-
+    });
   }
-  static getUpdateChannels(id: string) {
-    console.log(id, 'id::LELELLEELEL')
+  static updateChannel(data: any) {
     return request({
-      url: `/channels/${id}`,
-      method: "PUT",
-    })
-
+      url: `/channels/${data.id}`,
+      method: "PATCH",
+      data: data.newData,
+    });
   }
 }
