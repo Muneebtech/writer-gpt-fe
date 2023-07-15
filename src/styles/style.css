@@ -342,6 +342,10 @@ body {
 
 
 
+.outro-item:hover {
+  background-color: #F9F9F9;
+  border-radius: 8px;
+}
 
 
 .height-outro{

@@ -51,7 +51,7 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
 
   return (
     <div>
-      <div className="h-[calc(100vh-14.5rem)] mt-6 rounded-md border-2">
+      <div className="h-[calc(100vh-13.5rem)] mt-6 rounded-md border-2">
         <div>
           <div className="ps-3 pt-2">
             <h4 className="font-bold">REVIEW</h4>

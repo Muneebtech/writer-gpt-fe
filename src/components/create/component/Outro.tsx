@@ -1,6 +1,6 @@
 import { Outros } from "@/constants/outro";
 import { Button, TextField } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { OutroItems, outroDataTypes } from "../../Types/Outro.type";
 import { Job } from "@/components/Types/job.type";
@@ -11,20 +11,30 @@ interface ChildComponentProps {
 const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
   const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
   console.log(Outrodata, "Outrodata");
-
-  const [dataList, setDataList] = useState<OutroItems[]>(Outrodata);
-  const [newData, setNewData] = useState<OutroItems>({ id: 0, value: "" });
+  console.log(Outrodata, "Outrodata::Outrodata::Outrodata  ");
+  const [dataList, setDataList] = useState<outroDataTypes[]>(Outrodata || []);
+  const [newData, setNewData] = useState<outroDataTypes>({
+    id: "0",
+    outro: "",
+    description: "",
+    status: null,
+  });
 
   const handleAddData = () => {
-    if (newData.value.trim() !== "") {
+    if (newData?.description.trim() !== "") {
       const updatedDataList = [...dataList, newData];
       setDataList(updatedDataList);
-      setNewData({ id: newData.id + 1, value: "" });
+      setNewData({
+        id: (parseInt(newData.id) + 1).toString(),
+        outro: "",
+        description: "",
+        status: null,
+      });
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewData({ ...newData, value: event.target.value });
+    setNewData({ ...newData, description: event.target.value });
   };
 
   const ClearAllData = () => {
@@ -32,12 +42,18 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
   };
 
   const handleClearTextField = () => {
-    setNewData({ ...newData, value: "" });
+    setNewData({ ...newData, description: "" });
   };
 
   const handleOutroData = (id: string) => {
     setScriptData({ outro: id });
   };
+
+  useEffect(() => {
+    if (Outrodata) {
+      setDataList(Outrodata);
+    }
+  }, [Outrodata]);
 
   return (
     <div>
@@ -57,7 +73,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               multiline
               variant="filled"
               className="border-2 w-full"
-              value={newData.value} // Pass the value from state to the TextField
+              value={newData.description} // Pass the value from state to the TextField
               onChange={handleInputChange}
             />
           </div>
@@ -90,15 +106,15 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                 </>
               ) : (
                 <>
-                  {Outrodata?.map((items: outroDataTypes) => {
+                  {dataList?.map((items: outroDataTypes) => {
                     return (
                       <>
                         <div
                           key={items?.id}
-                          className="border-2 mt-2 mb-2 ms-2 me-2"
+                          className="outro-item mt-2 mb-2 ms-2 me-2"
                         >
                           <div className="flex ps-2 pe-2 pt-2 pb-2">
-                            <p>{items?.outro}</p>
+                            <p>{items?.description}</p>
                             <div
                               className="pt-1 cursor-pointer ps-2"
                               onClick={() => handleOutroData(items?.id)}

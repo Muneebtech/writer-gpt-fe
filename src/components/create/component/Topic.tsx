@@ -12,9 +12,9 @@ interface ChildComponentProps {
 
 const Topic: React.FC<ChildComponentProps> = ({ setScriptData }) => {
   const [selectTopic, setSelectTopic] = useState<string | null>(null);
-  const { data: topicData, isLoading} = useTopic();
-  console.log(topicData,'topicDat:::');
-  
+  const { data: topicData, isLoading } = useTopic();
+  console.log(topicData, "topicDat:::");
+
   const handleClick = (id: string) => {
     setSelectTopic(id === selectTopic ? null : id);
     setScriptData({ topic: id });
@@ -39,7 +39,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData }) => {
             </div>
             <div className="flex flex-wrap justify-center mt-4 mb-4 height-table">
               {topicData?.map((item: Topic) => {
-                const { id,topic,description } = item;
+                const { id, topic, description } = item;
                 return (
                   <div
                     onClick={() => handleClick(id)}
