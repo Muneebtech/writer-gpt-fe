@@ -31,6 +31,12 @@ export class ChannelServices {
       method: "DELETE",
     });
   }
+  static getChannelById(id: string) {
+    return request({
+      url: `/channels/${id}`,
+      method: "GET",
+    });
+  }
   static updateChannel(data: any) {
     return request({
       url: `/channels/${data.id}`,
