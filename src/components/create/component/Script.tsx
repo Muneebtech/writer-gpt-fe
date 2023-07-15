@@ -1,7 +1,7 @@
 import { Job } from "@/components/Types/job.type";
 import { Topic } from "@/constants/Topic";
 import { ModelList } from "@/constants/languageModel";
-import { OutroItems } from "@/constants/outro";
+import { OutroItems } from "../../Types/Outro.type";
 import Spinner from "@/modules/spinner/spinner";
 import { useModel } from "@/services/Script/hooks/useModel";
 import { useGetOutro } from "@/services/outro";
@@ -26,27 +26,27 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     topic: "",
   });
   const [zoomLevel, setZoomLevel] = useState("");
-  useEffect(() => {
-    const detectZoomLevel = () => {
-      const devicePixelRatio = window.devicePixelRatio;
+  // useEffect(() => {
+  //   const detectZoomLevel = () => {
+  //     const devicePixelRatio = window.devicePixelRatio;
 
-      if (devicePixelRatio === 0.25) {
-        setZoomLevel("25%");
-      } else if (devicePixelRatio === 0.75) {
-        setZoomLevel("75%");
-      } else {
-        setZoomLevel("Something else");
-      }
-    };
+  //     if (devicePixelRatio === 0.25) {
+  //       setZoomLevel("25%");
+  //     } else if (devicePixelRatio === 0.75) {
+  //       setZoomLevel("75%");
+  //     } else {
+  //       setZoomLevel("Something else");
+  //     }
+  //   };
 
-    detectZoomLevel();
+  //   detectZoomLevel();
 
-    window.addEventListener("resize", detectZoomLevel);
+  //   window.addEventListener("resize", detectZoomLevel);
 
-    return () => {
-      window.removeEventListener("resize", detectZoomLevel);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", detectZoomLevel);
+  //   };
+  // }, []);
   const { data: topicData, isLoading: topicLoading } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
   const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
@@ -126,7 +126,7 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                 >
                   {Outrodata?.map((obj: OutroItems) => (
                     <MenuItem key={obj.id} value={obj.id}>
-                      {obj.outro}
+                      {obj.value}
                     </MenuItem>
                   ))}
                 </Select>

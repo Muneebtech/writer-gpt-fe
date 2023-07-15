@@ -36,6 +36,8 @@ const Create = () => {
     channel: "",
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
+  console.log(ScriptData,"ScriptData");
+  
   const [Open, setOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
   const { data, isLoading, isSuccess, mutate } = useCreateJob();
@@ -104,7 +106,7 @@ const Create = () => {
       case 3:
         return <Topic setScriptData={handleStateUpdate} />;
       case 4:
-        return <Outro />;
+        return <Outro setScriptData={handleStateUpdate} />;
       //   case 3:
       //     return <Voice setScriptData={handleStateUpdate}/>;
 

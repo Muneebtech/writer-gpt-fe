@@ -13,8 +13,9 @@ import { useTopic } from "@/services/topic";
 import { useModel } from "@/services/Script/hooks/useModel";
 import { useGetOutro } from "@/services/outro";
 import { Topic } from "@/constants/Topic";
-import { OutroItems } from "@/constants/outro";
+import { Outros } from "@/constants/outro";
 import { ModelList } from "@/constants/languageModel";
+ import {OutroItems} from "../../Types/Outro.type"
 import { useGetChannels } from "@/services/channel";
 import { Channel } from "@/constants/channelcategories";
 interface ChildComponentProps {
@@ -40,6 +41,13 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
   let channel = channelData?.find(
     (obj: Channel) => obj.id === ScriptData?.channel
   );
+
+  console.log(Outrodata,"Outrodata");
+  console.log(topicData,"topicData");
+  console.log(modelData,'modelData');
+  
+  
+  
 
   return (
     <div>
