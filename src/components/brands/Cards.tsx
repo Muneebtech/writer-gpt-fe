@@ -113,7 +113,7 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
         </Box>
       </Modal>
       <div
-        // onClick={() => handleCardClick(data?.id)}
+        onClick={() => handleCardClick(data?.id)}
         key={key}
         className="col-span-1 flex flex-col justify-start items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
       >
