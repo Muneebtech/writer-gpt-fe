@@ -18,7 +18,7 @@ import { FiBook } from "react-icons/fi";
 import LanguageModel from "./component/LanguageModel";
 import Topic from "./component/Topic";
 import Outro from "./component/Outro";
-const steps = ["CHANNEL", "BASIC", "LANGUAGEMODEL", "TOPIC", "OUTRO", "REVIEW"];
+const steps = ["CHANNEL", "BASIC", "LANGUAGE MODEL", "TOPIC", "OUTRO", "REVIEW"];
 
 const Create = () => {
   const router = useRouter();
@@ -129,7 +129,7 @@ const Create = () => {
   useEffect(() => {}, []);
   return (
     <div>
-      <div className="mb-7 mt-1">
+      <div className="mb-2 mt-1">
         <Header title="CREATE SCRIPT" />
       </div>
       <Snackbar

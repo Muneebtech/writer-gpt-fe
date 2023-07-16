@@ -50,7 +50,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
           {" "}
           <div
             // style={{ height: `${divHeight}px` }}
-            className="mt-6 rounded-md border-2 "
+            className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)] "
           >
             <div>
               <div className="ps-3 pt-2">
@@ -71,10 +71,10 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                   />
                 </div>
               </div>
-              <div className="flex flex-wrap justify-center mt-4 mb-4 h-[calc(100vh-22.5rem)] overflow-scroll">
+              <div className=" mt-4 mb-4 h-[calc(100vh-22.5rem)] overflow-scroll">
 
 
-                <div className="flex flex-wrap justify-center mt-4 mb-4 ">
+                <div className="flex flex-wrap flex-start mt-4 mb-4 ">
                   {FilterData?.map((item: ModelList) => {
                     const { id, description, model } = item;
                     return (
@@ -82,7 +82,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                         onClick={() => handleClick(id)}
                         key={id}
                         className="flex
-                            cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 w-[50%] "
+                            cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 w-[30%] "
                       >
                         <div className="flex items-center">
                           <div className="ps-2 ">

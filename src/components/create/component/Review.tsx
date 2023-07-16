@@ -126,12 +126,14 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                 </div>
                 <div className="flex items-center pt-1 pb-1">
                   <div className="w-[10%]">
-                    <p className="font-bold pe-3 font-text">
+                    <p className="font-bold pe-2 font-text">
                       {outro?.outro ? "Outro " : "Outro "}
                     </p>
                   </div>
-                  <div className="pt-1 pb-1">
-                    <p>{outro?.outro}</p>
+                  <div className="pt-1 pb-1  ml-1  w-[90%]">
+                    <p>
+                      {outro?.outro}
+                    </p>
                   </div>
                 </div>
                 {/* <div className="pt-1 pb-1">

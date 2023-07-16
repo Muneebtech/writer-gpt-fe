@@ -29,7 +29,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData }) => {
         <>
           <div
             // style={{ height: `${divHeight}px` }}
-            className="mt-6 rounded-md border-2 h-[calc(100vh-14.5rem)]"
+            className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)]"
           >
             <div>
               <div className="ps-3 pt-2">

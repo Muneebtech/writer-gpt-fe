@@ -257,6 +257,8 @@ const brandsLibrary = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  console.log(value, "value::value;;value");
+
   const router = useRouter();
   const { id } = router.query;
   const handleCardClick = () => {
@@ -280,10 +282,23 @@ const brandsLibrary = () => {
           </div>
           <Header title="" showSearch={true} searchKeyword="Search" />
         </div>
-        <Button variant="contained" className="button-black ps-4 pe-4">
-          <FiPlus size={25} className="pe-1 ps-1" />
-          Create
-        </Button>
+
+        {value === 2 ? null : value === 4 ? null : (
+          <>
+            <Button variant="contained" className="button-black ps-4 pe-4">
+              <FiPlus size={25} className="pe-1 ps-1" />
+              {value === 0
+                ? "Create Script"
+                : value === 1
+                ? "Add Outro"
+                : value === 3
+                ? "Video Topic"
+                : value === 5
+                ? "Add Manager"
+                : null}
+            </Button>
+          </>
+        )}
       </div>
       <div className="table-bb-gray mt-1 ms-4 me-4"></div>
       <div>

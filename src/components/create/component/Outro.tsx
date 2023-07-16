@@ -12,6 +12,8 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
   const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
   console.log(Outrodata, "Outrodata");
   console.log(Outrodata, "Outrodata::Outrodata::Outrodata  ");
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
   const [dataList, setDataList] = useState<outroDataTypes[]>(Outrodata || []);
   const [newData, setNewData] = useState<outroDataTypes>({
     id: "0",
@@ -47,6 +49,10 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
 
   const handleOutroData = (id: string) => {
     setScriptData({ outro: id });
+    const selectedItem = dataList.find((item) => item.id === id);
+    if (selectedItem) {
+      setNewData({ ...selectedItem });
+    }
   };
 
   useEffect(() => {
@@ -75,6 +81,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               className="border-2 w-full"
               value={newData.description} // Pass the value from state to the TextField
               onChange={handleInputChange}
+              defaultValue={newData.description}
             />
           </div>
           <div className="ps-4 pe-4 pt-2 flex justify-end mt-2 mb-2">
@@ -107,11 +114,15 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               ) : (
                 <>
                   {dataList?.map((items: outroDataTypes) => {
+                    const isHovered = items.id === hoveredId;
                     return (
                       <>
                         <div
+                          onClick={() => handleOutroData(items?.id)}
+                          onMouseEnter={() => setHoveredId(items?.id)}
+                          onMouseLeave={() => setHoveredId(null)}
                           key={items?.id}
-                          className="outro-item mt-2 mb-2 ms-2 me-2"
+                          className="outro-item mt-2 mb-2 ms-2 me-2 cursor-pointer"
                         >
                           <div className="flex ps-2 pe-2 pt-2 pb-2">
                             <p>{items?.description}</p>
@@ -119,7 +130,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                               className="pt-1 cursor-pointer ps-2"
                               onClick={() => handleOutroData(items?.id)}
                             >
-                              <FaPlus />
+                              {isHovered && <FaPlus />}
                             </div>
                           </div>
                         </div>
