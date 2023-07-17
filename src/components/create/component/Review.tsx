@@ -13,8 +13,9 @@ import { useTopic } from "@/services/topic";
 import { useModel } from "@/services/Script/hooks/useModel";
 import { useGetOutro } from "@/services/outro";
 import { Topic } from "@/constants/Topic";
-import { OutroItems } from "@/constants/outro";
+import { Outros } from "@/constants/outro";
 import { ModelList } from "@/constants/languageModel";
+ import {OutroItems} from "../../Types/Outro.type"
 import { useGetChannels } from "@/services/channel";
 import { Channel } from "@/constants/channelcategories";
 interface ChildComponentProps {
@@ -41,9 +42,16 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
     (obj: Channel) => obj.id === ScriptData?.channel
   );
 
+  console.log(Outrodata,"Outrodata");
+  console.log(topicData,"topicData");
+  console.log(modelData,'modelData');
+  
+  
+  
+
   return (
     <div>
-      <div className="h-[calc(100vh-14.5rem)] mt-6 rounded-md border-2">
+      <div className="h-[calc(100vh-13.5rem)] mt-6 rounded-md border-2">
         <div>
           <div className="ps-3 pt-2">
             <h4 className="font-bold">REVIEW</h4>
@@ -118,12 +126,14 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                 </div>
                 <div className="flex items-center pt-1 pb-1">
                   <div className="w-[10%]">
-                    <p className="font-bold pe-3 font-text">
+                    <p className="font-bold pe-2 font-text">
                       {outro?.outro ? "Outro " : "Outro "}
                     </p>
                   </div>
-                  <div className="pt-1 pb-1">
-                    <p>{outro?.outro}</p>
+                  <div className="pt-1 pb-1  ml-1  w-[90%]">
+                    <p>
+                      {outro?.outro}
+                    </p>
                   </div>
                 </div>
                 {/* <div className="pt-1 pb-1">

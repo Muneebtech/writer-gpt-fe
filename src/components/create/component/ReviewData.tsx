@@ -13,7 +13,7 @@ import { useTopic } from "@/services/topic";
 import { useModel } from "@/services/Script/hooks/useModel";
 import { useGetOutro } from "@/services/outro";
 import { Topic } from "@/constants/Topic";
-import { OutroItems } from "@/constants/outro";
+import { OutroItems } from "@/./components/Types/Outro.type";
 import { ModelList } from "@/constants/languageModel";
 import { useGetChannels } from "@/services/channel";
 import { Channel } from "@/constants/channelcategories";
@@ -41,7 +41,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
   );
   return (
     <div>
-      <div className="h-[calc(100vh-14.5rem)] mt-6 rounded-md border-2 ">
+      <div className="h-[calc(100vh-13.6rem)] mt-6 rounded-md border-2 ">
         <div>
           <div className="ps-3 pt-2">
             <h4 className="font-bold">REVIEW</h4>

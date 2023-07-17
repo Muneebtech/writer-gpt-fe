@@ -1,10 +1,16 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { UseOutroData } from "../OutroServices";
 
-
 export function usePostOutro() {
-    const { isLoading, data, isSuccess } = useQuery("useOutro", () =>
-        UseOutroData.postOutroData()
-    )
-    return { data, isLoading, isSuccess }
+  const invalidateClient = useQueryClient();
+  const { isLoading, data, isSuccess } = useQuery(
+    "useOutro",
+    () => UseOutroData.postOutroData(),
+    {
+      onSuccess() {
+        invalidateClient.invalidateQueries("useOutro");
+      },
+    }
+  );
+  return { data, isLoading, isSuccess };
 }

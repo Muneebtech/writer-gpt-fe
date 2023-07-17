@@ -3,7 +3,7 @@ export type Job ={
     name: string;
     photoPath?: File;
     model: string;
-    outro: string;
+    outro: string | number;
     script?: string;
     wordCount?: number;
     voice?: string;

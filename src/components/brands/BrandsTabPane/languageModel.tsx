@@ -1,17 +1,10 @@
-import { TopicData, TopicModalData } from "@/constants/Topic";
 import Image from "next/image";
-import { Job } from "@/components/Types/job.type";
 import { useState, useMemo, useEffect } from "react";
-import Header from "@/common/Header/header";
-import SearchBar from "@/common/SearchBar/searchBar";
-import { FiSearch } from "react-icons/fi";
 import { useModel } from "@/services/Script/hooks/useModel";
 import Spinner from "@/modules/spinner/spinner";
 import { ModelList } from "@/constants/languageModel";
-interface ChildComponentProps {
-  setScriptData: (updatedState: Partial<Job>) => void;
-}
-const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
+
+const LanguageModel= () => {
   const { data: modelData, isLoading: modelLoading } = useModel();
   console.log(modelData, "modelData");
   const [languageModelData, setlanguageModelData] = useState<ModelList[]>(
@@ -32,7 +25,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
 
   const handleClick = (id: string) => {
     setSelectTopic(id === selectTopic ? null : id);
-    setScriptData({ model: id });
+    // setScriptData({ model: id });
   };
   useEffect(() => {
     if (modelData) {
@@ -59,21 +52,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
             <div>
-              <div className="pt-2 ps-4">
-                <div className="searchBar border-2">
-                  <FiSearch className="text-gray-500" />
-                  <input
-                    onChange={handleFilterChange}
-                    type="text"
-                    placeholder="Search Language Model"
-                    className="rounded-3xl bgSearch focus:outline-none focus:border-blue-500 "
-                    // onChange={handleInputChange}
-                  />
-                </div>
-              </div>
               <div className=" mt-4 mb-4 h-[calc(100vh-22.5rem)] overflow-scroll">
-
-
                 <div className="flex flex-wrap flex-start mt-4 mb-4 ">
                   {FilterData?.map((item: ModelList) => {
                     const { id, description, model } = item;

@@ -23,7 +23,7 @@
 
 .bgSearch {
   background: #fbfbfb;
-  height: 36px;
+  /* height: 36px; */
 }
 
 .table-bb-gray {
@@ -49,6 +49,13 @@ textarea {
 
 .modal-max-height {
   max-height: 95% !important;
+}
+
+.modal-max-height-1 {
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .position-btn {
@@ -318,6 +325,10 @@ body {
   transform: rotate(330deg);
 }
 
+.css-19kzrtu {
+  padding: 0px !important;
+}
+
 @keyframes spinner-fade9234 {
   0% {
     background-color: #69717d;
@@ -328,10 +339,23 @@ body {
   }
 }
 
+<<<<<<< HEAD .border-black-btn {
+  border: 1px solid #171717;
+}
+======= .outro-item:hover {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.height-outro {
+  height: 27.5vh;
+}
+
 .border-black-btn {
   border: 1px solid #171717;
 }
-.border-btn-red {
+
+>>>>>>>feature/admin-ui .border-btn-red {
   border: 1px solid red !important;
 }
 
@@ -561,4 +585,10 @@ label + .css-v4u5dn-MuiInputBase-root-MuiInput-root {
   100% {
     transform: rotate(1turn);
   }
+}
+
+.css-85zwa9-MuiInputBase-root-MuiFilledInput-root {
+  border: 1px solid !important;
+  border-radius: 8px !important;
+  background-color: #fff !important;
 }
