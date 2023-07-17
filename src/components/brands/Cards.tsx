@@ -37,12 +37,17 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
   const router = useRouter();
 
   const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${data?.photoPath}`;
-  const handleCardClick = (id: string) => {
+  const handleCardClick = (
+    id: string,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    event.stopPropagation();
     router.push(`/brands/${id}`);
   };
-  console.log(data, "data::data::data");
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    console.log();
+
     setPopoverAnchorEl(event.currentTarget);
   };
   const handlePopoverClose = () => {
@@ -61,12 +66,11 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
     setSelectedData(data);
     setShowEditModal(true);
   };
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
   const handleHideEditModal = () => {
     setShowEditModal(false);
   };
+
   return (
     <>
       <EditChannel
@@ -112,10 +116,56 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
           </div>
         </Box>
       </Modal>
+      {isLoading ? (
+        <></> // Render nothing when isLoading is true
+      ) : (
+        <>
+          {isSuccess ? (
+            <></> // Render nothing when isSuccess is true
+          ) : (
+            <Popover
+              open={
+                isPopoverOpen &&
+                data?.category?.id ===
+                  popoverAnchorEl?.getAttribute("data-category-id")
+              }
+              anchorEl={popoverAnchorEl}
+              onClose={handlePopoverClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+                <Typography
+                  onClick={() => handleShowEditModal(data?.id, data)}
+                  className="cursor-pointer"
+                  id="modal-modal-description"
+                  sx={{ mt: 1 }}
+                >
+                  Edit
+                </Typography>
+                <Typography
+                  onClick={() => HandleDeleteModal(data?.category?.id)}
+                  className="cursor-pointer"
+                  id="modal-modal-description"
+                  sx={{ mt: 1 }}
+                >
+                  {isLoading ? "Deleting..." : "Delete"}
+                </Typography>
+              </Box>
+            </Popover>
+          )}
+        </>
+      )}
       <div
-        // onClick={() => handleCardClick(data?.id)}
+        onClick={event => handleCardClick(data?.id, event)}
         key={key}
-        className="col-span-1 flex flex-col justify-start items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
+        className="w-1/6 flex flex-col justify-start items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
       >
         <span
           style={{
@@ -157,60 +207,17 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
             <Image width={20} height={20} src="/discord.png" alt="" />
           </a>
           <div
-            onClick={handlePopoverOpen}
-            className="rounded-2xl px-3 py-1 flex justify-center items-center border-gray-200 border"
+            onClick={event => {
+              event.stopPropagation();
+              handlePopoverOpen(event);
+            }}
+            className="rounded-2xl px-3 z-1000 py-1 flex justify-center items-center border-gray-200 border popover-trigger"
             data-category-id={data?.category?.id}
           >
             <Image width={15} height={15} src="/dots.png" alt="" />
           </div>
         </div>
       </div>
-      {isLoading ? (
-        <></> // Render nothing when isLoading is true
-      ) : (
-        <>
-          {isSuccess ? (
-            <></> // Render nothing when isSuccess is true
-          ) : (
-            <Popover
-              open={
-                isPopoverOpen &&
-                data?.category?.id ===
-                  popoverAnchorEl?.getAttribute("data-category-id")
-              }
-              anchorEl={popoverAnchorEl}
-              onClose={handlePopoverClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-            >
-              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
-                <Typography
-                  onClick={() => handleShowEditModal(data?.id, data)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
-                >
-                  Edit
-                </Typography>
-                <Typography
-                  onClick={() => HandleDeleteModal(data?.category?.id)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
-                >
-                  {isLoading ? "Deleting..." : "Delete"}
-                </Typography>
-              </Box>
-            </Popover>
-          )}
-        </>
-      )}
     </>
   );
 };

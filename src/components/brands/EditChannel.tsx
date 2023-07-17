@@ -33,11 +33,12 @@ import { getChannelTypes } from "../Types/channel.types";
 import Spinner from "@/modules/spinner/spinner";
 import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
+import { useUpdateChannel } from "@/services/channel/hooks/useUpdateChannel";
 interface FormData {
   channel: string;
   category: string;
-  youtubeLink: string;
-  discordLink: string;
+  youtubeUrl: string;
+  discordUrl: string;
   photoPath: File | any;
 }
 
@@ -60,79 +61,24 @@ const EditChannel: React.FC<EditChannelProps> = ({
     data: Data,
     isSuccess: success,
   } = useCategories();
-  console.log(selectedData, "selectedData");
 
-  const { data: ChannelData, mutate } = useCreateChannel();
-  const {
-    data: DataChannels,
-    isLoading,
-    isSuccess: successChaneel,
-    fetchNextPage,
-    currentPage,
-    totalPages,
-    isFetchingNextPage,
-    isFetching,
-  } = useGetChannels({ page: 1, limit: 10 });
+  const { data: ChannelData, mutate } = useUpdateChannel();
+  const { fetchNextPage, currentPage, totalPages, isFetchingNextPage } =
+    useGetChannels({ page: 1, limit: 10 });
   const CategoryData = Data?.results ?? [];
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [openModal, setOpenModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const youtubeLinkSelectRef = useRef<HTMLSelectElement>(null);
-  const discordLinkInputRef = useRef<HTMLInputElement>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState("");
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const colors = [
-    "gray",
-    "indigo",
-    "purple",
-    "pink",
-    "silver",
-    "black",
-    "crimson",
-    "Lavender",
-    "Orange",
-    "Cyan",
-    "Gold",
-    "Violet",
-  ];
+  const youtubeUrlSelectRef = useRef<HTMLSelectElement>(null);
+  const discordUrlInputRef = useRef<HTMLInputElement>(null);
+
   const [profileImage, setProfileImage] = useState<File | null>(null);
-  const {
-    mutate: mutateChannel,
-    isLoading: isLoadingDelete,
-    isSuccess: isSuccessDelete,
-  } = useDeletechannels();
+
   const [formData, setFormData] = useState<FormData>({
     channel: "",
     category: "",
-    discordLink: "",
-    youtubeLink: "",
+    discordUrl: "",
+    youtubeUrl: "",
     photoPath: "",
   });
-
-  const handleSearch = (keyword: string) => {
-    setSearchKeyword(keyword);
-  };
-  const handleCategoryFilter = (category: string) => {
-    setSelectedCategory(category === "All" ? null : category);
-  };
-  console.log(DataChannels, "DataChannels::HEHEHEHHEHEHE");
-  const filteredData = useMemo(() => {
-    let filtered = DataChannels;
-    if (searchKeyword) {
-      filtered = filtered.filter((data: getChannelTypes) =>
-        data?.channel?.toLowerCase().includes(searchKeyword.toLowerCase())
-      );
-    }
-    if (selectedCategory) {
-      filtered = filtered.filter(
-        (data: getChannelTypes) =>
-          data?.category?.category?.toLowerCase() ===
-          selectedCategory.toLowerCase()
-      );
-    }
-    return filtered;
-  }, [searchKeyword, selectedCategory, DataChannels]);
 
   const handleScroll = () => {
     const div = divRef.current;
@@ -159,14 +105,16 @@ const EditChannel: React.FC<EditChannelProps> = ({
     event: ChangeEvent<{ name?: string; value: string }>
   ) => {
     const { name, value } = event.target;
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       [name || ""]: value,
     }));
   };
+  const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${selectedData?.photoPath}`;
+
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       [name || ""]: value,
     }));
@@ -176,17 +124,19 @@ const EditChannel: React.FC<EditChannelProps> = ({
     const formdata = new FormData();
     formdata.append("channel", formData.channel as string);
     formdata.append("category", formData.category as string);
-    formdata.append("youtubeUrl", formData.youtubeLink as string);
-    formdata.append("discordUrl", formData.discordLink as string);
+    formdata.append("youtubeUrl", formData.youtubeUrl as string);
+    formdata.append("discordUrl", formData.discordUrl as string);
     formdata.append("photoPath", profileImage as File);
-    mutate(formdata);
+    const finalData = { id: selectedData?.id as string, newData: formdata };
+    mutate(finalData);
     setFormData({
       channel: "",
       category: "",
-      discordLink: "",
-      youtubeLink: "",
+      discordUrl: "",
+      youtubeUrl: "",
       photoPath: "",
     });
+    handleHideEditModal();
     setProfileImage(null);
   };
   const handleUploadPictureClick = () => {
@@ -200,7 +150,7 @@ const EditChannel: React.FC<EditChannelProps> = ({
     if (event.target.files && event.target.files[0]) {
       const selectedImage = event.target.files[0];
       setProfileImage(selectedImage);
-      setFormData((prevFormData) => ({
+      setFormData(prevFormData => ({
         ...prevFormData,
         photoPath: selectedImage,
       }));
@@ -208,10 +158,10 @@ const EditChannel: React.FC<EditChannelProps> = ({
   };
   const copyToClipboard = (fieldName: string) => {
     let textToCopy = "";
-    if (fieldName === "discordLink" && discordLinkInputRef.current) {
-      textToCopy = discordLinkInputRef.current.value;
-    } else if (fieldName === "youtubeLink" && youtubeLinkSelectRef.current) {
-      textToCopy = youtubeLinkSelectRef.current.value;
+    if (fieldName === "discordUrl" && discordUrlInputRef.current) {
+      textToCopy = discordUrlInputRef.current.value;
+    } else if (fieldName === "youtubeUrl" && youtubeUrlSelectRef.current) {
+      textToCopy = youtubeUrlSelectRef.current.value;
     }
     if (textToCopy) {
       navigator.clipboard
@@ -219,42 +169,24 @@ const EditChannel: React.FC<EditChannelProps> = ({
         .then(() => {
           console.log("Text copied to clipboard:", textToCopy);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("Error copying text to clipboard:", error);
         });
     }
   };
-  const handlepopOverOpne = () => {
-    setPopoverOpen(true);
-  };
-  const handlePopoverClose = () => {
-    setPopoverOpen(false);
-  };
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-  const HandleDeleteChannel = (id: string) => {
-    console.log(id, "Id::trigger:on:Delete");
-    const updatedData = DataChannels?.filter((channel) => channel?.id !== id);
-    console.log(
-      updatedData,
-      "DataChannels?.filter((channel) => channel?.id !== id)"
-    );
 
-    console.log(updatedData, "UpdatedData");
-
-    console.log("I am triggered");
-    const newFormData: FormData = {
-      ...formData,
-      channel: updatedData?.map((channel) => channel.channel).join(","),
-    };
-
-    setFormData(newFormData);
-    mutateChannel(id);
-  };
+  useEffect(() => {
+    if (selectedData) {
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        photoPath: selectedData?.photoPath,
+        discordUrl: selectedData?.discordUrl,
+        youtubeUrl: selectedData?.youtubeUrl,
+        channel: selectedData?.channel,
+        category: selectedData?.category?.id,
+      }));
+    }
+  }, [selectedData]);
 
   return (
     <div>
@@ -267,7 +199,10 @@ const EditChannel: React.FC<EditChannelProps> = ({
           <Typography className="" variant="h6" gutterBottom>
             <div className="table-bb-gray mt-1 ms-3 me-4 flex items-center justify-between">
               <Header title="ADD CHANNELS" />
-              <FaTimes onClick={handleHideEditModal} className="cursor-pointer" />
+              <FaTimes
+                onClick={handleHideEditModal}
+                className="cursor-pointer"
+              />
             </div>
             <div className="flex items-center pb-6 pt-6 ">
               <div className="Side-spacing ">
@@ -318,16 +253,16 @@ const EditChannel: React.FC<EditChannelProps> = ({
                   </InputLabel>
                   <Input
                     id="youtube"
-                    name="youtubeLink"
-                    value={formData.youtubeLink}
+                    name="youtubeUrl"
+                    value={formData.youtubeUrl}
                     onChange={handleInputChange}
                     type="text"
                     placeholder="Insert Youtube Link"
-                    // inputRef={youtubeLinkSelectRef}
+                    // inputRef={youtubeUrlSelectRef}
                     className="py-1  px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
                   />
                   <Button
-                    onClick={() => copyToClipboard("youtubeLink")}
+                    onClick={() => copyToClipboard("youtubeUrl")}
                     title="Copy Link"
                     className="bg-gray-200 position-btn border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
                   >
@@ -359,8 +294,17 @@ const EditChannel: React.FC<EditChannelProps> = ({
                             height={150}
                             style={{ height: "150px" }}
                             className="rounded-full mr-2"
-                            src={URL.createObjectURL(profileImage)}
-                            alt="Profile"
+                            src={
+                              formData?.photoPath
+                                ? formData?.photoPath
+                                : "/channel.jpg"
+                            }
+                            loader={() =>
+                              formData?.photoPath
+                                ? formData?.photoPath
+                                : "/channel.jpg"
+                            }
+                            alt="no image"
                           />
                         </div>
                       ) : (
@@ -403,17 +347,17 @@ const EditChannel: React.FC<EditChannelProps> = ({
                     Discord Link
                   </InputLabel>
                   <Input
-                    name="discordLink"
-                    value={formData.discordLink}
+                    name="discordUrl"
+                    value={formData.discordUrl}
                     onChange={handleInputChange}
                     id="discord"
                     type="text"
                     placeholder="Insert Discord Link"
-                    inputRef={discordLinkInputRef}
+                    inputRef={discordUrlInputRef}
                     className="py-1 px-3 border  border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
                   />
                   <Button
-                    onClick={() => copyToClipboard("discordLink")}
+                    onClick={() => copyToClipboard("discordUrl")}
                     title="Copy Link"
                     className="bg-gray-200 position-btn border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
                   >
@@ -438,7 +382,7 @@ const EditChannel: React.FC<EditChannelProps> = ({
               className="button-black ps-4 pe-4"
             >
               <FiPlus size={25} className="pe-1 ps-1" />
-              Create Channel
+              Update Channel
             </Button>
           </div>
         </div>

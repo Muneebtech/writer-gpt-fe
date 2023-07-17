@@ -11,7 +11,6 @@ const useNotification = ({
   type = "success",
 }: NotificationProps) => {
   const [open, setOpen] = useState(false);
-console.log('I got a hit');
 
   useEffect(() => {
     setOpen(true);

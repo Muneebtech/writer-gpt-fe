@@ -2,6 +2,7 @@ import Header from "@/common/Header/header";
 import { tableData, TableListData } from "@/constants/library";
 import Spinner from "@/modules/spinner/spinner";
 import { useGetJobs } from "@/services/Jobs";
+import { useGetChannelById } from "@/services/channel";
 import { useGetBrandsJobs } from "@/services/channel/hooks/channelJobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import { Button } from "@mui/material";
@@ -15,10 +16,18 @@ const BrandsLibrary = () => {
   const { id } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
+  const {
+    isLoading: channelLoading,
+    data: channelData,
+    mutate,
+  } = useGetChannelById();
   const [totalPagesCount, setTotalPages] = useState(data?.totalPages);
   const LibraryData = data?.results;
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
+  useEffect(() => {
+    mutate(id as string);
+  }, []);
 
   if (endPage - startPage < 4) {
     startPage = Math.max(endPage - 4, 1);
@@ -47,6 +56,7 @@ const BrandsLibrary = () => {
   const handleCardClick = () => {
     router.push(`/brands`);
   };
+
   return (
     <>
       {isLoading ? (
@@ -74,7 +84,7 @@ const BrandsLibrary = () => {
                 </div>
                 <div className="ps-1 pe-1">
                   {" "}
-                  <span>Morning Prayer</span>
+                  <span>{channelData?.channel}</span>
                 </div>
               </div>
               <Header title="" showSearch={true} searchKeyword="Search" />
@@ -88,21 +98,21 @@ const BrandsLibrary = () => {
           <div className="mt-4"></div>
           <div className="bg-white table-b-gray rounded-lg">
             <table className="min-w-full divide-y divide-gray-300 text-sm">
-            <thead>
-                  <tr className="">
-                    <th className="py-4 px-4 text-left">Video Name</th>
-                    <th className="py-4 px-4 text-left">Language</th>
-                    <th className="py-4 px-4 text-left">Video Topic</th>
-                    <th className="py-4 px-4 text-left">Outro</th>
-                    <th className="py-4 px-4 text-center">GPT Logs</th>
-                    <th className="py-4 px-4 text-center">Word Count</th>
-                    <th className="py-4 px-4 text-center">Script</th>
-                    {/* <th className="py-4 px-4 text-center">Voiceover</th> */}
-                    {/* <th className="py-4 px-4 text-center">Date</th> */}
-                  </tr>
-                </thead>
+              <thead>
+                <tr className="">
+                  <th className="py-4 px-4 text-left">Video Name</th>
+                  <th className="py-4 px-4 text-left">Language</th>
+                  <th className="py-4 px-4 text-left">Video Topic</th>
+                  <th className="py-4 px-4 text-left">Outro</th>
+                  <th className="py-4 px-4 text-center">GPT Logs</th>
+                  <th className="py-4 px-4 text-center">Word Count</th>
+                  <th className="py-4 px-4 text-center">Script</th>
+                  {/* <th className="py-4 px-4 text-center">Voiceover</th> */}
+                  {/* <th className="py-4 px-4 text-center">Date</th> */}
+                </tr>
+              </thead>
               <tbody>
-                {LibraryData?.map((row: TableListData,index:number) => {
+                {LibraryData?.map((row: TableListData, index: number) => {
                   const { backgroundColor } = generateRandomColors();
 
                   return (
@@ -124,11 +134,15 @@ const BrandsLibrary = () => {
                           {row?.channel.channel}
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-center">{row?.model?.model}</td>
+                      <td className="py-4 px-4 text-center">
+                        {row?.model?.model}
+                      </td>
                       <td className="py-4 px-4 text-center">
                         {row.topic?.topic}
                       </td>
-                      <td className="py-4 px-4 text-center">{row.outro?.outro}</td>
+                      <td className="py-4 px-4 text-center">
+                        {row.outro?.outro}
+                      </td>
                       <td className="py-4 px-4">
                         <div className="flex justify-center">
                           <FiDownload />
@@ -176,7 +190,7 @@ const BrandsLibrary = () => {
                   ...
                 </button>
               )}
-              {visiblePages.map((page) => (
+              {visiblePages.map(page => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""

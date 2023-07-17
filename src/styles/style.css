@@ -59,14 +59,14 @@ textarea {
   color: black;
 }
 
-.button-black-modal{
-background-color: #171717 !important;
-color: #fff !important;
+.button-black-modal {
+  background-color: #171717 !important;
+  color: #fff !important;
 }
 
 .css-3bmhjh-MuiPaper-root-MuiPopover-paper {
-  top: 261px !important;
-  left: 441px !important;
+  /* top: 261px !important;
+  left: 441px !important; */
   width: 16% !important;
 }
 
@@ -75,7 +75,7 @@ color: #fff !important;
 }
 
 .bgImage {
-  background-image: url('../../public/Group59.png');
+  background-image: url("../../public/Group59.png");
   background-size: cover;
   width: 48%;
   height: 100vh;
@@ -128,9 +128,8 @@ color: #fff !important;
 }
 
 .CompleteTabs {
-  background-color: #1E9030;
+  background-color: #1e9030;
   color: #fff;
-
 }
 
 .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
@@ -142,17 +141,15 @@ color: #fff !important;
 }
 
 .Mui-active-complete {
-  background-color: #1E9030 !important;
+  background-color: #1e9030 !important;
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
   font-size: 25px;
-
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
   font-size: 25px;
-
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
@@ -160,16 +157,15 @@ color: #fff !important;
 }
 
 .css-1hv8oq8-MuiStepLabel-label.Mui-completed {
-  color: #1E9030 !important;
+  color: #1e9030 !important;
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
-  color: #1E9030 !important;
+  color: #1e9030 !important;
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
   font-size: 25px;
-
 }
 
 .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
@@ -193,8 +189,6 @@ color: #fff !important;
 
 body {
   /* Light gray background color */
-
-
 }
 
 .spinner {
@@ -334,23 +328,10 @@ body {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .border-black-btn {
   border: 1px solid #171717;
 }
-.border-btn-red{
+.border-btn-red {
   border: 1px solid red !important;
 }
 
@@ -368,7 +349,6 @@ body {
 }
 
 @-webkit-keyframes honeycomb {
-
   0%,
   20%,
   80%,
@@ -387,7 +367,6 @@ body {
 }
 
 @keyframes honeycomb {
-
   0%,
   20%,
   80%,
@@ -424,7 +403,7 @@ body {
 
 .honeycomb div:after,
 .honeycomb div:before {
-  content: '';
+  content: "";
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   position: absolute;
@@ -536,7 +515,7 @@ html {
   overflow: scroll;
 }
 
-label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
+label + .css-v4u5dn-MuiInputBase-root-MuiInput-root {
   margin: 5px;
 }
 
