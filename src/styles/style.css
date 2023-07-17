@@ -51,6 +51,13 @@ textarea {
   max-height: 95% !important;
 }
 
+.modal-max-height-1 {
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .position-btn {
   position: relative;
   right: 75px;
@@ -59,9 +66,9 @@ textarea {
   color: black;
 }
 
-.button-black-modal{
-background-color: #171717 !important;
-color: #fff !important;
+.button-black-modal {
+  background-color: #171717 !important;
+  color: #fff !important;
 }
 
 .css-3bmhjh-MuiPaper-root-MuiPopover-paper {
@@ -323,7 +330,8 @@ body {
   -ms-transform: rotate(330deg);
   transform: rotate(330deg);
 }
-.css-19kzrtu{
+
+.css-19kzrtu {
   padding: 0px !important;
 }
 
@@ -351,7 +359,7 @@ body {
 }
 
 
-.height-outro{
+.height-outro {
   height: 27.5vh;
 }
 
@@ -359,7 +367,8 @@ body {
 .border-black-btn {
   border: 1px solid #171717;
 }
-.border-btn-red{
+
+.border-btn-red {
   border: 1px solid red !important;
 }
 
@@ -593,7 +602,7 @@ label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
   }
 }
 
-.css-85zwa9-MuiInputBase-root-MuiFilledInput-root{
+.css-85zwa9-MuiInputBase-root-MuiFilledInput-root {
   border: 1px solid !important;
   border-radius: 8px !important;
   background-color: #fff !important;

@@ -2,11 +2,15 @@ import { outroDataTypes } from "@/components/Types/Outro.type";
 import { useGetOutro } from "@/services/outro";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
-const Outros = () => {
-  const [totalPagesCount, setTotalPages] = useState(1);
 
+interface OutroProps {
+  data: outroDataTypes[];
+  FilterData: outroDataTypes[];
+}
+
+const Outros: React.FC<OutroProps> = ({ data,FilterData }) => {
+  const [totalPagesCount, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
 
@@ -49,19 +53,19 @@ const Outros = () => {
         <div>
           <div className="overflow-scroll h-[calc(100vh-15.5rem)]">
             <>
-              {Outrodata?.map((items: outroDataTypes) => {
+              {FilterData?.map((items: outroDataTypes) => {
                 return (
                   <>
                     <div
                       key={items?.id}
-                      className="border-b-2 mt-2 mb-2 ms-2 me-2"
+                      className="border-b-2 mt-2 mb-2 ms-2 me-2 "
                     >
                       <div className="flex pe-12 ps-6">
                         <div className="pt-2 ">
                           <p>1</p>
                         </div>
-                        <div className="ps-10 pe-10 pt-1 pb-1">
-                          <p>{items?.description}</p>
+                        <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
+                          <p className="text-sm">{items?.description}</p>
                         </div>
                         <div>
                           <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">

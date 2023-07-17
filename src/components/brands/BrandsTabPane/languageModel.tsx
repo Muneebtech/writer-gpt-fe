@@ -1,10 +1,5 @@
-import { TopicData, TopicModalData } from "@/constants/Topic";
 import Image from "next/image";
-import { Job } from "@/components/Types/job.type";
 import { useState, useMemo, useEffect } from "react";
-import Header from "@/common/Header/header";
-import SearchBar from "@/common/SearchBar/searchBar";
-import { FiSearch } from "react-icons/fi";
 import { useModel } from "@/services/Script/hooks/useModel";
 import Spinner from "@/modules/spinner/spinner";
 import { ModelList } from "@/constants/languageModel";

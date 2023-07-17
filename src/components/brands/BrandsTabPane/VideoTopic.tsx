@@ -4,10 +4,13 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import { useState } from "react";
 import { useTopic } from "@/services/topic";
-const VideoTopic = () => {
+
+interface TopicDataListProps {
+  data: Topic[];
+  TopicFilterData:Topic[]
+}
+const VideoTopic: React.FC<TopicDataListProps> = ({ data,TopicFilterData }) => {
   const [selectTopic, setSelectTopic] = useState<string | null>(null);
-  const { data: topicData, isLoading } = useTopic();
-  console.log(topicData, "topicDat:::");
 
   // const handleClick = (id: string) => {
   //   setSelectTopic(id === selectTopic ? null : id);
@@ -28,17 +31,20 @@ const VideoTopic = () => {
         <div className="table-bb-gray mt-2 ms-4 me-4"></div>
         <div className="overflow-scroll h-[calc(100vh-14.5rem)]">
           <>
-            {topicData?.map((item: Topic) => {
+            {TopicFilterData?.map((item: Topic) => {
               const { id, topic, description } = item;
               return (
                 <>
-                  <div key={item?.id} className="border-b-2 pt-2 pb-2 mt-2 mb-2 ms-2 me-2">
+                  <div
+                    key={item?.id}
+                    className="border-b-2 pt-2 pb-2 mt-2 mb-2 ms-2 me-2"
+                  >
                     <div className="flex pe-12 ps-6 items-center">
                       <div className="pt-2 ">
                         <p>1</p>
                       </div>
                       <div className="ps-10 pe-10 pt-1 pb-1 w-[100%]">
-                        <p>{item?.topic}</p> 
+                        <p className="text-sm">{item?.topic}</p>
                       </div>
                       {/* <div>
                         <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">

@@ -6,12 +6,12 @@ export type outroDataTypes = {
   description
   : string
   id
-  :
+  ?:
   string
   outro
-  :
+  ?:
   string
   status
-  :
+  ?:
   null
 }
