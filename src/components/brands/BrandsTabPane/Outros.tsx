@@ -8,7 +8,7 @@ interface OutroProps {
   FilterData: outroDataTypes[];
 }
 
-const Outros: React.FC<OutroProps> = ({ data,FilterData }) => {
+const Outros: React.FC<OutroProps> = ({ data, FilterData }) => {
   const [totalPagesCount, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   let startPage = Math.max(currentPage - 2, 1);
@@ -53,37 +53,39 @@ const Outros: React.FC<OutroProps> = ({ data,FilterData }) => {
         <div>
           <div className="overflow-scroll h-[calc(100vh-15.5rem)]">
             <>
-              {FilterData?.map((items: outroDataTypes) => {
-                return (
-                  <>
-                    <div
-                      key={items?.id}
-                      className="border-b-2 mt-2 mb-2 ms-2 me-2 "
-                    >
-                      <div className="flex pe-12 ps-6">
-                        <div className="pt-2 ">
-                          <p>1</p>
-                        </div>
-                        <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
-                          <p className="text-sm">{items?.description}</p>
-                        </div>
-                        <div>
-                          <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
-                            {items?.status === null
-                              ? "New" || items?.status === "New"
-                                ? " New"
-                                : "Used"
-                              : ""}
-                          </p>
-                        </div>
-                        <div className="pt-2 cursor-pointer ">
-                          <BsThreeDotsVertical />
+              {(FilterData.length > 0 ? FilterData : data)?.map(
+                (items: outroDataTypes, index) => {
+                  return (
+                    <>
+                      <div
+                        key={items?.id}
+                        className="border-b-2 mt-2 mb-2 ms-2 me-2 "
+                      >
+                        <div className="flex pe-12 ps-6">
+                          <div className="pt-2 ">
+                            <p>{index + 1}</p>
+                          </div>
+                          <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
+                            <p className="text-sm">{items?.description}</p>
+                          </div>
+                          <div>
+                            <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
+                              {items?.status === null
+                                ? "New" || items?.status === "New"
+                                  ? " New"
+                                  : "Used"
+                                : ""}
+                            </p>
+                          </div>
+                          <div className="pt-2 cursor-pointer ">
+                            <BsThreeDotsVertical />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                );
-              })}
+                    </>
+                  );
+                }
+              )}
             </>
           </div>
           <div>
@@ -102,7 +104,7 @@ const Outros: React.FC<OutroProps> = ({ data,FilterData }) => {
                   ...
                 </button>
               )}
-              {visiblePages.map((page) => (
+              {visiblePages.map(page => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""

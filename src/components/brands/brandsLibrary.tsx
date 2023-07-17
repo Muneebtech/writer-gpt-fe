@@ -407,14 +407,14 @@ const brandsLibrary = () => {
     setSearchKeyword(keyword);
   };
   const FilteredComponents = useMemo(() => {
-    let filteredData = OutroDataList?.filter((item) => {
+    let filteredData = OutroDataList?.filter(item => {
       return item.description
-        .toLowerCase()
+        ?.toLowerCase()
         .includes(searchKeyword.toLowerCase());
     });
 
-    let topicFilterData = topicDataList?.filter((item) => {
-      return item.topic.toLowerCase().includes(searchKeyword.toLowerCase());
+    let topicFilterData = topicDataList?.filter(item => {
+      return item?.topic?.toLowerCase().includes(searchKeyword?.toLowerCase());
     });
 
     return {
