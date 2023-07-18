@@ -4,7 +4,7 @@ import { UseOutroData } from "../OutroServices";
 export function usePostOutro() {
   const invalidateClient = useQueryClient();
   const { isLoading, data, isSuccess } = useQuery(
-    "useOutro",
+    "usePostOutro",
     () => UseOutroData.postOutroData(),
     {
       onSuccess() {

@@ -2,13 +2,27 @@ import { outroDataTypes } from "@/components/Types/Outro.type";
 import { useGetOutro } from "@/services/outro";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
+import { Box, Popover, Typography } from "@mui/material";
 
 interface OutroProps {
   data: outroDataTypes[];
   FilterData: outroDataTypes[];
+  setIsPopoverOpen: (value: boolean) => void;
+  isPopoverOpen: boolean;
+  popoverAnchorEl: null;
+  handlePopoverOpen: (id: string) => void;
+  openPopover: string | null;
 }
 
-const Outros: React.FC<OutroProps> = ({ data, FilterData }) => {
+const Outros: React.FC<OutroProps> = ({
+  data,
+  FilterData,
+  isPopoverOpen,
+  setIsPopoverOpen,
+  popoverAnchorEl,
+  handlePopoverOpen,
+  openPopover
+}) => {
   const [totalPagesCount, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   let startPage = Math.max(currentPage - 2, 1);
@@ -37,8 +51,46 @@ const Outros: React.FC<OutroProps> = ({ data, FilterData }) => {
       handlePageChange(currentPage + 1);
     }
   };
+  const handlePopoverClosed = () => {
+    setIsPopoverOpen(false);
+  };
   return (
     <div>
+      <>
+        <Popover
+          open={isPopoverOpen}
+          anchorEl={popoverAnchorEl}
+          onClose={handlePopoverClosed}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+            <Typography
+              // onClick={() => handleShowEditModal(data?.id, data)}
+              className="cursor-pointer"
+              id="modal-modal-description"
+              sx={{ mt: 1 }}
+            >
+              Edit
+            </Typography>
+            <Typography
+              // onClick={() => HandleDeleteModal(data?.category?.id)}
+              className="cursor-pointer"
+              id="modal-modal-description"
+              sx={{ mt: 1 }}
+            >
+              Delete
+              {/* {isLoading ? "Deleting..." : "Delete"} */}
+            </Typography>
+          </Box>
+        </Popover>
+      </>
       <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
         <div className="flex items-center justify-between pe-16 ps-6 pt-4">
           <div className="flex items-center ">
@@ -53,39 +105,44 @@ const Outros: React.FC<OutroProps> = ({ data, FilterData }) => {
         <div>
           <div className="overflow-scroll h-[calc(100vh-15.5rem)]">
             <>
-              {(FilterData.length > 0 ? FilterData : data)?.map(
-                (items: outroDataTypes, index) => {
-                  return (
-                    <>
-                      <div
-                        key={items?.id}
-                        className="border-b-2 mt-2 mb-2 ms-2 me-2 "
-                      >
-                        <div className="flex pe-12 ps-6">
-                          <div className="pt-2 ">
-                            <p>{index + 1}</p>
-                          </div>
-                          <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
-                            <p className="text-sm">{items?.description}</p>
-                          </div>
-                          <div>
-                            <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
-                              {items?.status === null
-                                ? "New" || items?.status === "New"
-                                  ? " New"
-                                  : "Used"
-                                : ""}
-                            </p>
-                          </div>
-                          <div className="pt-2 cursor-pointer ">
-                            <BsThreeDotsVertical />
-                          </div>
+              {FilterData?.map((items: outroDataTypes, index) => {
+                return (
+                  <>
+                    {console.log(
+                      FilterData,
+                      "FilterData::FilterData::FilterData"
+                    )}
+                    <div
+                      key={items?.id}
+                      className="border-b-2 mt-2 mb-2 ms-2 me-2 "
+                    >
+                      <div className="flex pe-12 ps-6">
+                        <div className="pt-2 ">
+                          <p>{index + 1}</p>
+                        </div>
+                        <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
+                          <p className="text-sm">{items?.description}</p>
+                        </div>
+                        <div>
+                          <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
+                            {items?.status === null
+                              ? "New" || items?.status === "New"
+                                ? " New"
+                                : "Used"
+                              : ""}
+                          </p>
+                        </div>
+                        <div
+                          className="pt-2 cursor-pointer"
+                          onClick={() => handlePopoverOpen(items?.id || "")}
+                        >
+                          <BsThreeDotsVertical />
                         </div>
                       </div>
-                    </>
-                  );
-                }
-              )}
+                    </div>
+                  </>
+                );
+              })}
             </>
           </div>
           <div>
@@ -104,7 +161,7 @@ const Outros: React.FC<OutroProps> = ({ data, FilterData }) => {
                   ...
                 </button>
               )}
-              {visiblePages.map(page => (
+              {visiblePages.map((page) => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""

@@ -115,6 +115,6 @@ export type TopicModalData = {
 
 export type Topic = {
     topic: string;
-    description: string;
-    id: string;
+    description?: string;
+    id?: string;
 };

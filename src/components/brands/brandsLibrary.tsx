@@ -24,7 +24,7 @@ import Managers from "./BrandsTabPane/Managers";
 import BrandsModal from "./BrandsModal";
 import { useGetOutro } from "@/services/outro";
 import { outroDataTypes } from "../Types/Outro.type";
-import { useTopic } from "@/services/topic";
+import { useAddTopic, useTopic } from "@/services/topic";
 import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import { UseAddManagers, UseGetManagers } from "@/services/managers";
 import { ManagerType } from "../Types/manager.type";
@@ -260,7 +260,10 @@ function a11yProps(index: number) {
 }
 
 const brandsLibrary = () => {
-  // creating Managers
+  // Edit Delete Popover
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const [openPopover, setOpenPopover] = useState<string | null>(null)
   const {
     data: ManagerData,
     isLoading: ManagerLoading,
@@ -313,21 +316,24 @@ const brandsLibrary = () => {
     }
   }, [ManagerData]);
   // creating Video Topic //
+  const {
+    data: AddTopic,
+    isLoading: AddTopicLoading,
+    isSuccess: AddTopicSuccess,
+    mutate: AddTopicMutate,
+  } = useAddTopic();
   const { data: topicData, isLoading } = useTopic();
   const [topicDataList, setTopicList] = useState<Topic[]>(topicData || []);
   const [addNewTopicVideo, setAddNewTopicVideo] = useState({
-    id: "0",
     topic: "",
-    description: "",
   });
   const handleAddNewVideoTopic = () => {
     const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
     setTopicList(AddNewTopicVideo);
     setAddNewTopicVideo({
-      id: (parseInt(addNewTopicVideo.id) + 1).toString(),
       topic: "",
-      description: "",
     });
+    AddTopicMutate(addNewTopicVideo);
   };
   const handleAddTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddNewTopicVideo({
@@ -408,22 +414,30 @@ const brandsLibrary = () => {
     setSearchKeyword(keyword);
   };
   const FilteredComponents = useMemo(() => {
-    let filteredData = OutroDataList?.filter(item => {
+    let filteredData = OutroDataList?.filter((item) => {
       return item.description
-        ?.toLowerCase()
+        .toLowerCase()
         .includes(searchKeyword.toLowerCase());
-    });
-
-    let topicFilterData = topicDataList?.filter(item => {
-      return item?.topic?.toLowerCase().includes(searchKeyword?.toLowerCase());
     });
 
     return {
       FilterData: filteredData,
-      TopicFilterData: topicFilterData,
     };
-  }, [OutroDataList, searchKeyword, topicData]);
+  }, [OutroDataList, searchKeyword]);
+  const TopicDataFilter = useMemo(() => {
+    if (!searchKeyword) {
+      return topicDataList;
+    }
 
+    return topicDataList?.filter((item) => {
+      return item.topic.toLowerCase().includes(searchKeyword.toLowerCase());
+    });
+  }, [topicDataList, searchKeyword]);
+  const handlePopoverOpen = (id: string) => {
+    console.log(id, "POpOVerIcClick");
+    setIsPopoverOpen(true);
+    setOpenPopover(id)
+  };
   return (
     <div>
       <BrandsModal
@@ -516,6 +530,11 @@ const brandsLibrary = () => {
               <Outros
                 data={OutroDataList}
                 FilterData={FilteredComponents.FilterData}
+                setIsPopoverOpen={setIsPopoverOpen}
+                isPopoverOpen={isPopoverOpen}
+                popoverAnchorEl={popoverAnchorEl}
+                handlePopoverOpen={handlePopoverOpen}
+                openPopover={openPopover}
               />
             </div>
           </CustomTabPanel>
@@ -528,7 +547,7 @@ const brandsLibrary = () => {
             <div>
               <VideoTopic
                 data={topicDataList}
-                TopicFilterData={FilteredComponents.TopicFilterData}
+                TopicFilterData={TopicDataFilter}
               />
             </div>
           </CustomTabPanel>
