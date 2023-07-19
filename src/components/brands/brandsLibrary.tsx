@@ -273,7 +273,6 @@ const brandsLibrary = () => {
   const [managerDataList, setManagerDataList] = useState<ManagerType[]>(
     ManagerData?.results || []
   );
-  console.log(managerDataList, "ManagerData::Parant");
   const [addNewManagerData, setAddNewManagerData] = useState<ManagerType>({
     id: "0",
     active: true,
@@ -297,7 +296,7 @@ const brandsLibrary = () => {
       role: "",
       lastName: "",
     });
-    mutate(addNewManagerData);
+    mutate({ email: addNewManagerData.email });
   };
 
   const handleAddManagerDataLists = (
