@@ -6,8 +6,8 @@ export type outroDataTypes = {
   description
   : string
   id
-  ?:
-  string
+  :
+  string | any
   outro
   ?:
   string

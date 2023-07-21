@@ -2,7 +2,9 @@ import { outroDataTypes } from "@/components/Types/Outro.type";
 import { useGetOutro } from "@/services/outro";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
-import { Box, Popover, Typography } from "@mui/material";
+import { Box, Button, Modal, Popover, Typography } from "@mui/material";
+import { FaTrash } from "react-icons/fa";
+import Spinner from "@/modules/spinner/spinner";
 
 interface OutroProps {
   data: outroDataTypes[];
@@ -12,6 +14,8 @@ interface OutroProps {
   popoverAnchorEl: null;
   handlePopoverOpen: (id: string) => void;
   openPopover: string | null;
+  handleEditOutro: (id: string) => void;
+  outroLoading: boolean;
 }
 
 const Outros: React.FC<OutroProps> = ({
@@ -21,9 +25,12 @@ const Outros: React.FC<OutroProps> = ({
   setIsPopoverOpen,
   popoverAnchorEl,
   handlePopoverOpen,
-  openPopover
+  openPopover,
+  handleEditOutro,
+  outroLoading,
 }) => {
   const [totalPagesCount, setTotalPages] = useState(1);
+  const [showdeleteModal, setDeleteModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
@@ -54,144 +61,205 @@ const Outros: React.FC<OutroProps> = ({
   const handlePopoverClosed = () => {
     setIsPopoverOpen(false);
   };
+
+  const EditModalId = data?.map((item: outroDataTypes) => {
+    return item?.id;
+  });
+  console.log(EditModalId, " EditModalId:; EditModalId");
+  const HandleDeleteModal = () => {
+    // if (id) {
+    setDeleteModal(true);
+    // }
+  };
+  const handleCloseDeleteModal = () => {
+    setDeleteModal(false);
+  };
+  const HandleDeleteChannel = (id: outroDataTypes) => {};
   return (
     <div>
-      <>
-        <Popover
-          open={isPopoverOpen}
-          anchorEl={popoverAnchorEl}
-          onClose={handlePopoverClosed}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
-          <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
-            <Typography
-              // onClick={() => handleShowEditModal(data?.id, data)}
-              className="cursor-pointer"
-              id="modal-modal-description"
-              sx={{ mt: 1 }}
+      {outroLoading ? (
+        <>
+          <Spinner />
+        </>
+      ) : (
+        <>
+          <>
+            {/* Modal-Delete */}
+            <Modal
+              open={showdeleteModal}
+              onClose={handleCloseDeleteModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              className="flex justify-center items-center"
             >
-              Edit
-            </Typography>
-            <Typography
-              // onClick={() => HandleDeleteModal(data?.category?.id)}
-              className="cursor-pointer"
-              id="modal-modal-description"
-              sx={{ mt: 1 }}
-            >
-              Delete
-              {/* {isLoading ? "Deleting..." : "Delete"} */}
-            </Typography>
-          </Box>
-        </Popover>
-      </>
-      <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
-        <div className="flex items-center justify-between pe-16 ps-6 pt-4">
-          <div className="flex items-center ">
-            <p className="pe-6">No.</p>
-            <p>Outros</p>
-          </div>
-          <div className="pe-6">
-            <p>Status</p>
-          </div>
-        </div>
-        <div className="table-bb-gray mt-2 ms-4 me-4"></div>
-        <div>
-          <div className="overflow-scroll h-[calc(100vh-15.5rem)]">
-            <>
-              {FilterData?.map((items: outroDataTypes, index) => {
-                return (
-                  <>
-                    {console.log(
-                      FilterData,
-                      "FilterData::FilterData::FilterData"
-                    )}
-                    <div
-                      key={items?.id}
-                      className="border-b-2 mt-2 mb-2 ms-2 me-2 "
+              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  DELETING CHANNEL
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Are you sure you want to delete this channel? Delete Cancel
+                </Typography>
+                <div className="flex justify-end pt-4">
+                  <div className="pe-2 ps-2">
+                    <Button
+                      onClick={() => HandleDeleteChannel(FilterData?.id)}
+                      className="flex items-center border-red-600 border-btn-red"
+                      variant="outlined"
                     >
-                      <div className="flex pe-12 ps-6">
-                        <div className="pt-2 ">
-                          <p>{index + 1}</p>
-                        </div>
-                        <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
-                          <p className="text-sm">{items?.description}</p>
-                        </div>
-                        <div>
-                          <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
-                            {items?.status === null
-                              ? "New" || items?.status === "New"
-                                ? " New"
-                                : "Used"
-                              : ""}
-                          </p>
-                        </div>
-                        <div
-                          className="pt-2 cursor-pointer"
-                          onClick={() => handlePopoverOpen(items?.id || "")}
-                        >
-                          <BsThreeDotsVertical />
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
-            </>
-          </div>
-          <div>
-            <div className="flex justify-end m-2 gap-1">
-              <button
-                className={`px-2 py-1 border border-gray-300 rounded-md ${
-                  currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                }`}
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-              {startPage > 1 && (
-                <button className="px-2 py-1 border border-gray-300 rounded-md">
-                  ...
-                </button>
-              )}
-              {visiblePages.map((page) => (
-                <button
-                  className={`px-2 py-1 border border-gray-300 rounded-md ${
-                    page === currentPage ? "bg-blue-500 text-white" : ""
-                  }`}
-                  key={page}
-                  onClick={() => handlePageChange(page)}
+                      <FaTrash className="text-red-600" />{" "}
+                      <span className="ps-2 pe-2 text-red-600">Delete</span>
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      onClick={handleCloseDeleteModal}
+                      variant="contained"
+                      className="btn-black button-black-modal"
+                    >
+                      <span className="ps-2 pe-2">Cancel</span>
+                    </Button>
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+
+            <Popover
+              open={isPopoverOpen}
+              anchorEl={popoverAnchorEl}
+              onClose={handlePopoverClosed}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+                <Typography
+                  onClick={() => handleEditOutro(FilterData?.id)}
+                  className="cursor-pointer"
+                  id="modal-modal-description"
+                  sx={{ mt: 1 }}
                 >
-                  {page}
-                </button>
-              ))}
-              {endPage < totalPagesCount && (
-                <button className="px-2 py-1 border border-gray-300 rounded-md">
-                  ...
-                </button>
-              )}
-              <button
-                className={`px-2 py-1 border border-gray-300 rounded-md ${
-                  currentPage === totalPagesCount
-                    ? "cursor-not-allowed opacity-50"
-                    : ""
-                }`}
-                onClick={handleNextPage}
-                disabled={currentPage === totalPagesCount}
-              >
-                Next
-              </button>
+                  Edit
+                </Typography>
+                <Typography
+                  onClick={() => HandleDeleteModal()}
+                  className="cursor-pointer"
+                  id="modal-modal-description"
+                  sx={{ mt: 1 }}
+                >
+                  Delete
+                  {/* {isLoading ? "Deleting..." : "Delete"} */}
+                </Typography>
+              </Box>
+            </Popover>
+          </>
+          <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
+            <div className="flex items-center justify-between pe-16 ps-6 pt-4">
+              <div className="flex items-center ">
+                <p className="pe-6">No.</p>
+                <p>Outros</p>
+              </div>
+              <div className="pe-6">
+                <p>Status</p>
+              </div>
+            </div>
+            <div className="table-bb-gray mt-2 ms-4 me-4"></div>
+            <div>
+              <div className="overflow-scroll h-[calc(100vh-15.5rem)]">
+                <>
+                  {FilterData?.map((items: outroDataTypes, index) => {
+                    return (
+                      <>
+                        {console.log(
+                          FilterData,
+                          "FilterData::FilterData::FilterData"
+                        )}
+                        <div
+                          key={items?.id}
+                          className="border-b-2 mt-2 mb-2 ms-2 me-2 "
+                        >
+                          <div className="flex pe-12 ps-6">
+                            <div className="pt-2 ">
+                              <p>{index + 1}</p>
+                            </div>
+                            <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
+                              <p className="text-sm">{items?.description}</p>
+                            </div>
+                            <div>
+                              <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
+                                {items?.status === null
+                                  ? "New" || items?.status === "New"
+                                    ? " New"
+                                    : "Used"
+                                  : ""}
+                              </p>
+                            </div>
+                            <div
+                              className="pt-2 cursor-pointer"
+                              onClick={() => handlePopoverOpen(items?.id || "")}
+                            >
+                              <BsThreeDotsVertical />
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })}
+                </>
+              </div>
+              <div>
+                <div className="flex justify-end m-2 gap-1">
+                  <button
+                    className={`px-2 py-1 border border-gray-300 rounded-md ${
+                      currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                    }`}
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  {startPage > 1 && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  {visiblePages.map((page) => (
+                    <button
+                      className={`px-2 py-1 border border-gray-300 rounded-md ${
+                        page === currentPage ? "bg-blue-500 text-white" : ""
+                      }`}
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  {endPage < totalPagesCount && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  <button
+                    className={`px-2 py-1 border border-gray-300 rounded-md ${
+                      currentPage === totalPagesCount
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPagesCount}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

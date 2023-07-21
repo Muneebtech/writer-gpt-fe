@@ -263,7 +263,7 @@ const brandsLibrary = () => {
   // Edit Delete Popover
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
-  const [openPopover, setOpenPopover] = useState<string | null>(null)
+  const [openPopover, setOpenPopover] = useState<string | null>(null);
   const {
     data: ManagerData,
     isLoading: ManagerLoading,
@@ -435,7 +435,10 @@ const brandsLibrary = () => {
   const handlePopoverOpen = (id: string) => {
     console.log(id, "POpOVerIcClick");
     setIsPopoverOpen(true);
-    setOpenPopover(id)
+    setOpenPopover(id);
+  };
+  const handleEditOutro = (id: string) => {
+    console.log(id, "id::IDD:IIDD");
   };
   return (
     <div>
@@ -534,6 +537,8 @@ const brandsLibrary = () => {
                 popoverAnchorEl={popoverAnchorEl}
                 handlePopoverOpen={handlePopoverOpen}
                 openPopover={openPopover}
+                handleEditOutro={handleEditOutro}
+                outroLoading={outroLoading}
               />
             </div>
           </CustomTabPanel>
