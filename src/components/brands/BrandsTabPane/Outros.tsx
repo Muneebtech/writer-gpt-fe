@@ -13,7 +13,7 @@ interface OutroProps {
   isPopoverOpen: boolean;
   popoverAnchorEl: null;
   handlePopoverOpen: (id: string) => void;
-  openPopover: string | null;
+  openPopover: string;
   handleEditOutro: (id: string) => void;
   outroLoading: boolean;
 }
@@ -65,7 +65,6 @@ const Outros: React.FC<OutroProps> = ({
   const EditModalId = data?.map((item: outroDataTypes) => {
     return item?.id;
   });
-  console.log(EditModalId, " EditModalId:; EditModalId");
   const HandleDeleteModal = () => {
     // if (id) {
     setDeleteModal(true);
@@ -74,7 +73,9 @@ const Outros: React.FC<OutroProps> = ({
   const handleCloseDeleteModal = () => {
     setDeleteModal(false);
   };
-  const HandleDeleteChannel = (id: outroDataTypes) => {};
+  const HandleDeleteChannel = (id: string) => {
+    console.log(id, "iddddddddddddd");
+  };
   return (
     <div>
       {outroLoading ? (
@@ -102,7 +103,7 @@ const Outros: React.FC<OutroProps> = ({
                 <div className="flex justify-end pt-4">
                   <div className="pe-2 ps-2">
                     <Button
-                      onClick={() => HandleDeleteChannel(FilterData?.id)}
+                      onClick={() => HandleDeleteChannel(openPopover)}
                       className="flex items-center border-red-600 border-btn-red"
                       variant="outlined"
                     >
@@ -138,7 +139,7 @@ const Outros: React.FC<OutroProps> = ({
             >
               <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
                 <Typography
-                  onClick={() => handleEditOutro(FilterData?.id)}
+                  onClick={() => handleEditOutro(openPopover)}
                   className="cursor-pointer"
                   id="modal-modal-description"
                   sx={{ mt: 1 }}
@@ -174,10 +175,6 @@ const Outros: React.FC<OutroProps> = ({
                   {FilterData?.map((items: outroDataTypes, index) => {
                     return (
                       <>
-                        {console.log(
-                          FilterData,
-                          "FilterData::FilterData::FilterData"
-                        )}
                         <div
                           key={items?.id}
                           className="border-b-2 mt-2 mb-2 ms-2 me-2 "
@@ -227,7 +224,7 @@ const Outros: React.FC<OutroProps> = ({
                       ...
                     </button>
                   )}
-                  {visiblePages.map((page) => (
+                  {visiblePages.map(page => (
                     <button
                       className={`px-2 py-1 border border-gray-300 rounded-md ${
                         page === currentPage ? "bg-blue-500 text-white" : ""
