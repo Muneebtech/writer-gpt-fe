@@ -27,4 +27,10 @@ export class UseOutroData {
             data: params
         });
     }
+    static deleteOutro(id: string) {
+        return request({
+            url: `/outro/${id}`,
+            method: "DELETE"
+        })
+    }
 }

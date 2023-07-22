@@ -1,5 +1,5 @@
 import { outroDataTypes } from "@/components/Types/Outro.type";
-import { useGetOutro } from "@/services/outro";
+import { UseDeleteOutro, useGetOutro } from "@/services/outro";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
 import { Box, Button, Modal, Popover, Typography } from "@mui/material";
@@ -11,11 +11,17 @@ interface OutroProps {
   FilterData: outroDataTypes[];
   setIsPopoverOpen: (value: boolean) => void;
   isPopoverOpen: boolean;
-  popoverAnchorEl: null;
-  handlePopoverOpen: (id: string) => void;
+  popoverAnchorEl: HTMLDivElement | null;
+  handlePopoverOpen: (
+    id: string,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => void;
   openPopover: string;
   handleEditOutro: (id: string) => void;
   outroLoading: boolean;
+  handleCloseDeleteModal: () => void;
+  HandleDeleteModal: (id: string) => void;
+  showdeleteOutroModal: boolean;
 }
 
 const Outros: React.FC<OutroProps> = ({
@@ -28,9 +34,12 @@ const Outros: React.FC<OutroProps> = ({
   openPopover,
   handleEditOutro,
   outroLoading,
+  handleCloseDeleteModal,
+  HandleDeleteModal,
+  showdeleteOutroModal,
 }) => {
   const [totalPagesCount, setTotalPages] = useState(1);
-  const [showdeleteModal, setDeleteModal] = useState(false);
+  const { mutate, isSuccess } = UseDeleteOutro();
   const [currentPage, setCurrentPage] = useState(1);
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
@@ -65,16 +74,11 @@ const Outros: React.FC<OutroProps> = ({
   const EditModalId = data?.map((item: outroDataTypes) => {
     return item?.id;
   });
-  const HandleDeleteModal = () => {
-    // if (id) {
-    setDeleteModal(true);
-    // }
-  };
-  const handleCloseDeleteModal = () => {
-    setDeleteModal(false);
-  };
+
   const HandleDeleteChannel = (id: string) => {
+    const DeleteOutroData = FilterData?.filter((items) => items?.id !== id);
     console.log(id, "iddddddddddddd");
+    mutate(id)
   };
   return (
     <div>
@@ -87,7 +91,7 @@ const Outros: React.FC<OutroProps> = ({
           <>
             {/* Modal-Delete */}
             <Modal
-              open={showdeleteModal}
+              open={showdeleteOutroModal}
               onClose={handleCloseDeleteModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
@@ -130,7 +134,7 @@ const Outros: React.FC<OutroProps> = ({
               onClose={handlePopoverClosed}
               anchorOrigin={{
                 vertical: "bottom",
-                horizontal: "right",
+                horizontal: "left",
               }}
               transformOrigin={{
                 vertical: "top",
@@ -147,7 +151,7 @@ const Outros: React.FC<OutroProps> = ({
                   Edit
                 </Typography>
                 <Typography
-                  onClick={() => HandleDeleteModal()}
+                  onClick={() => HandleDeleteModal(openPopover)}
                   className="cursor-pointer"
                   id="modal-modal-description"
                   sx={{ mt: 1 }}
@@ -197,7 +201,9 @@ const Outros: React.FC<OutroProps> = ({
                             </div>
                             <div
                               className="pt-2 cursor-pointer"
-                              onClick={() => handlePopoverOpen(items?.id || "")}
+                              onClick={(event) =>
+                                handlePopoverOpen(items?.id || "", event)
+                              }
                             >
                               <BsThreeDotsVertical />
                             </div>
@@ -224,7 +230,7 @@ const Outros: React.FC<OutroProps> = ({
                       ...
                     </button>
                   )}
-                  {visiblePages.map(page => (
+                  {visiblePages.map((page) => (
                     <button
                       className={`px-2 py-1 border border-gray-300 rounded-md ${
                         page === currentPage ? "bg-blue-500 text-white" : ""

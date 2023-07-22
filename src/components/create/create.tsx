@@ -18,7 +18,15 @@ import { FiBook } from "react-icons/fi";
 import LanguageModel from "./component/LanguageModel";
 import Topic from "./component/Topic";
 import Outro from "./component/Outro";
-const steps = ["CHANNEL", "BASIC", "LANGUAGE MODEL", "TOPIC", "OUTRO", "REVIEW"];
+const steps = [
+  "CHANNEL",
+  "BASIC",
+  "LANGUAGE MODEL",
+  "TOPIC",
+  "OUTRO",
+  "VOICE",
+  "REVIEW",
+];
 
 const Create = () => {
   const router = useRouter();
@@ -36,8 +44,8 @@ const Create = () => {
     channel: "",
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
-  console.log(ScriptData,"ScriptData");
-  
+  console.log(ScriptData, "ScriptData");
+
   const [Open, setOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
   const { data, isLoading, isSuccess, mutate } = useCreateJob();
@@ -102,18 +110,15 @@ const Create = () => {
       // return <Script setScriptData={handleStateUpdate} />;
       case 2:
         return <LanguageModel setScriptData={handleStateUpdate} />;
-
       case 3:
         return <Topic setScriptData={handleStateUpdate} />;
       case 4:
         return <Outro setScriptData={handleStateUpdate} />;
-      //   case 3:
-      //     return <Voice setScriptData={handleStateUpdate}/>;
-
-    
       case 5:
-        return <Review ScriptData={ScriptData} />;
+        return <Voice setScriptData={handleStateUpdate} />;
       case 6:
+        return <Review ScriptData={ScriptData} />;
+      case 7:
         return <ReviewData Jobdata={data} ScriptData={ScriptData} />;
     }
   };
@@ -192,7 +197,7 @@ const Create = () => {
                     Back
                   </Button>
                 )}
-                {activeStep > 5 ? (
+                {activeStep > 6 ? (
                   <Button
                     variant="contained"
                     className="button-black ms-2 me-2"

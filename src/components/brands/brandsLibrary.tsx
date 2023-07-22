@@ -21,7 +21,7 @@ import LanguageModel from "./BrandsTabPane/languageModel";
 import VideoTopic from "./BrandsTabPane/VideoTopic";
 import Voice from "./BrandsTabPane/Voice";
 import Managers from "./BrandsTabPane/Managers";
-import BrandsModal from "./BrandsModal";
+import BrandsModal from "./BrandsModals/BrandsModal";
 import { useGetOutro } from "@/services/outro";
 import { outroDataTypes } from "../Types/Outro.type";
 import { useAddTopic, useTopic } from "@/services/topic";
@@ -29,6 +29,7 @@ import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import { UseAddManagers, UseGetManagers } from "@/services/managers";
 import { ManagerType } from "../Types/manager.type";
 import { useAddOutro } from "@/services/outro/hooks/AddOutro";
+import BrandsEditModal from "./BrandsModals/BrandsModal";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -64,8 +65,14 @@ function a11yProps(index: number) {
 const brandsLibrary = () => {
   // Edit Delete Popover
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLDivElement | null>(
+    null
+  );
+  const [isPopoverOpenTopic, setIsPopoverOpenTopic] = useState(false);
+  const [popoverAnchorElTopic, setpopoverAnchorElTopic] =
+    useState<HTMLDivElement | null>(null);
   const [openPopover, setOpenPopover] = useState<string>("");
+  const [openPopoverTopic, setopenPopoverTopic] = useState<string>("");
   const {
     data: ManagerData,
     isLoading: ManagerLoading,
@@ -153,6 +160,8 @@ const brandsLibrary = () => {
   //creating Outro
   const { data: OutrosData, mutate: PostOutros } = useAddOutro();
   const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
+  const [showdeleteOutroModal, setdeleteOutroModal] = useState(false);
+  const [showTopicDeleteModal, setshowTopicDeleteModal] = useState(false);
   const [OutroDataList, setOutroDataList] = useState<outroDataTypes[]>(
     Outrodata || []
   );
@@ -160,6 +169,22 @@ const brandsLibrary = () => {
     description: "",
   });
 
+  const handleTopicDeleteModalopen = (id: string) => {
+    setshowTopicDeleteModal(true);
+  };
+  const handleTopicDeleteModalclose = () => {
+    setshowTopicDeleteModal(false);
+  };
+
+  const HandleDeleteModal = (id: string) => {
+    if (id) {
+      setdeleteOutroModal(true);
+    }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setdeleteOutroModal(false);
+  };
   const HandleAddOutro = () => {
     if (newOutroData?.description.trim() !== "") {
       const AddNewOutro: outroDataTypes = {
@@ -190,11 +215,19 @@ const brandsLibrary = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [value, setValue] = React.useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true);
+  };
+  const handleCloseEditodal = () => {
+    setOpenEditModal(false);
   };
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -215,7 +248,7 @@ const brandsLibrary = () => {
     setSearchKeyword(keyword);
   };
   const FilteredComponents = useMemo(() => {
-    let filteredData = OutroDataList?.filter(item => {
+    let filteredData = OutroDataList?.filter((item) => {
       return item.description
         .toLowerCase()
         .includes(searchKeyword.toLowerCase());
@@ -230,19 +263,42 @@ const brandsLibrary = () => {
       return topicDataList;
     }
 
-    return topicDataList?.filter(item => {
+    return topicDataList?.filter((item) => {
       return item.topic.toLowerCase().includes(searchKeyword.toLowerCase());
     });
   }, [topicDataList, searchKeyword]);
-  const handlePopoverOpen = (id: string) => {
+  // handlers for Outro
+  const handlePopoverOpen = (
+    id: string,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
     setIsPopoverOpen(true);
+    setPopoverAnchorEl(event.currentTarget);
     setOpenPopover(id);
   };
+
   const handleEditOutro = (id: string) => {
+    console.log(id, "id::IDD:IIDD");
+  };
+
+  // handlers For Topic
+
+  const handlePopoverOpenTopic = (
+    id: string,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    setIsPopoverOpenTopic(true);
+    setPopoverAnchorEl(event.currentTarget);
+    setopenPopoverTopic(id);
+  };
+
+  const handleEditTopic = (id: string) => {
     console.log(id, "id::IDD:IIDD");
   };
   return (
     <div>
+      {/* Modals */}
+      <BrandsEditModal handleOpenEditModal={handleOpenEditModal} handleCloseEditodal={handleCloseEditodal} />
       <BrandsModal
         openModal={openModal}
         handleCloseModal={handleCloseModal}
@@ -331,6 +387,9 @@ const brandsLibrary = () => {
           <CustomTabPanel value={value} index={1}>
             <div>
               <Outros
+                showdeleteOutroModal={showdeleteOutroModal}
+                handleCloseDeleteModal={handleCloseDeleteModal}
+                HandleDeleteModal={HandleDeleteModal}
                 data={OutroDataList}
                 FilterData={FilteredComponents.FilterData}
                 setIsPopoverOpen={setIsPopoverOpen}
@@ -351,8 +410,18 @@ const brandsLibrary = () => {
           <CustomTabPanel value={value} index={3}>
             <div>
               <VideoTopic
+                openPopoverTopic={openPopoverTopic}
+                setIsPopoverOpenTopic={setIsPopoverOpenTopic}
+                isPopoverOpenTopic={isPopoverOpenTopic}
+                popoverAnchorElTopic={popoverAnchorElTopic}
+                handleTopicDeleteModalopen={handleTopicDeleteModalopen}
+                handleTopicDeleteModalclose={handleTopicDeleteModalclose}
+                showTopicDeleteModal={showTopicDeleteModal}
                 data={topicDataList}
                 TopicFilterData={TopicDataFilter}
+                handlePopoverOpenTopic={handlePopoverOpenTopic}
+                openPopover={openPopover}
+                handleEditTopic={handleEditTopic}
               />
             </div>
           </CustomTabPanel>

@@ -14,4 +14,11 @@ export class TopicServices {
             data: data
         })
     }
+    static getDeleteTopic(id: string) {
+        return request({
+            url: `/topic/${id}`,
+            method: "DELETE",
+      
+        })
+    }
 }
