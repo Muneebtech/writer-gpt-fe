@@ -21,17 +21,24 @@ import { useLogout } from "@/services/auth";
 import Cookies from "js-cookie";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { FaTrash } from "react-icons/fa";
+import { User } from "../Types/user.type";
 const Sidebar: React.FC = () => {
   const [showdeleteModal, setDeleteModal] = useState(false);
   const router = useRouter();
-  const userData = decryptData("userdata");
   const token = decryptData("token");
+  const [UserDetails, setUserDetails] = useState<User>();
   const { mutate, isSuccess } = useLogout();
   const handleLogout = () => {
     mutate({ refreshToken: token?.refresh?.token });
     Cookies.remove("userdata");
     Cookies.remove("token");
   };
+
+  useEffect(() => {
+    const userData = decryptData("userdata");
+    setUserDetails(userData);
+  }, []);
+
   useEffect(() => {
     if (isSuccess) {
       router.push("/signin");
@@ -90,10 +97,16 @@ const Sidebar: React.FC = () => {
               width={500}
               height={300}
               className="w-10 h-10 rounded-full mr-2"
-              src="/profile.png"
               alt="Profile"
+              src={
+                UserDetails?.photoPath
+                  ? URL.createObjectURL(UserDetails?.photoPath as any)
+                  : "/avatar.jpg"
+              }
             />
-            <span className="font-semibold">Rana Muneeb Tahir</span>
+            <span className="font-semibold">
+              {UserDetails?.firstName + " " + UserDetails?.lastName}
+            </span>
           </div>
         </div>
         <nav className="px-4 flex-grow">

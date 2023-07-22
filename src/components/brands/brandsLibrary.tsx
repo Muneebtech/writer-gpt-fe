@@ -284,6 +284,17 @@ const brandsLibrary = () => {
     console.log(id, "id::IDD:IIDD");
   };
 
+  const {
+    isLoading: channelLoading,
+    data: channelData,
+    mutate: channelMutate,
+  } = useGetChannelById();
+
+  useEffect(() => {
+    if (id) {
+      channelMutate(id as string);
+    }
+  }, [id, channelMutate]);
   // handlers For Topic
 
   const handlePopoverOpenTopic = (
@@ -330,7 +341,7 @@ const brandsLibrary = () => {
             </div>
             <div className="ps-1 pe-1">
               {" "}
-              <span>Morning Prayer</span>
+              <span>{channelData?.channel}</span>
             </div>
           </div>
           <Header

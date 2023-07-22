@@ -39,7 +39,7 @@ const Manager: React.FC<ManagerDataChildProps> = ({ managerDataList }) => {
                 <div className="flex items-center">
                   <div>
                     <Image
-                      src="/manager.png"
+                      src="/avatar.jpg"
                       alt="channel"
                       width={40}
                       height={40}
