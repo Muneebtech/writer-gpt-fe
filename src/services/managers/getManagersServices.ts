@@ -4,7 +4,7 @@ import { request } from "@/lib/axios";
 export class getManagersServices {
   static getManagers() {
     return request({
-      url: "/users",
+      url: "users/managers",
       method: "GET",
     });
   }

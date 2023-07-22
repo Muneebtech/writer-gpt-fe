@@ -22,6 +22,7 @@ interface OutroProps {
   handleCloseDeleteModal: () => void;
   HandleDeleteModal: (id: string) => void;
   showdeleteOutroModal: boolean;
+  handleOpenEditModal: (id: string, description: outroDataTypes) => void;
 }
 
 const Outros: React.FC<OutroProps> = ({
@@ -37,6 +38,7 @@ const Outros: React.FC<OutroProps> = ({
   handleCloseDeleteModal,
   HandleDeleteModal,
   showdeleteOutroModal,
+  handleOpenEditModal,
 }) => {
   const [totalPagesCount, setTotalPages] = useState(1);
   const { mutate, isSuccess } = UseDeleteOutro();
@@ -78,7 +80,7 @@ const Outros: React.FC<OutroProps> = ({
   const HandleDeleteChannel = (id: string) => {
     const DeleteOutroData = FilterData?.filter((items) => items?.id !== id);
     console.log(id, "iddddddddddddd");
-    mutate(id)
+    mutate(id);
   };
   return (
     <div>
@@ -143,7 +145,7 @@ const Outros: React.FC<OutroProps> = ({
             >
               <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
                 <Typography
-                  onClick={() => handleEditOutro(openPopover)}
+                  onClick={()=>handleOpenEditModal(openPopover,)}
                   className="cursor-pointer"
                   id="modal-modal-description"
                   sx={{ mt: 1 }}

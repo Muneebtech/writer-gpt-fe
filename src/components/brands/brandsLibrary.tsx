@@ -21,7 +21,7 @@ import LanguageModel from "./BrandsTabPane/languageModel";
 import VideoTopic from "./BrandsTabPane/VideoTopic";
 import Voice from "./BrandsTabPane/Voice";
 import Managers from "./BrandsTabPane/Managers";
-import BrandsModal from "./BrandsModals/BrandsModal";
+import BrandsModal from "./modals/BrandsModal";
 import { useGetOutro } from "@/services/outro";
 import { outroDataTypes } from "../Types/Outro.type";
 import { useAddTopic, useTopic } from "@/services/topic";
@@ -29,7 +29,7 @@ import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import { UseAddManagers, UseGetManagers } from "@/services/managers";
 import { ManagerType } from "../Types/manager.type";
 import { useAddOutro } from "@/services/outro/hooks/AddOutro";
-import BrandsEditModal from "./BrandsModals/BrandsModal";
+import EditBrands from "./EditBrands";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -82,6 +82,8 @@ const brandsLibrary = () => {
   const [managerDataList, setManagerDataList] = useState<ManagerType[]>(
     ManagerData?.results || []
   );
+  console.log(managerDataList,"managerDataList");
+  
   const [addNewManagerData, setAddNewManagerData] = useState<ManagerType>({
     id: "0",
     active: true,
@@ -216,6 +218,7 @@ const brandsLibrary = () => {
   const [value, setValue] = React.useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [editTopicData,setEditTopicData]=useState([])
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -223,8 +226,9 @@ const brandsLibrary = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  const handleOpenEditModal = () => {
+  const handleOpenEditModal = (id: string, description: outroDataTypes) => {
     setOpenEditModal(true);
+    setEditTopicData
   };
   const handleCloseEditodal = () => {
     setOpenEditModal(false);
@@ -292,13 +296,19 @@ const brandsLibrary = () => {
     setopenPopoverTopic(id);
   };
 
+
+
   const handleEditTopic = (id: string) => {
     console.log(id, "id::IDD:IIDD");
   };
   return (
     <div>
+      <EditBrands
+        openEditModal={openEditModal}
+        handleCloseEditodal={handleCloseEditodal}
+        value={value}
+      />
       {/* Modals */}
-      <BrandsEditModal handleOpenEditModal={handleOpenEditModal} handleCloseEditodal={handleCloseEditodal} />
       <BrandsModal
         openModal={openModal}
         handleCloseModal={handleCloseModal}
@@ -387,6 +397,7 @@ const brandsLibrary = () => {
           <CustomTabPanel value={value} index={1}>
             <div>
               <Outros
+                handleOpenEditModal={handleOpenEditModal}
                 showdeleteOutroModal={showdeleteOutroModal}
                 handleCloseDeleteModal={handleCloseDeleteModal}
                 HandleDeleteModal={HandleDeleteModal}
