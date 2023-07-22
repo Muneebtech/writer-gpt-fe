@@ -1,5 +1,5 @@
 export type ManagerType = {
-  active: boolean;
+  status: boolean;
   email: string;
   firstName: string;
   id: string;

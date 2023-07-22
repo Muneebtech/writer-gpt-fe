@@ -80,13 +80,12 @@ const brandsLibrary = () => {
   } = UseGetManagers();
 
   const [managerDataList, setManagerDataList] = useState<ManagerType[]>(
-    ManagerData?.results || []
+    ManagerData || []
   );
-  console.log(managerDataList,"managerDataList");
-  
+
   const [addNewManagerData, setAddNewManagerData] = useState<ManagerType>({
     id: "0",
-    active: true,
+    status: true,
     firstName: "",
     email: "",
     photoPath: "",
@@ -100,7 +99,7 @@ const brandsLibrary = () => {
     setManagerDataList(addNewManager);
     setAddNewManagerData({
       id: (parseInt(addNewManagerData.id) + 1).toString(),
-      active: true,
+      status: true,
       firstName: "",
       email: "",
       photoPath: "",
@@ -117,12 +116,12 @@ const brandsLibrary = () => {
       ...addNewManagerData,
       firstName: event.target.value,
       email: event.target.value,
-      active: event.target.value === "true",
+      status: event.target.value === "true",
     });
   };
   useEffect(() => {
     if (ManagerData) {
-      setManagerDataList(ManagerData?.results);
+      setManagerDataList(ManagerData);
     }
   }, [ManagerData]);
   // creating Video Topic //
@@ -139,11 +138,11 @@ const brandsLibrary = () => {
   });
   const handleAddNewVideoTopic = () => {
     const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
-    setTopicList(AddNewTopicVideo);
+    setTopicList(AddNewTopicVideo as any);
     setAddNewTopicVideo({
       topic: "",
     });
-    AddTopicMutate(addNewTopicVideo);
+    AddTopicMutate(addNewTopicVideo as any);
   };
   const handleAddTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddNewTopicVideo({
@@ -218,7 +217,7 @@ const brandsLibrary = () => {
   const [value, setValue] = React.useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [editTopicData,setEditTopicData]=useState([])
+  const [editTopicData, setEditTopicData] = useState([]);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -228,7 +227,7 @@ const brandsLibrary = () => {
   };
   const handleOpenEditModal = (id: string, description: outroDataTypes) => {
     setOpenEditModal(true);
-    setEditTopicData
+    setEditTopicData;
   };
   const handleCloseEditodal = () => {
     setOpenEditModal(false);
@@ -252,7 +251,7 @@ const brandsLibrary = () => {
     setSearchKeyword(keyword);
   };
   const FilteredComponents = useMemo(() => {
-    let filteredData = OutroDataList?.filter((item) => {
+    let filteredData = OutroDataList?.filter(item => {
       return item.description
         .toLowerCase()
         .includes(searchKeyword.toLowerCase());
@@ -267,7 +266,7 @@ const brandsLibrary = () => {
       return topicDataList;
     }
 
-    return topicDataList?.filter((item) => {
+    return topicDataList?.filter(item => {
       return item.topic.toLowerCase().includes(searchKeyword.toLowerCase());
     });
   }, [topicDataList, searchKeyword]);
@@ -295,8 +294,6 @@ const brandsLibrary = () => {
     setPopoverAnchorEl(event.currentTarget);
     setopenPopoverTopic(id);
   };
-
-
 
   const handleEditTopic = (id: string) => {
     console.log(id, "id::IDD:IIDD");

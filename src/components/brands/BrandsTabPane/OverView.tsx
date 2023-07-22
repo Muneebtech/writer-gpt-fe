@@ -17,8 +17,7 @@ const OverView = () => {
   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
   const [totalPagesCount, setTotalPages] = useState(data?.totalPages);
   const LibraryData = data?.results;
-  console.log(LibraryData,"LibraryData:::::LibraryData");
-  
+
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
 
@@ -147,7 +146,7 @@ const OverView = () => {
                   ...
                 </button>
               )}
-              {visiblePages.map((page) => (
+              {visiblePages.map(page => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""
