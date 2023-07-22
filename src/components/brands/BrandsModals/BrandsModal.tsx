@@ -27,7 +27,7 @@ interface ChildProps {
   handleAddTopic: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const BrandsModal: React.FC<ChildProps> = ({
+const BrandsEditModal: React.FC<ChildProps> = ({
   openModal,
   handleCloseModal,
   handleOpenModal,
@@ -148,4 +148,4 @@ const BrandsModal: React.FC<ChildProps> = ({
   );
 };
 
-export default BrandsModal;
+export default BrandsEditModal;

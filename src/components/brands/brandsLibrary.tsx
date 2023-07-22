@@ -21,212 +21,15 @@ import LanguageModel from "./BrandsTabPane/languageModel";
 import VideoTopic from "./BrandsTabPane/VideoTopic";
 import Voice from "./BrandsTabPane/Voice";
 import Managers from "./BrandsTabPane/Managers";
-import BrandsModal from "./BrandsModal";
+import BrandsModal from "./BrandsModals/BrandsModal";
 import { useGetOutro } from "@/services/outro";
 import { outroDataTypes } from "../Types/Outro.type";
-import { useTopic } from "@/services/topic";
+import { useAddTopic, useTopic } from "@/services/topic";
 import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import { UseAddManagers, UseGetManagers } from "@/services/managers";
 import { ManagerType } from "../Types/manager.type";
 import { useAddOutro } from "@/services/outro/hooks/AddOutro";
-// const BrandsLibrary = () => {
-//   const router = useRouter();
-//   const { id } = router.query;
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
-//   const [totalPagesCount, setTotalPages] = useState(data?.totalPages);
-//   const LibraryData = data?.results;
-//   let startPage = Math.max(currentPage - 2, 1);
-//   let endPage = Math.min(startPage + 4, totalPagesCount);
-//   if (endPage - startPage < 4) {
-//     startPage = Math.max(endPage - 4, 1);
-//   }
-//   // Generate an array of visible page numbers
-//   const visiblePages = Array.from(
-//     { length: endPage - startPage + 1 },
-//     (_, i) => startPage + i
-//   );
-//   // Handle previous page click
-//   const handlePreviousPage = () => {
-//     if (currentPage > 1) {
-//       handlePageChange(currentPage - 1);
-//     }
-//   };
-//   const handlePageChange = (page: number) => {
-//     setCurrentPage(page);
-//   };
-//   // Handle next page click
-//   const handleNextPage = () => {
-//     if (currentPage < totalPagesCount) {
-//       handlePageChange(currentPage + 1);
-//     }
-//   };
-//   const handleCardClick = () => {
-//     router.push(`/brands`);
-//   };
-//   return (
-//     <>
-//       {isLoading ? (
-//         <>
-//           <Spinner />
-//         </>
-//       ) : (
-//         <>
-//           <div className="flex items-center justify-between fade-out">
-//             <div className="flex items-center">
-//               <div className="flex items-center ">
-//                 <div
-//                   onClick={handleCardClick}
-//                   className="ps-1 pe-1 cursor-pointer"
-//                 >
-//                   <AiOutlineLeft />
-//                 </div>
-//                 <div className="ps-1 pe-1">
-//                   <Image
-//                     src="/chaneel.png"
-//                     alt="chnaeel"
-//                     width={30}
-//                     height={30}
-//                   />
-//                 </div>
-//                 <div className="ps-1 pe-1">
-//                   {" "}
-//                   <span>Morning Prayer</span>
-//                 </div>
-//               </div>
-//               <Header title="" showSearch={true} searchKeyword="Search" />
-//             </div>
-//             <Button variant="contained" className="button-black ps-4 pe-4">
-//               <FiPlus size={25} className="pe-1 ps-1" />
-//               Create
-//             </Button>
-//           </div>
-//           <div className="table-bb-gray mt-1 ms-4 me-4"></div>
-//           <div className="mt-4"></div>
-//           <div className="bg-white table-b-gray rounded-lg">
-//             <table className="min-w-full divide-y divide-gray-300 text-sm">
-//             <thead>
-//                   <tr className="">
-//                     <th className="py-4 px-4 text-left">Video Name</th>
-//                     <th className="py-4 px-4 text-left">Language</th>
-//                     <th className="py-4 px-4 text-left">Video Topic</th>
-//                     <th className="py-4 px-4 text-left">Outro</th>
-//                     <th className="py-4 px-4 text-center">GPT Logs</th>
-//                     <th className="py-4 px-4 text-center">Word Count</th>
-//                     <th className="py-4 px-4 text-center">Script</th>
-//                     {/* <th className="py-4 px-4 text-center">Voiceover</th> */}
-//                     {/* <th className="py-4 px-4 text-center">Date</th> */}
-//                   </tr>
-//                 </thead>
-//               <tbody>
-//                 {LibraryData?.map((row: TableListData,index:number) => {
-//                   const { backgroundColor } = generateRandomColors();
-//                   return (
-//                     <tr
-//                       key={row?.id}
-//                       className={`border-b leading-3 ${
-//                         index !== LibraryData.length - 1 ? "table-bb-gray" : ""
-//                       }`}
-//                     >
-//                       <td className="py-4 px-4 text-center ">
-//                         <div className="flex items-center">
-//                           <Image
-//                             src="/Library.png"
-//                             alt="Thumbnail"
-//                             width={43}
-//                             height={28}
-//                             className="mr-2 rounded"
-//                           />
-//                           {row?.channel.channel}
-//                         </div>
-//                       </td>
-//                       <td className="py-4 px-4 text-center">{row?.model?.model}</td>
-//                       <td className="py-4 px-4 text-center">
-//                         {row.topic?.topic}
-//                       </td>
-//                       <td className="py-4 px-4 text-center">{row.outro?.outro}</td>
-//                       <td className="py-4 px-4">
-//                         <div className="flex justify-center">
-//                           <FiDownload />
-//                         </div>
-//                       </td>
-//                       <td className="py-4 px-4 text-center">
-//                         <span
-//                           className=" text-center rounded-3xl py-2 px-6"
-//                           style={{
-//                             backgroundColor: `${backgroundColor}`,
-//                           }}
-//                         >
-//                           {row.wordCount}
-//                         </span>
-//                       </td>
-//                       <td className="py-4 px-4">
-//                         <div className="flex justify-center">
-//                           <FiDownload />
-//                         </div>
-//                       </td>
-//                       <td className="py-4 px-4">
-//                         <div className="flex justify-center">
-//                           <FiDownload />
-//                         </div>
-//                       </td>
-//                       {/* <td className="py-4 px-4 text-center">{row.date}</td> */}
-//                     </tr>
-//                   );
-//                 })}
-//               </tbody>
-//             </table>
-//             {/* Pagination */}
-//             <div className="flex justify-end m-2 gap-1">
-//               <button
-//                 className={`px-2 py-1 border border-gray-300 rounded-md ${
-//                   currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-//                 }`}
-//                 onClick={handlePreviousPage}
-//                 disabled={currentPage === 1}
-//               >
-//                 Previous
-//               </button>
-//               {startPage > 1 && (
-//                 <button className="px-2 py-1 border border-gray-300 rounded-md">
-//                   ...
-//                 </button>
-//               )}
-//               {visiblePages.map((page) => (
-//                 <button
-//                   className={`px-2 py-1 border border-gray-300 rounded-md ${
-//                     page === currentPage ? "bg-blue-500 text-white" : ""
-//                   }`}
-//                   key={page}
-//                   onClick={() => handlePageChange(page)}
-//                 >
-//                   {page}
-//                 </button>
-//               ))}
-//               {endPage < totalPagesCount && (
-//                 <button className="px-2 py-1 border border-gray-300 rounded-md">
-//                   ...
-//                 </button>
-//               )}
-//               <button
-//                 className={`px-2 py-1 border border-gray-300 rounded-md ${
-//                   currentPage === totalPagesCount
-//                     ? "cursor-not-allowed opacity-50"
-//                     : ""
-//                 }`}
-//                 onClick={handleNextPage}
-//                 disabled={currentPage === totalPagesCount}
-//               >
-//                 Next
-//               </button>
-//             </div>
-//           </div>
-//         </>
-//       )}
-//     </>
-//   );
-// };
-// export default BrandsLibrary;
+import BrandsEditModal from "./BrandsModals/BrandsModal";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -260,7 +63,16 @@ function a11yProps(index: number) {
 }
 
 const brandsLibrary = () => {
-  // creating Managers
+  // Edit Delete Popover
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLDivElement | null>(
+    null
+  );
+  const [isPopoverOpenTopic, setIsPopoverOpenTopic] = useState(false);
+  const [popoverAnchorElTopic, setpopoverAnchorElTopic] =
+    useState<HTMLDivElement | null>(null);
+  const [openPopover, setOpenPopover] = useState<string>("");
+  const [openPopoverTopic, setopenPopoverTopic] = useState<string>("");
   const {
     data: ManagerData,
     isLoading: ManagerLoading,
@@ -312,21 +124,24 @@ const brandsLibrary = () => {
     }
   }, [ManagerData]);
   // creating Video Topic //
+  const {
+    data: AddTopic,
+    isLoading: AddTopicLoading,
+    isSuccess: AddTopicSuccess,
+    mutate: AddTopicMutate,
+  } = useAddTopic();
   const { data: topicData, isLoading } = useTopic();
   const [topicDataList, setTopicList] = useState<Topic[]>(topicData || []);
   const [addNewTopicVideo, setAddNewTopicVideo] = useState({
-    id: "0",
     topic: "",
-    description: "",
   });
   const handleAddNewVideoTopic = () => {
     const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
     setTopicList(AddNewTopicVideo);
     setAddNewTopicVideo({
-      id: (parseInt(addNewTopicVideo.id) + 1).toString(),
       topic: "",
-      description: "",
     });
+    AddTopicMutate(addNewTopicVideo);
   };
   const handleAddTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddNewTopicVideo({
@@ -345,6 +160,8 @@ const brandsLibrary = () => {
   //creating Outro
   const { data: OutrosData, mutate: PostOutros } = useAddOutro();
   const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
+  const [showdeleteOutroModal, setdeleteOutroModal] = useState(false);
+  const [showTopicDeleteModal, setshowTopicDeleteModal] = useState(false);
   const [OutroDataList, setOutroDataList] = useState<outroDataTypes[]>(
     Outrodata || []
   );
@@ -352,6 +169,22 @@ const brandsLibrary = () => {
     description: "",
   });
 
+  const handleTopicDeleteModalopen = (id: string) => {
+    setshowTopicDeleteModal(true);
+  };
+  const handleTopicDeleteModalclose = () => {
+    setshowTopicDeleteModal(false);
+  };
+
+  const HandleDeleteModal = (id: string) => {
+    if (id) {
+      setdeleteOutroModal(true);
+    }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setdeleteOutroModal(false);
+  };
   const HandleAddOutro = () => {
     if (newOutroData?.description.trim() !== "") {
       const AddNewOutro: outroDataTypes = {
@@ -382,11 +215,19 @@ const brandsLibrary = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [value, setValue] = React.useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+
   const handleOpenModal = () => {
     setOpenModal(true);
   };
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+  const handleOpenEditModal = () => {
+    setOpenEditModal(true);
+  };
+  const handleCloseEditodal = () => {
+    setOpenEditModal(false);
   };
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -407,24 +248,57 @@ const brandsLibrary = () => {
     setSearchKeyword(keyword);
   };
   const FilteredComponents = useMemo(() => {
-    let filteredData = OutroDataList?.filter(item => {
+    let filteredData = OutroDataList?.filter((item) => {
       return item.description
-        ?.toLowerCase()
+        .toLowerCase()
         .includes(searchKeyword.toLowerCase());
-    });
-
-    let topicFilterData = topicDataList?.filter(item => {
-      return item?.topic?.toLowerCase().includes(searchKeyword?.toLowerCase());
     });
 
     return {
       FilterData: filteredData,
-      TopicFilterData: topicFilterData,
     };
-  }, [OutroDataList, searchKeyword, topicData]);
+  }, [OutroDataList, searchKeyword]);
+  const TopicDataFilter = useMemo(() => {
+    if (!searchKeyword) {
+      return topicDataList;
+    }
 
+    return topicDataList?.filter((item) => {
+      return item.topic.toLowerCase().includes(searchKeyword.toLowerCase());
+    });
+  }, [topicDataList, searchKeyword]);
+  // handlers for Outro
+  const handlePopoverOpen = (
+    id: string,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    setIsPopoverOpen(true);
+    setPopoverAnchorEl(event.currentTarget);
+    setOpenPopover(id);
+  };
+
+  const handleEditOutro = (id: string) => {
+    console.log(id, "id::IDD:IIDD");
+  };
+
+  // handlers For Topic
+
+  const handlePopoverOpenTopic = (
+    id: string,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => {
+    setIsPopoverOpenTopic(true);
+    setPopoverAnchorEl(event.currentTarget);
+    setopenPopoverTopic(id);
+  };
+
+  const handleEditTopic = (id: string) => {
+    console.log(id, "id::IDD:IIDD");
+  };
   return (
     <div>
+      {/* Modals */}
+      <BrandsEditModal handleOpenEditModal={handleOpenEditModal} handleCloseEditodal={handleCloseEditodal} />
       <BrandsModal
         openModal={openModal}
         handleCloseModal={handleCloseModal}
@@ -513,8 +387,18 @@ const brandsLibrary = () => {
           <CustomTabPanel value={value} index={1}>
             <div>
               <Outros
+                showdeleteOutroModal={showdeleteOutroModal}
+                handleCloseDeleteModal={handleCloseDeleteModal}
+                HandleDeleteModal={HandleDeleteModal}
                 data={OutroDataList}
                 FilterData={FilteredComponents.FilterData}
+                setIsPopoverOpen={setIsPopoverOpen}
+                isPopoverOpen={isPopoverOpen}
+                popoverAnchorEl={popoverAnchorEl}
+                handlePopoverOpen={handlePopoverOpen}
+                openPopover={openPopover}
+                handleEditOutro={handleEditOutro}
+                outroLoading={outroLoading}
               />
             </div>
           </CustomTabPanel>
@@ -526,8 +410,18 @@ const brandsLibrary = () => {
           <CustomTabPanel value={value} index={3}>
             <div>
               <VideoTopic
+                openPopoverTopic={openPopoverTopic}
+                setIsPopoverOpenTopic={setIsPopoverOpenTopic}
+                isPopoverOpenTopic={isPopoverOpenTopic}
+                popoverAnchorElTopic={popoverAnchorElTopic}
+                handleTopicDeleteModalopen={handleTopicDeleteModalopen}
+                handleTopicDeleteModalclose={handleTopicDeleteModalclose}
+                showTopicDeleteModal={showTopicDeleteModal}
                 data={topicDataList}
-                TopicFilterData={FilteredComponents.TopicFilterData}
+                TopicFilterData={TopicDataFilter}
+                handlePopoverOpenTopic={handlePopoverOpenTopic}
+                openPopover={openPopover}
+                handleEditTopic={handleEditTopic}
               />
             </div>
           </CustomTabPanel>

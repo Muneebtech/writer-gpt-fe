@@ -339,10 +339,10 @@ body {
   }
 }
 
-<<<<<<< HEAD .border-black-btn {
+ .border-black-btn {
   border: 1px solid #171717;
 }
-======= .outro-item:hover {
+.outro-item:hover {
   background-color: #f9f9f9;
   border-radius: 8px;
 }
@@ -355,7 +355,7 @@ body {
   border: 1px solid #171717;
 }
 
->>>>>>>feature/admin-ui .border-btn-red {
+.border-btn-red {
   border: 1px solid red !important;
 }
 

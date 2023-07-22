@@ -21,13 +21,12 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     description: "",
     status: null,
   });
-
   const handleAddData = () => {
     if (newData?.description.trim() !== "") {
       const updatedDataList = [...dataList, newData];
       setDataList(updatedDataList);
       setNewData({
-        id: (parseInt(newData.id) + 1).toString(),
+        id: (parseInt(newData?.id || "0") + 1).toString(),
         outro: "",
         description: "",
         status: null,
@@ -44,7 +43,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
   };
 
   const handleClearTextField = () => {
-    setNewData({ ...newData, description: "" });
+    setNewData({ ...dataList, description: "" });
   };
 
   const handleOutroData = (id: string) => {
@@ -118,8 +117,8 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                     return (
                       <>
                         <div
-                          onClick={() => handleOutroData(items?.id)}
-                          onMouseEnter={() => setHoveredId(items?.id)}
+                          onClick={() => handleOutroData(items?.id || "")}
+                          onMouseEnter={() => setHoveredId(items?.id || "")}
                           onMouseLeave={() => setHoveredId(null)}
                           key={items?.id}
                           className="outro-item mt-2 mb-2 ms-2 me-2 cursor-pointer"
@@ -128,7 +127,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                             <p>{items?.description}</p>
                             <div
                               className="pt-1 cursor-pointer ps-2"
-                              onClick={() => handleOutroData(items?.id)}
+                              onClick={() => handleOutroData(items?.id || "")}
                             >
                               {isHovered && <FaPlus />}
                             </div>

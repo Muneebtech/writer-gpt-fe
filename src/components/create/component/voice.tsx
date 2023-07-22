@@ -59,21 +59,21 @@ const Voice = ({setScriptData}:ChildComponentProps) => {
 
   return (
     <div>
-      <div className='mt-6 rounded-md border-2'>
+      <div className='mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)]'>
         <div>
           <div className='ps-3 pt-2'>
             <h4 className='font-bold'>SELECT YOUR VOICE</h4>
           </div>
           <div className='table-bb-gray mt-4 ms-4 me-4'></div>
         </div>
-        <div className='flex flex-wrap justify-start mt-4 mb-4'>
+        <div className='flex flex-wrap justify-start mt-4 mb-4 overflow-scroll'>
           {Data?.map((item: VoiceData) => {
             const { name, voice_id } = item;
             return (
               <div
                 onClick={() => handleShowCard(voice_id)}
                 key={voice_id}
-                className={`flex justify-between items-center cursor-pointer pt-4 pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card`}
+                className={`flex justify-between items-center cursor-pointer pt-4 pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card `}
               >
                 <div className='flex items-center'>
                   <div>
