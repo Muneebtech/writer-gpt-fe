@@ -8,16 +8,31 @@ import {
 } from "@mui/material";
 import React from "react";
 import { FaTimes } from "react-icons/fa";
-import { FiPlus } from "react-icons/fi";
 interface CHildModalProps {
   handleCloseEditodal: () => void;
   value: number;
   openEditModal: boolean;
+  textValue: any;
+  handleUpdateOutro: () => void;
+  handleUpdateVideoTopic: () => void;
+  handleAddManagersList: () => void;
+  handleClearTextFieldData: () => void;
+  handleInputChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value: number,
+    text: string
+  ) => void;
 }
 const EditBrands: React.FC<CHildModalProps> = ({
   handleCloseEditodal,
   value,
   openEditModal,
+  textValue,
+  handleUpdateOutro,
+  handleUpdateVideoTopic,
+  handleAddManagersList,
+  handleClearTextFieldData,
+  handleInputChange,
 }) => {
   return (
     <div>
@@ -35,7 +50,7 @@ const EditBrands: React.FC<CHildModalProps> = ({
                   <Header title="Edit Outro" />
                 </>
               ) : value === 3 ? (
-                <>const [state, dispatch] = useReducer(first, second, third)
+                <>
                   <Header title="Edit Topic" />
                 </>
               ) : value === 5 ? (
@@ -55,19 +70,25 @@ const EditBrands: React.FC<CHildModalProps> = ({
                     <>
                       {" "}
                       <TextField
-                        // onChange={handleInputChange}
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
                         id="outlined-multiline-static"
-                        label="ADD OUTRO"
+                        label="OUTRO"
                         multiline
                         rows={6}
+                        value={textValue.outro as any}
                         className="w-full mt-2 mb-2"
                       />
                     </>
                   ) : value === 3 ? (
                     <>
                       <TextField
-                        // onChange={handleAddTopic}
-                        label="ADD TOPIC HERE"
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
+                        label="TOPIC"
+                        value={textValue.topic as any}
                         className="w-full mt-2 mb-2"
                       />
                     </>
@@ -77,7 +98,10 @@ const EditBrands: React.FC<CHildModalProps> = ({
                         MANAGERS EMAIL
                       </InputLabel>
                       <TextField
-                        // onChange={handleAddManagerDataLists}
+                        value={textValue as any}
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
                         label="abc@gmail.com"
                         className="w-full"
                       />
@@ -99,27 +123,27 @@ const EditBrands: React.FC<CHildModalProps> = ({
                 Cancel
               </Button>
               <Button
-                // onClick={() => {
-                //   value === 1
-                //     ? HandleAddOutro()
-                //     : value === 3
-                //     ? handleAddNewVideoTopic()
-                //     : value === 5
-                //     ? handleAddManagersList()
-                //     : null;
-                //   handleClearTextFieldData();
-                // }}
+                onClick={() => {
+                  value === 1
+                    ? handleUpdateOutro()
+                    : value === 3
+                    ? handleUpdateVideoTopic()
+                    : value === 5
+                    ? handleAddManagersList()
+                    : null;
+                  handleClearTextFieldData();
+                }}
                 variant="contained"
                 className="button-black ps-4 pe-4"
               >
-                <FiPlus size={25} className="pe-1 ps-1" />
-                {/* {value === 1
-                  ? "ADD OUTRO"
+                {/* <FiPlus size={25} className="pe-1 ps-1" /> */}
+                {value === 1
+                  ? "UPDATE OUTRO"
                   : value === 3
-                  ? "ADD TOPIC"
+                  ? "UPDATE TOPIC"
                   : value === 5
-                  ? "ADD MANAGER"
-                  : null} */}
+                  ? "UPDATE MANAGER"
+                  : null}
               </Button>
             </div>
           </div>

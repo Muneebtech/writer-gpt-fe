@@ -16,7 +16,11 @@ interface ChildProps {
   handleCloseModal: () => void;
   handleOpenModal: () => void;
   HandleAddOutro: () => void;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value: number,
+    text: string
+  ) => void;
   value: number;
   handleAddNewVideoTopic: () => void;
   handleClearTextFieldData: () => void;
@@ -74,7 +78,9 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                     <>
                       {" "}
                       <TextField
-                        onChange={handleInputChange}
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
                         id="outlined-multiline-static"
                         label="ADD OUTRO"
                         multiline

@@ -7,6 +7,8 @@ import { FaTrash } from "react-icons/fa";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { getChannelTypes } from "../Types/channel.types";
 import EditChannel from "./EditChannel";
+import { isAdminOrManager } from "@/utils/authorisation";
+import { decryptData } from "@/utils/localStorage";
 interface CardProps {
   data: {
     id: string;
@@ -206,16 +208,20 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
           >
             <Image width={20} height={20} src="/discord.png" alt="" />
           </a>
-          <div
-            onClick={event => {
-              event.stopPropagation();
-              handlePopoverOpen(event);
-            }}
-            className="rounded-2xl px-3 z-1000 py-1 flex justify-center items-center border-gray-200 border popover-trigger"
-            data-category-id={data?.category?.id}
-          >
-            <Image width={15} height={15} src="/dots.png" alt="" />
-          </div>
+          {isAdminOrManager() ? (
+            <>
+              <div
+                onClick={event => {
+                  event.stopPropagation();
+                  handlePopoverOpen(event);
+                }}
+                className="rounded-2xl px-3 z-1000 py-1 flex justify-center items-center border-gray-200 border popover-trigger"
+                data-category-id={data?.category?.id}
+              >
+                <Image width={15} height={15} src="/dots.png" alt="" />
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
     </>

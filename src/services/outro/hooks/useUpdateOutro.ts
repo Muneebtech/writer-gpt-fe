@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from "react-query";
-import { TopicServices } from "../topicServices";
-import { Topic } from "@/constants/Topic";
+import { updateOutro } from "../type";
+import { OutroServices } from "../OutroServices";
 
-export function useAddTopic() {
+export function useUpdateOutro() {
   const invalidateClient = useQueryClient();
   const { isLoading, data, isSuccess, mutate } = useMutation(
-    "useAddTopic",
-    (data: Topic) => TopicServices.getPostTopic(data),
+    "useUpdateOutro",
+    (data: updateOutro) => OutroServices.updateTopic(data),
     {
       onSuccess() {
-        invalidateClient.invalidateQueries("useTopic");
+        invalidateClient.invalidateQueries("useOutro");
       },
     }
   );

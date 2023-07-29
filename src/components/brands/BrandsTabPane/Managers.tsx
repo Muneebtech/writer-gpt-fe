@@ -7,13 +7,6 @@ interface ManagerDataChildProps {
   managerDataList: ManagerType[];
 }
 const Manager: React.FC<ManagerDataChildProps> = ({ managerDataList }) => {
-  const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
-  const [selectCard, setSelectCard] = useState<string | null>(null);
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
-    null
-  );
-  console.log(managerDataList, "managerDataList");
-
   return (
     <div>
       <div className="mt-6 rounded-md border-2 h-[calc(100vh-11.5rem)] overflow-scroll">

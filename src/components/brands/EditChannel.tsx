@@ -275,9 +275,7 @@ const EditChannel: React.FC<EditChannelProps> = ({
                 <div className="flex items-center">
                   <div>
                     <div className="ms-4 mb-1 mt-1">
-                      <span className="font-bold text-base">
-                        Profile Picture
-                      </span>
+                      <span className="font-bold text-base">Channel Image</span>
                     </div>
                     <div className="">
                       <input
@@ -296,12 +294,12 @@ const EditChannel: React.FC<EditChannelProps> = ({
                             className="rounded-full mr-2"
                             src={
                               formData?.photoPath
-                                ? formData?.photoPath
+                                ? URL.createObjectURL(profileImage)
                                 : "/channel.jpg"
                             }
                             loader={() =>
                               formData?.photoPath
-                                ? formData?.photoPath
+                                ? URL.createObjectURL(profileImage)
                                 : "/channel.jpg"
                             }
                             alt="no image"

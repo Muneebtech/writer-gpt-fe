@@ -33,6 +33,8 @@ import { getChannelTypes } from "../Types/channel.types";
 import Spinner from "@/modules/spinner/spinner";
 import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
+import { isAdminOrManager } from "@/utils/authorisation";
+import { decryptData } from "@/utils/localStorage";
 interface FormData {
   channel: string;
   category: string;
@@ -250,14 +252,18 @@ const Brands = () => {
                 searchKeyword="Search"
                 onSearch={handleSearch}
               />
-              <Button
-                onClick={handleOpenModal}
-                variant="contained"
-                className="button-black ps-4 pe-4"
-              >
-                <FiPlus size={25} className="pe-1 ps-1" />
-                Add Channel
-              </Button>
+              {isAdminOrManager() ? (
+                <>
+                  <Button
+                    onClick={handleOpenModal}
+                    variant="contained"
+                    className="button-black ps-4 pe-4"
+                  >
+                    <FiPlus size={25} className="pe-1 ps-1" />
+                    Add Channel
+                  </Button>
+                </>
+              ) : null}
             </div>
             <div className=" table-bb-gray mt-1 ms-4 me-4 "></div>
             <Modal
