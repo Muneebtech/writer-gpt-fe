@@ -16,7 +16,8 @@ interface TopicDataListProps {
   handleTopicDeleteModalopen: (id: string) => void;
   handlePopoverOpenTopic: (
     id: string,
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLDivElement>,
+    data: any
   ) => void;
   openPopover: string;
   handleEditTopic: (id: string) => void;
@@ -48,7 +49,7 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
   const { mutate, isLoading, isSuccess } = UseDeleteTopic();
 
   const HandleDeleteTopic = (id: string) => {
-    const Deletetopic = TopicFilterData?.filter((items) => items?.id !== id);
+    const Deletetopic = TopicFilterData?.filter(items => items?.id !== id);
     mutate(id);
   };
 
@@ -164,8 +165,8 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
                       </div> */}
                         <div
                           className="pt-2 cursor-pointer "
-                          onClick={(event) =>
-                            handlePopoverOpenTopic(id || "", event)
+                          onClick={event =>
+                            handlePopoverOpenTopic(id || "", event, item)
                           }
                         >
                           <BsThreeDotsVertical />

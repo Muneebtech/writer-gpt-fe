@@ -1,16 +1,13 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { TopicServices } from "../topicServices";
+import { getTopic } from "../types";
 
 export function useTopic() {
-  const { isLoading, data, isSuccess } = useQuery(
+  const { isLoading, data, isSuccess, mutate } = useMutation(
     "useTopic",
-    () => TopicServices.getTopicData(),
-    {
-      cacheTime: 300000,
-      staleTime: 300000,
-    }
+    (params: getTopic) => TopicServices.getTopicData(params)
   );
   const results = data?.results;
 
-  return { data: results, isLoading, isSuccess };
+  return { data: results, isLoading, isSuccess, mutate };
 }

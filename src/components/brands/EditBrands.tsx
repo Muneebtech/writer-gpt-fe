@@ -3,49 +3,42 @@ import {
   Button,
   InputLabel,
   Modal,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { FaTimes } from "react-icons/fa";
-import { FiPlus } from "react-icons/fi";
-
-interface ChildProps {
-  openModal: boolean;
-  handleCloseModal: () => void;
-  handleOpenModal: () => void;
-  HandleAddOutro: () => void;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+interface CHildModalProps {
+  handleCloseEditodal: () => void;
   value: number;
-  handleAddNewVideoTopic: () => void;
-  handleClearTextFieldData: () => void;
-  handleAddManagerDataLists: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  openEditModal: boolean;
+  textValue: any;
+  handleUpdateOutro: () => void;
+  handleUpdateVideoTopic: () => void;
   handleAddManagersList: () => void;
-  handleAddTopic: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleClearTextFieldData: () => void;
+  handleInputChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value: number,
+    text: string
+  ) => void;
 }
-
-const BrandsEditModal: React.FC<ChildProps> = ({
-  openModal,
-  handleCloseModal,
-  handleOpenModal,
-  HandleAddOutro,
-  handleInputChange,
-  handleAddNewVideoTopic,
-  handleAddTopic,
-  handleClearTextFieldData,
-  handleAddManagersList,
-  handleAddManagerDataLists,
+const EditBrands: React.FC<CHildModalProps> = ({
+  handleCloseEditodal,
   value,
+  openEditModal,
+  textValue,
+  handleUpdateOutro,
+  handleUpdateVideoTopic,
+  handleAddManagersList,
+  handleClearTextFieldData,
+  handleInputChange,
 }) => {
   return (
     <div>
-      {" "}
       <Modal
-        open={openModal}
-        onClose={handleCloseModal}
+        open={openEditModal}
+        onClose={handleCloseEditodal}
         className="flex justify-center items-center w-full"
       >
         <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height-1 w-11/12 ">
@@ -54,18 +47,21 @@ const BrandsEditModal: React.FC<ChildProps> = ({
               {value === 1 ? (
                 <>
                   {" "}
-                  <Header title="Add Outro" />
+                  <Header title="Edit Outro" />
                 </>
               ) : value === 3 ? (
                 <>
-                  <Header title="Add Topic" />
+                  <Header title="Edit Topic" />
                 </>
               ) : value === 5 ? (
                 <>
                   <Header title="Add Manager" />
                 </>
               ) : null}
-              <FaTimes onClick={handleCloseModal} className="cursor-pointer" />
+              <FaTimes
+                onClick={handleCloseEditodal}
+                className="cursor-pointer"
+              />
             </div>
             <div>
               <div className="ms-4 me-4">
@@ -74,19 +70,25 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                     <>
                       {" "}
                       <TextField
-                        onChange={handleInputChange}
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
                         id="outlined-multiline-static"
-                        label="ADD OUTRO"
+                        label="OUTRO"
                         multiline
                         rows={6}
+                        value={textValue.outro as any}
                         className="w-full mt-2 mb-2"
                       />
                     </>
                   ) : value === 3 ? (
                     <>
                       <TextField
-                        onChange={handleAddTopic}
-                        label="ADD TOPIC HERE"
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
+                        label="TOPIC"
+                        value={textValue.topic as any}
                         className="w-full mt-2 mb-2"
                       />
                     </>
@@ -96,7 +98,10 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         MANAGERS EMAIL
                       </InputLabel>
                       <TextField
-                        onChange={handleAddManagerDataLists}
+                        value={textValue as any}
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
                         label="abc@gmail.com"
                         className="w-full"
                       />
@@ -111,7 +116,7 @@ const BrandsEditModal: React.FC<ChildProps> = ({
             <div className="table-bb-gray "></div>
             <div className="flex justify-between items-center pt-4 pb-2">
               <Button
-                onClick={handleCloseModal}
+                onClick={handleCloseEditodal}
                 variant="outlined"
                 className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
               >
@@ -120,9 +125,9 @@ const BrandsEditModal: React.FC<ChildProps> = ({
               <Button
                 onClick={() => {
                   value === 1
-                    ? HandleAddOutro()
+                    ? handleUpdateOutro()
                     : value === 3
-                    ? handleAddNewVideoTopic()
+                    ? handleUpdateVideoTopic()
                     : value === 5
                     ? handleAddManagersList()
                     : null;
@@ -131,13 +136,13 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                 variant="contained"
                 className="button-black ps-4 pe-4"
               >
-                <FiPlus size={25} className="pe-1 ps-1" />
+                {/* <FiPlus size={25} className="pe-1 ps-1" /> */}
                 {value === 1
-                  ? "ADD OUTRO"
+                  ? "UPDATE OUTRO"
                   : value === 3
-                  ? "ADD TOPIC"
+                  ? "UPDATE TOPIC"
                   : value === 5
-                  ? "ADD MANAGER"
+                  ? "UPDATE MANAGER"
                   : null}
               </Button>
             </div>
@@ -148,4 +153,4 @@ const BrandsEditModal: React.FC<ChildProps> = ({
   );
 };
 
-export default BrandsEditModal;
+export default EditBrands;

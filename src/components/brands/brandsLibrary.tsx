@@ -1,16 +1,12 @@
 import Header from "@/common/Header/header";
-import { tableData, TableListData } from "@/constants/library";
 import Spinner from "@/modules/spinner/spinner";
-import { useGetJobs } from "@/services/Jobs";
 import { useGetChannelById } from "@/services/channel";
-import { useGetBrandsJobs } from "@/services/channel/hooks/channelJobs";
-import { generateRandomColors } from "@/utils/randomColor";
 import { Button } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
-import { FiDownload, FiPlus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -21,15 +17,18 @@ import LanguageModel from "./BrandsTabPane/languageModel";
 import VideoTopic from "./BrandsTabPane/VideoTopic";
 import Voice from "./BrandsTabPane/Voice";
 import Managers from "./BrandsTabPane/Managers";
-import BrandsModal from "./BrandsModals/BrandsModal";
+import BrandsModal from "./modals/BrandsModal";
 import { useGetOutro } from "@/services/outro";
 import { outroDataTypes } from "../Types/Outro.type";
-import { useAddTopic, useTopic } from "@/services/topic";
-import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
+import { useAddTopic, useTopic, useUpdateTopic } from "@/services/topic";
+import { Topic } from "@/constants/Topic";
 import { UseAddManagers, UseGetManagers } from "@/services/managers";
 import { ManagerType } from "../Types/manager.type";
 import { useAddOutro } from "@/services/outro/hooks/AddOutro";
-import BrandsEditModal from "./BrandsModals/BrandsModal";
+import EditBrands from "./EditBrands";
+import { isAdminOrManager } from "@/utils/authorisation";
+import { useUpdateOutro } from "@/services/outro/hooks/useUpdateOutro";
+import { decryptData } from "@/utils/localStorage";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -47,8 +46,8 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+        <Box sx={{ padding: 3 }}>
+          <span>{children}</span>
         </Box>
       )}
     </div>
@@ -63,6 +62,37 @@ function a11yProps(index: number) {
 }
 
 const brandsLibrary = () => {
+  const [IsAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const userData = decryptData("userdata");
+    if (userData.role === "Admin") {
+      setIsAdmin(true);
+    }
+  }, []);
+  const [channelId, setChannelId] = useState("");
+
+  const router = useRouter();
+  const { id } = router.query;
+  const {
+    isLoading: channelLoading,
+    data: channelData,
+    mutate: channelMutate,
+  } = useGetChannelById();
+
+  useEffect(() => {
+    if (id) {
+      channelMutate(id as string);
+      outroMutate({ channel: id as any });
+      mutateTopic({ channel: id as any });
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (channelData) {
+      setChannelId(channelData?.id);
+    }
+  }, [channelData]);
+
   // Edit Delete Popover
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLDivElement | null>(
@@ -77,14 +107,15 @@ const brandsLibrary = () => {
     data: ManagerData,
     isLoading: ManagerLoading,
     isSuccess,
-  } = UseGetManagers();
+  } = UseGetManagers({ channelId: channelId });
 
   const [managerDataList, setManagerDataList] = useState<ManagerType[]>(
-    ManagerData?.results || []
+    ManagerData || []
   );
+
   const [addNewManagerData, setAddNewManagerData] = useState<ManagerType>({
     id: "0",
-    active: true,
+    status: true,
     firstName: "",
     email: "",
     photoPath: "",
@@ -92,13 +123,14 @@ const brandsLibrary = () => {
     lastName: "",
   });
   const { data, mutate } = UseAddManagers();
+  const [textValue, setTextValue] = useState({ topic: "", outro: "", id: "" });
 
   const handleAddManagersList = () => {
     const addNewManager = [...managerDataList, addNewManagerData];
     setManagerDataList(addNewManager);
     setAddNewManagerData({
       id: (parseInt(addNewManagerData.id) + 1).toString(),
-      active: true,
+      status: true,
       firstName: "",
       email: "",
       photoPath: "",
@@ -115,51 +147,62 @@ const brandsLibrary = () => {
       ...addNewManagerData,
       firstName: event.target.value,
       email: event.target.value,
-      active: event.target.value === "true",
+      status: event.target.value === "true",
     });
   };
   useEffect(() => {
     if (ManagerData) {
-      setManagerDataList(ManagerData?.results);
+      setManagerDataList(ManagerData);
     }
   }, [ManagerData]);
-  // creating Video Topic //
+
+  // creating  Topic //
   const {
     data: AddTopic,
     isLoading: AddTopicLoading,
     isSuccess: AddTopicSuccess,
     mutate: AddTopicMutate,
   } = useAddTopic();
-  const { data: topicData, isLoading } = useTopic();
+  const { mutate: mutateUpdateTopic, isLoading: updateTopicLoading } =
+    useUpdateTopic();
+
+  const { mutate: mutateUpdateOutro } = useUpdateOutro();
+  const { data: topicData, isLoading, mutate: mutateTopic } = useTopic();
   const [topicDataList, setTopicList] = useState<Topic[]>(topicData || []);
   const [addNewTopicVideo, setAddNewTopicVideo] = useState({
-    topic: "",
+    description: "",
   });
   const handleAddNewVideoTopic = () => {
     const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
-    setTopicList(AddNewTopicVideo);
+    setTopicList(AddNewTopicVideo as any);
     setAddNewTopicVideo({
-      topic: "",
+      description: "",
     });
-    AddTopicMutate(addNewTopicVideo);
+    AddTopicMutate(addNewTopicVideo as any);
   };
   const handleAddTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddNewTopicVideo({
       ...addNewTopicVideo,
-      topic: event.target.value,
+      description: event.target.value,
     });
   };
+  const handleUpdateVideoTopic = () => {
+    mutateUpdateTopic(textValue as any);
+  };
+
   useEffect(() => {
     if (topicData) {
       setTopicList(topicData);
     }
   }, [topicData]);
-  const handleClearTextField = () => {
-    setAddNewTopicVideo({ ...addNewTopicVideo, topic: "" });
-  };
+
   //creating Outro
-  const { data: OutrosData, mutate: PostOutros } = useAddOutro();
-  const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
+  const { mutate: PostOutros } = useAddOutro();
+  const {
+    data: Outrodata,
+    isLoading: outroLoading,
+    mutate: outroMutate,
+  } = useGetOutro();
   const [showdeleteOutroModal, setdeleteOutroModal] = useState(false);
   const [showTopicDeleteModal, setshowTopicDeleteModal] = useState(false);
   const [OutroDataList, setOutroDataList] = useState<outroDataTypes[]>(
@@ -201,8 +244,44 @@ const brandsLibrary = () => {
     }
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewOutroData({ ...newOutroData, description: event.target.value });
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value: number,
+    text: string
+  ) => {
+    if (text === "edit") {
+      switch (value) {
+        case 1:
+          setTextValue({ ...textValue, outro: event.target.value });
+          break;
+        case 3:
+          setTextValue({ ...textValue, topic: event.target.value });
+          break;
+      }
+    }
+    if (text === "add") {
+      switch (value) {
+        case 1:
+          setNewOutroData({ ...newOutroData, description: event.target.value });
+
+          break;
+        case 3:
+          setAddNewTopicVideo({
+            ...addNewTopicVideo,
+            description: event.target.value,
+          });
+          break;
+        case 5:
+          setAddNewManagerData({
+            ...addNewManagerData,
+            email: event.target.value,
+          });
+          break;
+
+        default:
+          break;
+      }
+    }
   };
   useEffect(() => {
     if (Outrodata) {
@@ -223,82 +302,102 @@ const brandsLibrary = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  const handleOpenEditModal = () => {
+  const handleOpenEditModal = (description: outroDataTypes) => {
     setOpenEditModal(true);
   };
   const handleCloseEditodal = () => {
     setOpenEditModal(false);
   };
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+
+  const handleOnChange = (
+    event: React.SyntheticEvent<Element, Event>,
+    newValue: number
+  ) => {
     setValue(newValue);
   };
 
-  const router = useRouter();
-  const { id } = router.query;
   const handleCardClick = () => {
     router.push(`/brands`);
   };
 
   // clear Input Feild When New Data Add
   const handleClearTextFieldData = () => {
-    setAddNewTopicVideo({ ...addNewTopicVideo, topic: "" }),
+    setAddNewTopicVideo({ ...addNewTopicVideo, description: "" }),
       setNewOutroData({ ...newOutroData, description: "" });
   };
+
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
+
   const FilteredComponents = useMemo(() => {
-    let filteredData = OutroDataList?.filter((item) => {
+    let filteredData = OutroDataList?.filter(item => {
       return item.description
-        .toLowerCase()
-        .includes(searchKeyword.toLowerCase());
+        ?.toLowerCase()
+        ?.includes(searchKeyword?.toLowerCase());
     });
 
     return {
       FilterData: filteredData,
     };
   }, [OutroDataList, searchKeyword]);
+
   const TopicDataFilter = useMemo(() => {
     if (!searchKeyword) {
       return topicDataList;
     }
 
-    return topicDataList?.filter((item) => {
-      return item.topic.toLowerCase().includes(searchKeyword.toLowerCase());
+    return topicDataList?.filter(item => {
+      return item.topic?.toLowerCase().includes(searchKeyword?.toLowerCase());
     });
   }, [topicDataList, searchKeyword]);
+
   // handlers for Outro
   const handlePopoverOpen = (
     id: string,
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLDivElement>,
+    data: any
   ) => {
     setIsPopoverOpen(true);
     setPopoverAnchorEl(event.currentTarget);
     setOpenPopover(id);
+    setTextValue({ ...textValue, outro: data.description, id: data.id });
   };
 
-  const handleEditOutro = (id: string) => {
-    console.log(id, "id::IDD:IIDD");
+  const handleUpdateOutro = () => {
+    mutateUpdateOutro(textValue as any);
   };
 
   // handlers For Topic
 
   const handlePopoverOpenTopic = (
     id: string,
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLDivElement>,
+    data: any
   ) => {
     setIsPopoverOpenTopic(true);
-    setPopoverAnchorEl(event.currentTarget);
+    setpopoverAnchorElTopic(event.currentTarget);
     setopenPopoverTopic(id);
+    setTextValue({ ...textValue, topic: data.description, id: data.id });
   };
 
   const handleEditTopic = (id: string) => {
-    console.log(id, "id::IDD:IIDD");
+    setOpenEditModal(true);
   };
   return (
     <div>
+      <EditBrands
+        openEditModal={openEditModal}
+        handleCloseEditodal={handleCloseEditodal}
+        value={value}
+        handleUpdateVideoTopic={handleUpdateVideoTopic}
+        handleUpdateOutro={handleUpdateOutro}
+        handleAddManagersList={handleAddManagersList}
+        handleClearTextFieldData={handleClearTextFieldData}
+        handleInputChange={handleInputChange}
+        textValue={textValue}
+      />
       {/* Modals */}
-      <BrandsEditModal handleOpenEditModal={handleOpenEditModal} handleCloseEditodal={handleCloseEditodal} />
       <BrandsModal
         openModal={openModal}
         handleCloseModal={handleCloseModal}
@@ -319,11 +418,11 @@ const brandsLibrary = () => {
               <AiOutlineLeft />
             </div>
             <div className="ps-1 pe-1">
-              <Image src="/chaneel.png" alt="chnaeel" width={30} height={30} />
+              <Image src="/chaneel.png" alt="channel" width={30} height={30} />
             </div>
             <div className="ps-1 pe-1">
               {" "}
-              <span>Morning Prayer</span>
+              <span>{channelData?.channel}</span>
             </div>
           </div>
           <Header
@@ -333,9 +432,10 @@ const brandsLibrary = () => {
             onSearch={handleSearch}
           />
         </div>
-        {value === 2 ? null : value === 4 ? null : (
-          <>
+        {value === 2 ? null : value === 4 ? null : IsAdmin === false ? null : (
+          <div>
             <Button
+              suppressHydrationWarning={true}
               onClick={() => {
                 value === 1
                   ? handleOpenModal()
@@ -359,83 +459,91 @@ const brandsLibrary = () => {
                 ? "Add Manager"
                 : null}
             </Button>
-          </>
+          </div>
         )}
       </div>
       <div className="table-bb-gray mt-1 ms-4 me-4"></div>
       <div>
-        <Box sx={{ width: "100%" }}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-            >
-              <Tab label="OverView" {...a11yProps(0)} />
-              <Tab label="Outros" {...a11yProps(1)} />
-              <Tab label="Language Model" {...a11yProps(2)} />
-              <Tab label="Video topics" {...a11yProps(3)} />
-              <Tab label="Voice" {...a11yProps(4)} />
-              <Tab label="Managers" {...a11yProps(5)} />
-            </Tabs>
+        {id ? (
+          <Box sx={{ width: "100%" }}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={value}
+                onChange={handleOnChange}
+                aria-label="basic tabs example"
+              >
+                <Tab label="OverView" {...a11yProps(0)} />
+                <Tab label="Outros" {...a11yProps(1)} />
+                <Tab label="Language Model" {...a11yProps(2)} />
+                <Tab label="Video topics" {...a11yProps(3)} />
+                <Tab label="Voice" {...a11yProps(4)} />
+                {IsAdmin ? (
+                  <Tab
+                    suppressHydrationWarning={true}
+                    label="Managers"
+                    {...a11yProps(5)}
+                  />
+                ) : null}
+              </Tabs>
+            </Box>
+            <CustomTabPanel value={value} index={0}>
+              <div>
+                <OverView />
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+              <div>
+                <Outros
+                  handleOpenEditModal={handleOpenEditModal}
+                  showdeleteOutroModal={showdeleteOutroModal}
+                  handleCloseDeleteModal={handleCloseDeleteModal}
+                  HandleDeleteModal={HandleDeleteModal}
+                  data={OutroDataList}
+                  FilterData={FilteredComponents.FilterData}
+                  setIsPopoverOpen={setIsPopoverOpen}
+                  isPopoverOpen={isPopoverOpen}
+                  popoverAnchorEl={popoverAnchorEl}
+                  handlePopoverOpen={handlePopoverOpen}
+                  openPopover={openPopover}
+                  outroLoading={outroLoading}
+                />
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={2}>
+              <div>
+                <LanguageModel />
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={3}>
+              <div>
+                <VideoTopic
+                  openPopoverTopic={openPopoverTopic}
+                  setIsPopoverOpenTopic={setIsPopoverOpenTopic}
+                  isPopoverOpenTopic={isPopoverOpenTopic}
+                  popoverAnchorElTopic={popoverAnchorElTopic}
+                  handleTopicDeleteModalopen={handleTopicDeleteModalopen}
+                  handleTopicDeleteModalclose={handleTopicDeleteModalclose}
+                  showTopicDeleteModal={showTopicDeleteModal}
+                  data={topicDataList}
+                  TopicFilterData={TopicDataFilter}
+                  handlePopoverOpenTopic={handlePopoverOpenTopic}
+                  openPopover={openPopover}
+                  handleEditTopic={handleEditTopic}
+                />
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={4}>
+              <div>
+                <Voice />
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={5}>
+              <div>
+                <Managers managerDataList={managerDataList} />
+              </div>
+            </CustomTabPanel>
           </Box>
-          <CustomTabPanel value={value} index={0}>
-            <div>
-              <OverView />
-            </div>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            <div>
-              <Outros
-                showdeleteOutroModal={showdeleteOutroModal}
-                handleCloseDeleteModal={handleCloseDeleteModal}
-                HandleDeleteModal={HandleDeleteModal}
-                data={OutroDataList}
-                FilterData={FilteredComponents.FilterData}
-                setIsPopoverOpen={setIsPopoverOpen}
-                isPopoverOpen={isPopoverOpen}
-                popoverAnchorEl={popoverAnchorEl}
-                handlePopoverOpen={handlePopoverOpen}
-                openPopover={openPopover}
-                handleEditOutro={handleEditOutro}
-                outroLoading={outroLoading}
-              />
-            </div>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            <div>
-              <LanguageModel />
-            </div>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={3}>
-            <div>
-              <VideoTopic
-                openPopoverTopic={openPopoverTopic}
-                setIsPopoverOpenTopic={setIsPopoverOpenTopic}
-                isPopoverOpenTopic={isPopoverOpenTopic}
-                popoverAnchorElTopic={popoverAnchorElTopic}
-                handleTopicDeleteModalopen={handleTopicDeleteModalopen}
-                handleTopicDeleteModalclose={handleTopicDeleteModalclose}
-                showTopicDeleteModal={showTopicDeleteModal}
-                data={topicDataList}
-                TopicFilterData={TopicDataFilter}
-                handlePopoverOpenTopic={handlePopoverOpenTopic}
-                openPopover={openPopover}
-                handleEditTopic={handleEditTopic}
-              />
-            </div>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={4}>
-            <div>
-              <Voice />
-            </div>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={5}>
-            <div>
-              <Managers managerDataList={managerDataList} />
-            </div>
-          </CustomTabPanel>
-        </Box>
+        ) : null}
       </div>
     </div>
   );

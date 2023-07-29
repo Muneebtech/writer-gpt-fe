@@ -1,18 +1,17 @@
 import { useMutation, useQueryClient } from "react-query";
-import { UseOutroData } from "../OutroServices";
-
+import { OutroServices } from "../OutroServices";
 
 export function UseDeleteOutro() {
-    const queryClient = useQueryClient();
-    const { data, isLoading, isSuccess, mutate } = useMutation("", (id: string) =>
-        UseOutroData.deleteOutro(id),
-        {
-            onSuccess: () => {
+  const queryClient = useQueryClient();
+  const { data, isLoading, isSuccess, mutate } = useMutation(
+    "",
+    (id: string) => OutroServices.deleteOutro(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("useOutro"); // Assuming the query key for the list is "channelList"
+      },
+    }
+  );
 
-                queryClient.invalidateQueries("useOutro"); // Assuming the query key for the list is "channelList"
-            },
-        }
-    )
-
-    return { data, isLoading, isSuccess, mutate }
+  return { data, isLoading, isSuccess, mutate };
 }

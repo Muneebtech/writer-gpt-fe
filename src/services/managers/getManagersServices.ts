@@ -1,11 +1,13 @@
 import { AddManagerType, ManagerType } from "@/components/Types/manager.type";
 import { request } from "@/lib/axios";
+import { getManager } from "./types";
 
 export class getManagersServices {
-  static getManagers() {
+  static getManagers(params: getManager) {
     return request({
-      url: "/users",
+      url: "users/managers",
       method: "GET",
+      params: params,
     });
   }
   static addManager(data: AddManagerType) {

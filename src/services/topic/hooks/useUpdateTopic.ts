@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from "react-query";
 import { TopicServices } from "../topicServices";
 import { Topic } from "@/constants/Topic";
+import { updateTopic } from "../types";
 
-export function useAddTopic() {
+export function useUpdateTopic() {
   const invalidateClient = useQueryClient();
   const { isLoading, data, isSuccess, mutate } = useMutation(
     "useAddTopic",
-    (data: Topic) => TopicServices.getPostTopic(data),
+    (data: updateTopic) => TopicServices.updateTopic(data),
     {
       onSuccess() {
         invalidateClient.invalidateQueries("useTopic");

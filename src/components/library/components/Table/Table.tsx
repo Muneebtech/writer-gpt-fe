@@ -1,18 +1,17 @@
-import {  TableListData } from "@/constants/library"
-import Spinner from "../../../../modules/spinner/spinner"
-import { useGetJobs } from "@/services/Jobs"
-import { generateRandomColors } from "@/utils/randomColor"
-import Image from "next/image"
-import React, { useState ,useMemo} from "react"
-import { FiDownload } from "react-icons/fi"
-import { Button } from "@mui/material"
-import Header from "@/common/Header/header"
+import { TableListData } from "@/constants/library";
+import Spinner from "../../../../modules/spinner/spinner";
+import { useGetJobs } from "@/services/Jobs";
+import { generateRandomColors } from "@/utils/randomColor";
+import Image from "next/image";
+import React, { useState, useMemo } from "react";
+import { FiDownload } from "react-icons/fi";
+import { Button } from "@mui/material";
+import Header from "@/common/Header/header";
 const Table = () => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const { isLoading: loading, data: Data } = useGetJobs()
-  const [totalPagesData, setTotalPages] = useState(Data?.totalPages)
+  const [currentPage, setCurrentPage] = useState(1);
+  const { isLoading: loading, data: Data } = useGetJobs();
+  const [totalPagesData, setTotalPages] = useState(Data?.totalPages);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-
 
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
@@ -22,46 +21,48 @@ const Table = () => {
     let filtered = Data?.results;
     if (searchKeyword) {
       filtered = filtered.filter((data: TableListData) =>
-        data?.channel?.channel?.toLowerCase().includes(searchKeyword.toLowerCase())
+        data?.channel?.channel
+          ?.toLowerCase()
+          .includes(searchKeyword.toLowerCase())
       );
     }
     return filtered;
   }, [searchKeyword, Data?.results]);
 
-  let startPage = Math.max(currentPage - 2, 1)
-  let endPage = Math.min(startPage + 4, totalPagesData)
+  let startPage = Math.max(currentPage - 2, 1);
+  let endPage = Math.min(startPage + 4, totalPagesData);
 
   if (endPage - startPage < 4) {
-    startPage = Math.max(endPage - 4, 1)
+    startPage = Math.max(endPage - 4, 1);
   }
   // Generate an array of visible page numbers
   const visiblePages = Array.from(
     { length: endPage - startPage + 1 },
     (_, i) => startPage + i
-  )
+  );
   // Handle previous page click
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      handlePageChange(currentPage - 1)
+      handlePageChange(currentPage - 1);
     }
-  }
+  };
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+    setCurrentPage(page);
+  };
   // Handle next page click
   const handleNextPage = () => {
     if (currentPage < totalPagesData) {
-      handlePageChange(currentPage + 1)
+      handlePageChange(currentPage + 1);
     }
-  }
+  };
   function downloadTextAsFile(text: string, filename: string) {
-    const blob = new Blob([text], { type: "text/plain" })
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement("a")
-    link.href = url
-    link.download = filename
-    link.click()
-    window.URL.revokeObjectURL(url)
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    window.URL.revokeObjectURL(url);
   }
   return (
     <>
@@ -85,7 +86,7 @@ const Table = () => {
           <div className="bg-white table-b-gray rounded-lg">
             <div
               className="table-container h-[calc(100vh-11.6rem)] rounded-lg"
-              style={{ overflowY:"scroll" }}
+              style={{ overflowY: "scroll" }}
             >
               <table className="min-w-full divide-y divide-gray-300 text-sm">
                 <thead>
@@ -103,17 +104,17 @@ const Table = () => {
                 </thead>
                 <tbody>
                   {filteredData?.map((row: TableListData, index: number) => {
-                    const { backgroundColor } = generateRandomColors()
-                    const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${row.photoPath}`
-                    const currentDate = new Date()
+                    const { backgroundColor } = generateRandomColors();
+                    const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${row.photoPath}`;
+                    const currentDate = new Date();
                     const formattedDate = currentDate
                       .toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
                       })
-                      .replace(/\//g, "-")
-                    const filename = `${formattedDate}_${row?.channel?.channel}`
+                      .replace(/\//g, "-");
+                    const filename = `${formattedDate}_${row?.channel?.channel}`;
                     return (
                       <tr
                         key={row?.id}
@@ -200,7 +201,7 @@ const Table = () => {
                         </td> */}
                         {/* <td className="py-4 px-4 text-center">{row.date}</td> */}
                       </tr>
-                    )
+                    );
                   })}
                 </tbody>
               </table>
@@ -223,7 +224,7 @@ const Table = () => {
                   ...
                 </button>
               )}
-              {visiblePages.map((page) => (
+              {visiblePages.map(page => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""
@@ -255,7 +256,7 @@ const Table = () => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Table
+export default Table;

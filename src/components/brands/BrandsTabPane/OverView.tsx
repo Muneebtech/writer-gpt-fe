@@ -4,21 +4,31 @@ import Spinner from "@/modules/spinner/spinner";
 import { useGetJobs } from "@/services/Jobs";
 import { useGetBrandsJobs } from "@/services/channel/hooks/channelJobs";
 import { generateRandomColors } from "@/utils/randomColor";
-import { Button } from "@mui/material";
+import { Box, Button, Popover, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiDownload, FiPlus } from "react-icons/fi";
 const OverView = () => {
   const router = useRouter();
   const { id } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
-  const [totalPagesCount, setTotalPages] = useState(data?.totalPages);
-  const LibraryData = data?.results;
-  console.log(LibraryData,"LibraryData:::::LibraryData");
-  
+  const [Data, setData] = useState<TableListData[]>();
+  const [totalPagesCount, setTotalPages] = useState(1);
+  // const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  // const [popoverAnchorEl, setpopoverAnchorEl] = useState<HTMLDivElement | null>(
+  //   null
+  // );
+  // const [openEditModal, setOpenEditModal] = useState(false);
+
+  useEffect(() => {
+    setTotalPages(data?.totalPages);
+    setData(data?.results);
+  }, [data]);
+
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
 
@@ -45,6 +55,45 @@ const OverView = () => {
       handlePageChange(currentPage + 1);
     }
   };
+  function downloadTextAsFile(text: string, filename: string) {
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  function downloadFiles(row: TableListData) {
+    const currentDate = new Date();
+    const formattedDate = currentDate
+      .toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+      .replace(/\//g, "-");
+    const filename = `${formattedDate}_${row?.channel?.channel}`;
+
+    // Download the GPT logs file
+    if (row?.gptLogs) {
+      downloadTextAsFile(row.gptLogs, `GPT_LOG_${filename}`);
+    }
+
+    // Download the script file
+    if (row?.script) {
+      downloadTextAsFile(row.script, `SCRIPT_${filename}`);
+    }
+  }
+
+  // const handleOpenEditModal = () => {
+  //   setOpenEditModal(true);
+  //   // setEditTopicData();
+  // };
+  // const HandleDeleteModal = () => {
+  //   setOpenEditModal(false);
+  // };
   return (
     <>
       {isLoading ? (
@@ -70,13 +119,22 @@ const OverView = () => {
                 </tr>
               </thead>
               <tbody>
-                {LibraryData?.map((row: TableListData, index: number) => {
+                {Data?.map((row: TableListData, index: number) => {
+                  const currentDate = new Date();
+                  const formattedDate = currentDate
+                    .toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })
+                    .replace(/\//g, "-");
+                  const filename = `${formattedDate}_${row?.channel?.channel}`;
                   const { backgroundColor } = generateRandomColors();
                   return (
                     <tr
                       key={row?.id}
                       className={`border-b leading-3 ${
-                        index !== LibraryData.length - 1 ? "table-bb-gray" : ""
+                        index !== Data.length - 1 ? "table-bb-gray" : ""
                       }`}
                     >
                       <td className="py-4 px-4 text-center ">
@@ -88,21 +146,31 @@ const OverView = () => {
                             height={28}
                             className="mr-2 rounded"
                           />
-                          {row?.channel.channel}
+                          {row?.channel?.channel}
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-center">
+                      <td className="py-4 px-4 text-left">
                         {row?.model?.model}
                       </td>
-                      <td className="py-4 px-4 text-center">
-                        {row.topic?.topic}
+                      <td className="py-4 px-4 text-left">
+                        {row?.topic?.topic}
                       </td>
-                      <td className="py-4 px-4 text-center">
-                        {row.outro?.outro}
+                      <td className="py-4 px-4 text-left">
+                        {row?.outro?.outro}
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex justify-center">
-                          <FiDownload />
+                          <Button
+                            disabled={row?.gptLogs ? false : true}
+                            onClick={() =>
+                              downloadTextAsFile(
+                                row.gptLogs,
+                                `GPT_LOG_${filename}`
+                              )
+                            }
+                          >
+                            <FiDownload />
+                          </Button>
                         </div>
                       </td>
                       <td className="py-4 px-4 text-center">
@@ -115,15 +183,24 @@ const OverView = () => {
                           {row.wordCount}
                         </span>
                       </td>
-                      <td className="py-4 px-4">
+                      <td className="py-4 px-4 flex justify-center items-center">
                         <div className="flex justify-center">
-                          <FiDownload />
+                          <Button
+                            disabled={row?.script ? false : true}
+                            onClick={() =>
+                              downloadTextAsFile(
+                                row.script,
+                                `SCRIPT_${filename}`
+                              )
+                            }
+                          >
+                            <FiDownload />
+                          </Button>
                         </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex justify-center">
-                          <FiDownload />
-                        </div>
+                        <BsThreeDotsVertical
+                          style={{ marginRight: "-10px" }}
+                          onClick={() => downloadFiles(row)} // Call the downloadFiles function when the three-dot icon is clicked
+                        />
                       </td>
                       {/* <td className="py-4 px-4 text-center">{row.date}</td> */}
                     </tr>
@@ -147,7 +224,7 @@ const OverView = () => {
                   ...
                 </button>
               )}
-              {visiblePages.map((page) => (
+              {visiblePages.map(page => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""
@@ -176,6 +253,39 @@ const OverView = () => {
               </button>
             </div>
           </div>
+
+          {/* <Popover
+            open={isPopoverOpen}
+            anchorEl={popoverAnchorEl}
+            onClose={HandleDeleteModal}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+              <Typography
+                onClick={() => handleOpenEditModal()}
+                className="cursor-pointer"
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+              >
+                Edit
+              </Typography>
+              <Typography
+                onClick={() => HandleDeleteModal()}
+                className="cursor-pointer"
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+              >
+                Delete
+              </Typography>
+            </Box>
+          </Popover> */}
         </>
       )}
     </>

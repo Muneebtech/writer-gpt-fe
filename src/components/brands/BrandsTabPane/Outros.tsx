@@ -14,14 +14,15 @@ interface OutroProps {
   popoverAnchorEl: HTMLDivElement | null;
   handlePopoverOpen: (
     id: string,
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLDivElement>,
+    item: any
   ) => void;
   openPopover: string;
-  handleEditOutro: (id: string) => void;
   outroLoading: boolean;
   handleCloseDeleteModal: () => void;
   HandleDeleteModal: (id: string) => void;
   showdeleteOutroModal: boolean;
+  handleOpenEditModal: (description: outroDataTypes) => void;
 }
 
 const Outros: React.FC<OutroProps> = ({
@@ -32,11 +33,11 @@ const Outros: React.FC<OutroProps> = ({
   popoverAnchorEl,
   handlePopoverOpen,
   openPopover,
-  handleEditOutro,
   outroLoading,
   handleCloseDeleteModal,
   HandleDeleteModal,
   showdeleteOutroModal,
+  handleOpenEditModal,
 }) => {
   const [totalPagesCount, setTotalPages] = useState(1);
   const { mutate, isSuccess } = UseDeleteOutro();
@@ -76,9 +77,8 @@ const Outros: React.FC<OutroProps> = ({
   });
 
   const HandleDeleteChannel = (id: string) => {
-    const DeleteOutroData = FilterData?.filter((items) => items?.id !== id);
-    console.log(id, "iddddddddddddd");
-    mutate(id)
+    const DeleteOutroData = FilterData?.filter(items => items?.id !== id);
+    mutate(id);
   };
   return (
     <div>
@@ -143,7 +143,7 @@ const Outros: React.FC<OutroProps> = ({
             >
               <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
                 <Typography
-                  onClick={() => handleEditOutro(openPopover)}
+                  onClick={() => handleOpenEditModal(openPopover as any)}
                   className="cursor-pointer"
                   id="modal-modal-description"
                   sx={{ mt: 1 }}
@@ -201,8 +201,8 @@ const Outros: React.FC<OutroProps> = ({
                             </div>
                             <div
                               className="pt-2 cursor-pointer"
-                              onClick={(event) =>
-                                handlePopoverOpen(items?.id || "", event)
+                              onClick={event =>
+                                handlePopoverOpen(items?.id || "", event, items)
                               }
                             >
                               <BsThreeDotsVertical />
@@ -230,7 +230,7 @@ const Outros: React.FC<OutroProps> = ({
                       ...
                     </button>
                   )}
-                  {visiblePages.map((page) => (
+                  {visiblePages.map(page => (
                     <button
                       className={`px-2 py-1 border border-gray-300 rounded-md ${
                         page === currentPage ? "bg-blue-500 text-white" : ""

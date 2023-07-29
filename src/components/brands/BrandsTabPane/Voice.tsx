@@ -52,7 +52,7 @@ const Voice = () => {
   }, [Data]);
 
   useEffect(() => {
-    Object.values(audioRefs.current).forEach((audio) => {
+    Object.values(audioRefs.current).forEach(audio => {
       if (audio) {
         audio.addEventListener("ended", () => {
           setCurrentAudio(null);
@@ -85,7 +85,7 @@ const Voice = () => {
                   <div
                     onClick={() => handleShowCard(voice_id)}
                     key={voice_id}
-                    className={`flex justify-between items-center cursor-pointer pt-4 pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2   w-[95%] `}
+                    className={`flex justify-between items-center cursor-pointer pt-4 pb-4 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2   w-[97%] `}
                   >
                     <div className="flex items-center">
                       <div>

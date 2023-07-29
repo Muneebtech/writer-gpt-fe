@@ -16,7 +16,11 @@ interface ChildProps {
   handleCloseModal: () => void;
   handleOpenModal: () => void;
   HandleAddOutro: () => void;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value: number,
+    text: string
+  ) => void;
   value: number;
   handleAddNewVideoTopic: () => void;
   handleClearTextFieldData: () => void;
@@ -27,7 +31,7 @@ interface ChildProps {
   handleAddTopic: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const BrandsModal: React.FC<ChildProps> = ({
+const BrandsEditModal: React.FC<ChildProps> = ({
   openModal,
   handleCloseModal,
   handleOpenModal,
@@ -54,15 +58,15 @@ const BrandsModal: React.FC<ChildProps> = ({
               {value === 1 ? (
                 <>
                   {" "}
-                  <Header title="Edit Outro" />
+                  <Header title="Add Outro" />
                 </>
               ) : value === 3 ? (
                 <>
-                  <Header title="Edit Topic" />
+                  <Header title="Add Topic" />
                 </>
               ) : value === 5 ? (
                 <>
-                  <Header title="Edit Manager" />
+                  <Header title="Add Manager" />
                 </>
               ) : null}
               <FaTimes onClick={handleCloseModal} className="cursor-pointer" />
@@ -74,7 +78,9 @@ const BrandsModal: React.FC<ChildProps> = ({
                     <>
                       {" "}
                       <TextField
-                        onChange={handleInputChange}
+                        onChange={event =>
+                          handleInputChange(event, value, "edit")
+                        }
                         id="outlined-multiline-static"
                         label="ADD OUTRO"
                         multiline
@@ -148,4 +154,4 @@ const BrandsModal: React.FC<ChildProps> = ({
   );
 };
 
-export default BrandsModal;
+export default BrandsEditModal;

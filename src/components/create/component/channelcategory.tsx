@@ -38,13 +38,13 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
             // style={{ height: `${divHeight}px` }}
             className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)]"
           >
-            <div>
+            <div className="h-[10%]">
               <div className="ps-3 pt-2">
                 <h4 className="font-bold">SELECT YOUR CHANNEL</h4>
               </div>
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
-            <div className="flex flex-wrap justify-center mt-4 mb-4 height-table">
+            <div className="flex flex-wrap flex-start mt-4 mb-4 h-[90%] overflow-scroll">
               {Data?.map((item: Channel) => {
                 const { id, channel, description } = item;
                 return (
