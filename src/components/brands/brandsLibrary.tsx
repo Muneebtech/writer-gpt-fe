@@ -416,8 +416,6 @@ const brandsLibrary = () => {
     mutateUpdateOutro(textValue as any);
   };
 
-  // handlers For Topic
-
   const handlePopoverOpenTopic = (
     id: string,
     event: React.MouseEvent<HTMLDivElement>,

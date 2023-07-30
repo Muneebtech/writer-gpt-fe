@@ -81,10 +81,10 @@ const Outros: React.FC<OutroProps> = ({
     const DeleteOutroData = FilterData?.filter((items) => items?.id !== id);
     mutate(id);
   };
-
+  const { isLoading: OutroDataLoading } = useGetOutro();
   return (
     <div>
-      {outroLoading ? (
+      {OutroDataLoading ? (
         <>
           <Spinner />
         </>

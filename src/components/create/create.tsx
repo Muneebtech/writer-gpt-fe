@@ -44,6 +44,7 @@ const Create = () => {
     channel: "",
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
+  const [channelId, setChannelId] = useState<string>("");
   console.log(ScriptData, "ScriptData");
 
   const [Open, setOpen] = useState(false);
@@ -100,20 +101,22 @@ const Create = () => {
     formdata.append("channel", data.channel as string);
     mutate(formdata);
   };
-
+  const handleChannelId = () => {
+    setChannelId("");
+  };
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <ChannelAndCategory setScriptData={handleStateUpdate} />;
+        return <ChannelAndCategory setScriptData={handleStateUpdate} setChannelId={setChannelId} />;
       case 1:
         return <BasicData setScriptData={handleStateUpdate} />;
       // return <Script setScriptData={handleStateUpdate} />;
       case 2:
         return <LanguageModel setScriptData={handleStateUpdate} />;
       case 3:
-        return <Topic setScriptData={handleStateUpdate} />;
+        return <Topic setScriptData={handleStateUpdate} channelId={channelId} />;
       case 4:
-        return <Outro setScriptData={handleStateUpdate} />;
+        return <Outro setScriptData={handleStateUpdate} channelId={channelId}  />;
       case 5:
         return <Voice setScriptData={handleStateUpdate} />;
       case 6:

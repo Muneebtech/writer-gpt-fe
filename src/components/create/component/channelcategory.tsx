@@ -9,9 +9,11 @@ import Spinner from "@/modules/spinner/spinner";
 import { Job } from "@/components/Types/job.type";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
+  setChannelId: (channelId: string) => void;
 }
 const ChannelAndCategory: React.FC<ChildComponentProps> = ({
   setScriptData,
+  setChannelId,
 }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const {
@@ -23,6 +25,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
   const handleClick = (id: string) => {
     setSelectedItemId(id === selectedItemId ? null : id);
     setScriptData({ channel: id });
+    setChannelId(id);
   };
 
   return (

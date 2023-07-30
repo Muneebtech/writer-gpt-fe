@@ -1,24 +1,32 @@
 import { Job } from "@/components/Types/job.type";
 import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import Spinner from "@/modules/spinner/spinner";
+import { useGetChannelById } from "@/services/channel";
 import { useTopic } from "@/services/topic";
 import { Button } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
+  channelId: string;
 }
-
-const Topic: React.FC<ChildComponentProps> = ({ setScriptData }) => {
+const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
   const [selectTopic, setSelectTopic] = useState<string | null>(null);
-  const { data: topicData, isLoading } = useTopic();
+  const { data: topicData, isLoading, mutate } = useTopic();
   console.log(topicData, "topicDat:::");
 
   const handleClick = (id: string) => {
     setSelectTopic(id === selectTopic ? null : id);
     setScriptData({ topic: id });
   };
+
+  useEffect(() => {
+    if (channelId) {
+      mutate({ channel: channelId });
+    }
+  }, [channelId]);
+
   return (
     <div>
       {isLoading ? (
