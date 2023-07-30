@@ -44,7 +44,6 @@ const Create = () => {
     channel: "",
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
-  console.log(ScriptData, "ScriptData");
 
   const [Open, setOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
@@ -66,18 +65,18 @@ const Create = () => {
     newSkipped = new Set(newSkipped.values());
     newSkipped.delete(activeStep);
     if (activeStep < 6) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setActiveStep(prevActiveStep => prevActiveStep + 1);
     }
     setSkipped(newSkipped);
   };
 
   const handleBack = () => {
     if (activeStep > 0) {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+      setActiveStep(prevActiveStep => prevActiveStep - 1);
     }
   };
   const handleStateUpdate = (updatedState: Partial<Job>) => {
-    setScriptData((prevState) => ({
+    setScriptData(prevState => ({
       ...prevState,
       ...updatedState,
     }));
@@ -114,8 +113,8 @@ const Create = () => {
         return <Topic setScriptData={handleStateUpdate} />;
       case 4:
         return <Outro setScriptData={handleStateUpdate} />;
-      case 5:
-        return <Voice setScriptData={handleStateUpdate} />;
+      // case 5:
+      //   return <Voice setScriptData={handleStateUpdate} />;
       case 6:
         return <Review ScriptData={ScriptData} />;
       case 7:
