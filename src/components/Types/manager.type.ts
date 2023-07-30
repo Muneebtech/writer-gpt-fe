@@ -9,4 +9,5 @@ export type ManagerType = {
 };
 export type AddManagerType = {
   email: string;
+  id: string | any
 };

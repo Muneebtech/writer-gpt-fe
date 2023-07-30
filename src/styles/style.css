@@ -599,3 +599,6 @@ label + .css-v4u5dn-MuiInputBase-root-MuiInput-root {
   border-radius: 8px !important;
   background-color: #fff !important;
 }
+.MuiLoadingButton-text{
+  color: tomato;
+}

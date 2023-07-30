@@ -16,17 +16,12 @@ export class OutroServices {
     });
   }
   static addOutroData(data: outroDataTypes) {
-    console.log(data, "data");
-
-    const params = {
-      description: data.description,
-      outro: data.outro,
-    };
-
+    console.log(data,"OutrpAddData");
+    
     return request({
       url: "/outro",
       method: "POST",
-      data: params,
+      data: data,
     });
   }
   static deleteOutro(id: string) {

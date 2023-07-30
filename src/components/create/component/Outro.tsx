@@ -7,9 +7,10 @@ import { Job } from "@/components/Types/job.type";
 import { useGetOutro } from "@/services/outro";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
+  channelId: string;
 }
-const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
-  const { data: Outrodata, isLoading: outroLoading } = useGetOutro();
+const Outro: React.FC<ChildComponentProps> = ({ setScriptData,channelId }) => {
+  const { data: Outrodata, isLoading: outroLoading, mutate } = useGetOutro();
   console.log(Outrodata, "Outrodata");
   console.log(Outrodata, "Outrodata::Outrodata::Outrodata  ");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -34,6 +35,11 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     }
   };
 
+  useEffect(() => {
+    if (channelId) {
+      mutate({ channel: channelId });
+    }
+  }, [channelId]);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewData({ ...newData, description: event.target.value });
   };

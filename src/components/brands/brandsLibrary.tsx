@@ -84,9 +84,13 @@ const brandsLibrary = () => {
       channelMutate(id as string);
       outroMutate({ channel: id as any });
       mutateTopic({ channel: id as any });
+      managersMutate({ channelId: id as any });
     }
   }, [id]);
-
+  useEffect(() => {
+    if (id) {
+    }
+  });
   useEffect(() => {
     if (channelData) {
       setChannelId(channelData?.id);
@@ -107,7 +111,8 @@ const brandsLibrary = () => {
     data: ManagerData,
     isLoading: ManagerLoading,
     isSuccess,
-  } = UseGetManagers({ channelId: channelId });
+    mutate: managersMutate,
+  } = UseGetManagers();
 
   const [managerDataList, setManagerDataList] = useState<ManagerType[]>(
     ManagerData || []
@@ -122,8 +127,18 @@ const brandsLibrary = () => {
     role: "",
     lastName: "",
   });
-  const { data, mutate } = UseAddManagers();
-  const [textValue, setTextValue] = useState({ topic: "", outro: "", id: "" });
+  const {
+    data,
+    mutate,
+    isLoading: managerLoading,
+    isSuccess: managerSuccess,
+  } = UseAddManagers();
+  const [textValue, setTextValue] = useState({
+    topic: "",
+    outro: "",
+    id: "",
+    managers: "",
+  });
 
   const handleAddManagersList = () => {
     const addNewManager = [...managerDataList, addNewManagerData];
@@ -137,7 +152,7 @@ const brandsLibrary = () => {
       role: "",
       lastName: "",
     });
-    mutate({ email: addNewManagerData.email });
+    mutate({ email: addNewManagerData.email, id: id });
   };
 
   const handleAddManagerDataLists = (
@@ -171,20 +186,27 @@ const brandsLibrary = () => {
   const [topicDataList, setTopicList] = useState<Topic[]>(topicData || []);
   const [addNewTopicVideo, setAddNewTopicVideo] = useState({
     description: "",
+    topic: "",
   });
   const handleAddNewVideoTopic = () => {
     const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
     setTopicList(AddNewTopicVideo as any);
     setAddNewTopicVideo({
       description: "",
+      topic: "",
     });
-    AddTopicMutate(addNewTopicVideo as any);
+    AddTopicMutate({
+      topic: addNewTopicVideo.topic,
+      description: addNewTopicVideo.description,
+      channel: id as any,
+    });
   };
   const handleAddTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAddNewTopicVideo({
-      ...addNewTopicVideo,
-      description: event.target.value,
-    });
+    const { name, value } = event.target;
+    setAddNewTopicVideo((prevTopic) => ({
+      ...prevTopic,
+      [name]: value,
+    }));
   };
   const handleUpdateVideoTopic = () => {
     mutateUpdateTopic(textValue as any);
@@ -197,7 +219,11 @@ const brandsLibrary = () => {
   }, [topicData]);
 
   //creating Outro
-  const { mutate: PostOutros } = useAddOutro();
+  const {
+    mutate: PostOutros,
+    isLoading: OutroLoading,
+    isSuccess: outroSuccess,
+  } = useAddOutro();
   const {
     data: Outrodata,
     isLoading: outroLoading,
@@ -228,19 +254,40 @@ const brandsLibrary = () => {
   const handleCloseDeleteModal = () => {
     setdeleteOutroModal(false);
   };
-  const HandleAddOutro = () => {
-    if (newOutroData?.description.trim() !== "") {
-      const AddNewOutro: outroDataTypes = {
-        ...newOutroData,
-        description: "",
-      };
+  // const HandleAddOutro = () => {
+  //   if (newOutroData?.description.trim() !== "") {
+  //     const AddNewOutro: outroDataTypes = {
+  //       ...newOutroData,
+  //       description: "",
+  //     };
 
-      setOutroDataList([...OutroDataList, AddNewOutro]);
+  //     setOutroDataList([...OutroDataList, AddNewOutro]);
+  //     setNewOutroData({
+  //       description: "",
+  //     });
+
+  //     PostOutros({ description: newOutroData, id: id });
+  //   }
+  // };
+  const HandleAddOutro = () => {
+    console.log(newOutroData, "trigger:: start");
+    console.log(newOutroData?.description.trim() !== "", "Outro");
+    console.log(channelId, "ChannelId");
+    if (newOutroData?.description.trim() !== "") {
+      // const AddNewOutro: outroDataTypes = {
+      //   description: newOutroData.description,
+      // };
+
+      // setOutroDataList([...OutroDataList, AddNewOutro]);
+      PostOutros({
+        description: newOutroData.description,
+        channel: channelId as any,
+      });
+      console.log("trigger");
+
       setNewOutroData({
         description: "",
       });
-
-      PostOutros(newOutroData);
     }
   };
 
@@ -259,6 +306,7 @@ const brandsLibrary = () => {
           break;
       }
     }
+    console.log("newOutroData", event.target.value, "Text", text);
     if (text === "add") {
       switch (value) {
         case 1:
@@ -331,7 +379,7 @@ const brandsLibrary = () => {
   };
 
   const FilteredComponents = useMemo(() => {
-    let filteredData = OutroDataList?.filter(item => {
+    let filteredData = OutroDataList?.filter((item) => {
       return item.description
         ?.toLowerCase()
         ?.includes(searchKeyword?.toLowerCase());
@@ -347,7 +395,7 @@ const brandsLibrary = () => {
       return topicDataList;
     }
 
-    return topicDataList?.filter(item => {
+    return topicDataList?.filter((item) => {
       return item.topic?.toLowerCase().includes(searchKeyword?.toLowerCase());
     });
   }, [topicDataList, searchKeyword]);
@@ -368,8 +416,6 @@ const brandsLibrary = () => {
     mutateUpdateOutro(textValue as any);
   };
 
-  // handlers For Topic
-
   const handlePopoverOpenTopic = (
     id: string,
     event: React.MouseEvent<HTMLDivElement>,
@@ -384,6 +430,18 @@ const brandsLibrary = () => {
   const handleEditTopic = (id: string) => {
     setOpenEditModal(true);
   };
+  useEffect(() => {
+    if (outroSuccess) {
+      handleCloseModal();
+    }
+    if (AddTopicSuccess) {
+      handleCloseModal();
+    }
+    if (managerSuccess) {
+      handleCloseModal();
+    }
+  }, [outroSuccess, AddTopicSuccess, managerSuccess]);
+
   return (
     <div>
       <EditBrands
@@ -399,6 +457,7 @@ const brandsLibrary = () => {
       />
       {/* Modals */}
       <BrandsModal
+        addNewTopicVideo={addNewTopicVideo}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
         handleOpenModal={handleOpenModal}

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import "./../../../public/profile.png";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   FiSettings,
   FiLogOut,
@@ -27,7 +28,7 @@ const Sidebar: React.FC = () => {
   const router = useRouter();
   const token = decryptData("token");
   const [UserDetails, setUserDetails] = useState<User>();
-  const { mutate, isSuccess } = useLogout();
+  const { mutate, isSuccess, isLoading: logOutLoading } = useLogout();
   const handleLogout = () => {
     mutate({ refreshToken: token?.refresh?.token });
     Cookies.remove("userdata");
@@ -52,43 +53,62 @@ const Sidebar: React.FC = () => {
   };
   return (
     <>
-      <Modal
-        open={showdeleteModal}
-        onClose={handleCloseDeleteModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="flex justify-center items-center"
-      >
-        <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Logging Out?
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Are you sure you want to logout ? Logout Cancel
-          </Typography>
-          <div className="flex justify-end pt-4">
-            <div className="pe-2 ps-2">
-              <Button
-                onClick={handleLogout}
-                className="flex items-center border-red-600 border-btn-red"
-                variant="outlined"
-              >
-                <FiLogOut className="text-red-600" />{" "}
-                <span className="ps-2 pe-2 text-red-600">Logout</span>
-              </Button>
-            </div>
-            <div>
-              <Button
-                onClick={handleCloseDeleteModal}
-                variant="contained"
-                className="btn-black button-black-modal"
-              >
-                <span className="ps-2 pe-2">Cancel</span>
-              </Button>
-            </div>
-          </div>
-        </Box>
-      </Modal>
+      {isSuccess ? (
+        <></>
+      ) : (
+        <>
+          {" "}
+          <Modal
+            open={showdeleteModal}
+            onClose={handleCloseDeleteModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            className="flex justify-center items-center"
+          >
+            <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Logging Out?
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Are you sure you want to logout ? Logout Cancel
+              </Typography>
+              <div className="flex justify-end pt-4">
+                <div className="pe-2 ps-2">
+                  <Button
+                    onClick={handleLogout}
+                    className="flex items-center border-red-600 border-btn-red"
+                    variant="outlined"
+                  >
+                    <FiLogOut className="text-red-600" />{" "}
+                    <span className="ps-2 pe-2 text-red-600">
+                      {logOutLoading ? (
+                        <LoadingButton
+                          loading
+                          loadingIndicator="Loading…"
+                          variant="outlined"
+                          color="error"
+                        ></LoadingButton>
+                      ) : (
+                        "Logout"
+                      )}
+                    </span>
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    onClick={handleCloseDeleteModal}
+                    variant="contained"
+                    className="btn-black button-black-modal"
+                  >
+                    <span className="ps-2 pe-2">Cancel</span>
+                  </Button>
+                </div>
+              </div>
+            </Box>
+          </Modal>
+        </>
+      )}
+
       <div className="w-48 h-screen flex flex-col bg-black text-white ">
         <div className="p-4">
           {/* Profile section */}
