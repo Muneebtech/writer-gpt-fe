@@ -113,7 +113,8 @@ export type TopicModalData = {
 };
 
 export type Topic = {
-  topic: string;
-  description?: string;
-  id: string;
+  topic?: string;
+  description?: string | any;
+  id?: string | any;
+  channel?: string
 };

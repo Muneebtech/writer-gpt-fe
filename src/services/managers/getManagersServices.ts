@@ -12,7 +12,7 @@ export class getManagersServices {
   }
   static addManager(data: AddManagerType) {
     return request({
-      url: "/users/invite",
+      url: `/users/invite`,
       method: "POST",
       data: data,
     });

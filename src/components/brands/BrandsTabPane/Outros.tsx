@@ -5,7 +5,8 @@ import { useState } from "react";
 import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { FaTrash } from "react-icons/fa";
 import Spinner from "@/modules/spinner/spinner";
-
+import buttonSpinner from "@/common/buttonspinner/buttonSpinner";
+import { LoadingButton } from "@mui/lab";
 interface OutroProps {
   data: outroDataTypes[];
   FilterData: outroDataTypes[];
@@ -40,7 +41,7 @@ const Outros: React.FC<OutroProps> = ({
   handleOpenEditModal,
 }) => {
   const [totalPagesCount, setTotalPages] = useState(1);
-  const { mutate, isSuccess } = UseDeleteOutro();
+  const { mutate, isSuccess, isLoading } = UseDeleteOutro();
   const [currentPage, setCurrentPage] = useState(1);
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
@@ -77,9 +78,10 @@ const Outros: React.FC<OutroProps> = ({
   });
 
   const HandleDeleteChannel = (id: string) => {
-    const DeleteOutroData = FilterData?.filter(items => items?.id !== id);
+    const DeleteOutroData = FilterData?.filter((items) => items?.id !== id);
     mutate(id);
   };
+
   return (
     <div>
       {outroLoading ? (
@@ -90,77 +92,107 @@ const Outros: React.FC<OutroProps> = ({
         <>
           <>
             {/* Modal-Delete */}
-            <Modal
-              open={showdeleteOutroModal}
-              onClose={handleCloseDeleteModal}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              className="flex justify-center items-center"
-            >
-              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  DELETING CHANNEL
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Are you sure you want to delete this channel? Delete Cancel
-                </Typography>
-                <div className="flex justify-end pt-4">
-                  <div className="pe-2 ps-2">
-                    <Button
-                      onClick={() => HandleDeleteChannel(openPopover)}
-                      className="flex items-center border-red-600 border-btn-red"
-                      variant="outlined"
+            {isSuccess ? (
+              <></>
+            ) : (
+              <>
+                <Modal
+                  open={showdeleteOutroModal}
+                  onClose={handleCloseDeleteModal}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                  className="flex justify-center items-center"
+                >
+                  <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
                     >
-                      <FaTrash className="text-red-600" />{" "}
-                      <span className="ps-2 pe-2 text-red-600">Delete</span>
-                    </Button>
-                  </div>
-                  <div>
-                    <Button
-                      onClick={handleCloseDeleteModal}
-                      variant="contained"
-                      className="btn-black button-black-modal"
-                    >
-                      <span className="ps-2 pe-2">Cancel</span>
-                    </Button>
-                  </div>
-                </div>
-              </Box>
-            </Modal>
+                      DELETING CHANNEL
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      Are you sure you want to delete this channel? Delete
+                      Cancel
+                    </Typography>
+                    <div className="flex justify-end pt-4">
+                      <div className="pe-2 ps-2">
+                        <Button
+                          disabled={isLoading}
+                          onClick={() => HandleDeleteChannel(openPopover)}
+                          className="flex items-center border-red-600 border-btn-red"
+                          variant="outlined"
+                        >
+                          <FaTrash className="text-red-600" />
+                          <span className="ps-2 pe-2 text-red-600">
+                            {/* {isLoading ? "" : <> <buttonSpinner/> </>} */}
+                            {isLoading ? (
+                              <LoadingButton
+                                loading
+                                loadingIndicator="Loading…"
+                                variant="outlined"
+                                color="error"
+                              ></LoadingButton>
+                            ) : (
+                              "Delete"
+                            )}
+                          </span>
+                        </Button>
+                      </div>
+                      <div>
+                        <Button
+                          onClick={handleCloseDeleteModal}
+                          variant="contained"
+                          className="btn-black button-black-modal"
+                        >
+                          <span className="ps-2 pe-2">Cancel</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </Box>
+                </Modal>
+              </>
+            )}
 
-            <Popover
-              open={isPopoverOpen}
-              anchorEl={popoverAnchorEl}
-              onClose={handlePopoverClosed}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-            >
-              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
-                <Typography
-                  onClick={() => handleOpenEditModal(openPopover as any)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
+            {isSuccess ? (
+              <></>
+            ) : (
+              <>
+                <Popover
+                  open={isPopoverOpen}
+                  anchorEl={popoverAnchorEl}
+                  onClose={handlePopoverClosed}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
                 >
-                  Edit
-                </Typography>
-                <Typography
-                  onClick={() => HandleDeleteModal(openPopover)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
-                >
-                  Delete
-                  {/* {isLoading ? "Deleting..." : "Delete"} */}
-                </Typography>
-              </Box>
-            </Popover>
+                  <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+                    <Typography
+                      onClick={() => handleOpenEditModal(openPopover as any)}
+                      className="cursor-pointer"
+                      id="modal-modal-description"
+                      sx={{ mt: 1 }}
+                    >
+                      Edit
+                    </Typography>
+                    <Typography
+                      onClick={() => HandleDeleteModal(openPopover)}
+                      className="cursor-pointer"
+                      id="modal-modal-description"
+                      sx={{ mt: 1 }}
+                    >
+                      Delete
+                      {/* {isLoading ? "Deleting..." : "Delete"} */}
+                    </Typography>
+                  </Box>
+                </Popover>
+              </>
+            )}
           </>
           <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
             <div className="flex items-center justify-between pe-16 ps-6 pt-4">
@@ -201,7 +233,7 @@ const Outros: React.FC<OutroProps> = ({
                             </div>
                             <div
                               className="pt-2 cursor-pointer"
-                              onClick={event =>
+                              onClick={(event) =>
                                 handlePopoverOpen(items?.id || "", event, items)
                               }
                             >
@@ -230,7 +262,7 @@ const Outros: React.FC<OutroProps> = ({
                       ...
                     </button>
                   )}
-                  {visiblePages.map(page => (
+                  {visiblePages.map((page) => (
                     <button
                       className={`px-2 py-1 border border-gray-300 rounded-md ${
                         page === currentPage ? "bg-blue-500 text-white" : ""

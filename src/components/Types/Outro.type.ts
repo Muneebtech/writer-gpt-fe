@@ -3,8 +3,10 @@ export type OutroItems = {
   value: string;
 };
 export type outroDataTypes = {
-  description: string;
-  id?: string;
+  description?: string;
+  channel?: string;
   outro?: string;
   status?: null;
+  id?:string
 };
+

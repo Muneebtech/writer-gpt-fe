@@ -1,4 +1,5 @@
 import Header from "@/common/Header/header";
+import { useAddOutro } from "@/services/outro/hooks/AddOutro";
 import {
   Button,
   InputLabel,
@@ -7,11 +8,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
+import { useAddTopic } from "@/services/topic";
+import { UseAddManagers } from "@/services/managers";
 
 interface ChildProps {
+  addNewTopicVideo: {
+    description: string;
+    topic: string;
+  };
   openModal: boolean;
   handleCloseModal: () => void;
   handleOpenModal: () => void;
@@ -32,6 +40,7 @@ interface ChildProps {
 }
 
 const BrandsEditModal: React.FC<ChildProps> = ({
+  addNewTopicVideo,
   openModal,
   handleCloseModal,
   handleOpenModal,
@@ -44,6 +53,9 @@ const BrandsEditModal: React.FC<ChildProps> = ({
   handleAddManagerDataLists,
   value,
 }) => {
+  const { isLoading: OutroLoading } = useAddOutro();
+  const { isLoading: TopicLoading } = useAddTopic();
+  const { isLoading: ManagerLoading } = UseAddManagers();
   return (
     <div>
       {" "}
@@ -78,8 +90,8 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                     <>
                       {" "}
                       <TextField
-                        onChange={event =>
-                          handleInputChange(event, value, "edit")
+                        onChange={(event) =>
+                          handleInputChange(event, value, "add")
                         }
                         id="outlined-multiline-static"
                         label="ADD OUTRO"
@@ -92,9 +104,20 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                     <>
                       <TextField
                         onChange={handleAddTopic}
-                        label="ADD TOPIC HERE"
+                        value={addNewTopicVideo.topic}
+                        label="ADD TOPIC DESCRIPTION"
                         className="w-full mt-2 mb-2"
+                        name="topic"
                       />
+                      <div className="pt-4">
+                        <TextField
+                          onChange={handleAddTopic}
+                          value={addNewTopicVideo.description}
+                          label="ADD TOPIC HERE"
+                          className="w-full mt-2 mb-2"
+                          name="description"
+                        />
+                      </div>
                     </>
                   ) : value === 5 ? (
                     <>
@@ -145,6 +168,42 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                   : value === 5
                   ? "ADD MANAGER"
                   : null}
+                {OutroLoading ? (
+                  <>
+                    <LoadingButton
+                      loading
+                      loadingIndicator="Loading…"
+                      variant="outlined"
+                      color="error"
+                    ></LoadingButton>
+                  </>
+                ) : (
+                  <></>
+                )}
+                {TopicLoading ? (
+                  <>
+                    <LoadingButton
+                      loading
+                      loadingIndicator="Loading…"
+                      variant="outlined"
+                      color="error"
+                    ></LoadingButton>
+                  </>
+                ) : (
+                  <></>
+                )}
+                {ManagerLoading ? (
+                  <>
+                    <LoadingButton
+                      loading
+                      loadingIndicator="Loading…"
+                      variant="outlined"
+                      color="error"
+                    ></LoadingButton>
+                  </>
+                ) : (
+                  <></>
+                )}
               </Button>
             </div>
           </div>

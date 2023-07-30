@@ -98,7 +98,7 @@ const EditBrands: React.FC<CHildModalProps> = ({
                         MANAGERS EMAIL
                       </InputLabel>
                       <TextField
-                        value={textValue as any}
+                        value={textValue.manager as any}
                         onChange={event =>
                           handleInputChange(event, value, "edit")
                         }

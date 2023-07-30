@@ -243,7 +243,6 @@ const Brands = () => {
         </>
       ) : (
         <>
-          {" "}
           <div className="flex flex-col text-black gap-5 fade-in">
             <div className="flex items-center justify-between">
               <Header
