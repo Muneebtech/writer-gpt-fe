@@ -67,18 +67,18 @@ const Create = () => {
     newSkipped = new Set(newSkipped.values());
     newSkipped.delete(activeStep);
     if (activeStep < 6) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setActiveStep(prevActiveStep => prevActiveStep + 1);
     }
     setSkipped(newSkipped);
   };
 
   const handleBack = () => {
     if (activeStep > 0) {
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+      setActiveStep(prevActiveStep => prevActiveStep - 1);
     }
   };
   const handleStateUpdate = (updatedState: Partial<Job>) => {
-    setScriptData((prevState) => ({
+    setScriptData(prevState => ({
       ...prevState,
       ...updatedState,
     }));

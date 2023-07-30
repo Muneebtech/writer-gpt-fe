@@ -1,1 +1,2 @@
-export * from "./useVoices"
+export * from "./useVoices";
+export * from "./useGenerateVoice";
