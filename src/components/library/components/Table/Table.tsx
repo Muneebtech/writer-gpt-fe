@@ -3,19 +3,27 @@ import Spinner from "../../../../modules/spinner/spinner";
 import { useGetJobs } from "@/services/Jobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { FiDownload } from "react-icons/fi";
-import { Button } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import Header from "@/common/Header/header";
+import Voice from "../voice";
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading: loading, data: Data } = useGetJobs();
-  const [totalPagesData, setTotalPages] = useState(Data?.totalPages);
+  const [totalPagesData, setTotalPages] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-
+  const [selectedRow, setSelectedRow] = useState<TableListData>();
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    if (Data) {
+      setTotalPages(Data?.totalPages);
+    }
+  }, [Data]);
 
   const filteredData = useMemo(() => {
     let filtered = Data?.results;
@@ -64,6 +72,20 @@ const Table = () => {
     link.click();
     window.URL.revokeObjectURL(url);
   }
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 800,
+    bgcolor: "background.paper",
+    // border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
   return (
     <>
       {loading ? (
@@ -98,7 +120,7 @@ const Table = () => {
                     <th className="py-4 px-4 text-center">GPT Logs</th>
                     <th className="py-4 px-4 text-center">Word Count</th>
                     <th className="py-4 px-4 text-center">Script</th>
-                    {/* <th className="py-4 px-4 text-center">Voiceover</th> */}
+                    <th className="py-4 px-4 text-center">Voiceover</th>
                     {/* <th className="py-4 px-4 text-center">Date</th> */}
                   </tr>
                 </thead>
@@ -186,19 +208,20 @@ const Table = () => {
                             </Button>
                           </div>
                         </td>
-                        {/* <td className="py-4 px-4">
+                        <td className="py-4 px-4">
                           <div className="flex justify-center">
                             <Button
-                              disabled={true}
-                              onClick={() =>
-                                downloadTextAsFile(row.gptLogs, filename)
-                              }
+                              // disabled={true}
+                              onClick={() => {
+                                setOpenModal(true);
+                                setSelectedRow(row);
+                              }}
                               className="text-black"
                             >
                               <FiDownload />
                             </Button>
                           </div>
-                        </td> */}
+                        </td>
                         {/* <td className="py-4 px-4 text-center">{row.date}</td> */}
                       </tr>
                     );
@@ -253,6 +276,20 @@ const Table = () => {
               </button>
             </div>
           </div>
+          <Modal
+            open={openModal}
+            onClose={handleCloseModal}
+            // className="flex justify-center items-center"
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Voice
+                handleCloseModal={handleCloseModal}
+                selectedRow={selectedRow}
+              ></Voice>
+            </Box>
+          </Modal>
         </>
       )}
     </>
