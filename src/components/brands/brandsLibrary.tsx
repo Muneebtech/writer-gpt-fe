@@ -178,10 +178,14 @@ const brandsLibrary = () => {
     isSuccess: AddTopicSuccess,
     mutate: AddTopicMutate,
   } = useAddTopic();
-  const { mutate: mutateUpdateTopic, isLoading: updateTopicLoading } =
-    useUpdateTopic();
+  const {
+    mutate: mutateUpdateTopic,
+    isLoading: updateTopicLoading,
+    isSuccess: updateTopicSuccess,
+  } = useUpdateTopic();
 
-  const { mutate: mutateUpdateOutro } = useUpdateOutro();
+  const { mutate: mutateUpdateOutro, isSuccess: OutroUpdateSuccess } =
+    useUpdateOutro();
   const { data: topicData, isLoading, mutate: mutateTopic } = useTopic();
   const [topicDataList, setTopicList] = useState<Topic[]>(topicData || []);
   const [addNewTopicVideo, setAddNewTopicVideo] = useState({
@@ -441,6 +445,15 @@ const brandsLibrary = () => {
       handleCloseModal();
     }
   }, [outroSuccess, AddTopicSuccess, managerSuccess]);
+
+  useEffect(() => {
+    if (updateTopicSuccess) {
+      handleCloseEditodal();
+    }
+    if (OutroUpdateSuccess) {
+      handleCloseEditodal();
+    }
+  }, [updateTopicSuccess, OutroUpdateSuccess]);
 
   return (
     <div>
