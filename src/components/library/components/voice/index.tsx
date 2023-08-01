@@ -78,7 +78,7 @@ const Voice = ({ handleCloseModal, selectedRow }: ChildComponentProps) => {
   useEffect(() => {
     if (voiceData.data) {
       // Create a new Blob URL from the provided Blob
-      setAudioUrl(voiceData.data);
+      setAudioUrl(voiceData.data?.file_link);
     }
   }, [voiceData.data]);
   const rotateAnimation = `spin 1s linear infinite`;
@@ -153,15 +153,16 @@ const Voice = ({ handleCloseModal, selectedRow }: ChildComponentProps) => {
               })}
             </div>
           </div>
-          <div className="d-flex justify-flex-end ms-1 me-1">
+          <div className="flex justify-end mt-2 ms-1 me-1 gap-2">
             <div>
-              <audio controls>
-                <source src={audioUrl} type="audio/mp3" />
-                Your browser does not support the audio element.
-              </audio>
+              {audioUrl ? (
+                <audio controls src={audioUrl}>
+                  Your browser does not support the audio element.
+                </audio>
+              ) : null}
             </div>
             <Button
-              className="text-black ms-1 me-1"
+              className="text-black "
               variant="outlined"
               onClick={handleCloseModal}
               disabled={voiceData.isLoading}
@@ -170,7 +171,7 @@ const Voice = ({ handleCloseModal, selectedRow }: ChildComponentProps) => {
             </Button>
             <Button
               variant="contained"
-              className="button-black ms-1 me-1"
+              className="button-black "
               onClick={handleSubmit}
               disabled={voiceData.isLoading}
             >
