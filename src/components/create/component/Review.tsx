@@ -15,9 +15,10 @@ import { useGetOutro } from "@/services/outro";
 import { Topic } from "@/constants/Topic";
 import { Outros } from "@/constants/outro";
 import { ModelList } from "@/constants/languageModel";
- import {OutroItems} from "../../Types/Outro.type"
+import { OutroItems } from "../../Types/Outro.type";
 import { useGetChannels } from "@/services/channel";
 import { Channel } from "@/constants/channelcategories";
+import { useEffect } from "react";
 interface ChildComponentProps {
   ScriptData: Job | null;
 }
@@ -27,9 +28,14 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
     isLoading: loading,
     data: Outrodata,
     isSuccess: success,
+    mutate: mutateOutro,
   } = useGetOutro();
 
-  const { data: topicData, isLoading: topicLoading } = useTopic();
+  const {
+    data: topicData,
+    isLoading: topicLoading,
+    mutate: topicMutate,
+  } = useTopic();
   const { data: modelData, isLoading: modelLoading } = useModel();
   const { data: channelData, isLoading: channelLoading } = useGetChannels({});
 
@@ -42,12 +48,10 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
     (obj: Channel) => obj.id === ScriptData?.channel
   );
 
-  console.log(Outrodata,"Outrodata");
-  console.log(topicData,"topicData");
-  console.log(modelData,'modelData');
-  
-  
-  
+  useEffect(() => {
+    mutateOutro({});
+    topicMutate({});
+  }, []);
 
   return (
     <div>
@@ -131,9 +135,7 @@ const Review: React.FC<ChildComponentProps> = ({ ScriptData }) => {
                     </p>
                   </div>
                   <div className="pt-1 pb-1  ml-1  w-[90%]">
-                    <p>
-                      {outro?.outro}
-                    </p>
+                    <p>{outro?.outro}</p>
                   </div>
                 </div>
                 {/* <div className="pt-1 pb-1">

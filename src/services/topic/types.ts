@@ -3,5 +3,5 @@ export type updateTopic = {
   id: string;
 };
 export type getTopic = {
-  channel: string;
+  channel?: string;
 };
