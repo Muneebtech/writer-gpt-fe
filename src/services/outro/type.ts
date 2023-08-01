@@ -3,5 +3,5 @@ export type updateOutro = {
   id: string;
 };
 export type getOutro = {
-  channel: string;
+  channel?: string;
 };

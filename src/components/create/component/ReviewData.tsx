@@ -1,13 +1,5 @@
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Header from "@/common/Header/header";
-import { CreateReviewData, ReviewDataTypes } from "@/constants/ReviewConstant";
+import { useEffect } from "react";
 import Image from "next/image";
-import { FaPlus } from "react-icons/fa";
 import { Job } from "@/components/Types/job.type";
 import { useTopic } from "@/services/topic";
 import { useModel } from "@/services/Script/hooks/useModel";
@@ -17,7 +9,6 @@ import { OutroItems } from "@/./components/Types/Outro.type";
 import { ModelList } from "@/constants/languageModel";
 import { useGetChannels } from "@/services/channel";
 import { Channel } from "@/constants/channelcategories";
-import { scriptType } from "@/components/Types/script.type";
 interface ChildComponentProps {
   ScriptData: Job | null;
   Jobdata: {
@@ -25,9 +16,19 @@ interface ChildComponentProps {
   };
 }
 const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
-  const { data: Outrodata } = useGetOutro();
   const profileImage = ScriptData?.photoPath;
-  const { data: topicData } = useTopic();
+  const {
+    isLoading: loading,
+    data: Outrodata,
+    isSuccess: success,
+    mutate: mutateOutro,
+  } = useGetOutro();
+
+  const {
+    data: topicData,
+    isLoading: topicLoading,
+    mutate: topicMutate,
+  } = useTopic();
   const { data: modelData } = useModel();
   const { data: channelData } = useGetChannels({});
 
@@ -39,6 +40,11 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
   let channel = channelData?.find(
     (obj: Channel) => obj.id === ScriptData?.channel
   );
+  useEffect(() => {
+    mutateOutro({});
+    topicMutate({});
+  }, []);
+
   return (
     <div>
       <div className="h-[calc(100vh-13.6rem)] mt-6 rounded-md border-2 ">
@@ -56,7 +62,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {ScriptData?.name ? "Script Name" : "Script Name"}
                     </p>
                   </div>
-        
+
                   <div className=" pt-1 pb-1 flex  ml-1  w-[90%]">
                     <p>{ScriptData?.name}</p>
                   </div>
@@ -65,7 +71,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                   <div className="w-[10%] flex  pt-1 pb-1">
                     <p className="font-bold  pe-3 font-text"> Thumbnail </p>
                   </div>
-               
+
                   <div className=" ml-1 w-[90%] flex  pt-1 pb-1">
                     <Image
                       src={
@@ -85,7 +91,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {channel?.channel ? "Channel " : "Channel "}
                     </p>
                   </div>
-             
+
                   <div className=" pt-1 pb-1  ml-1  w-[90%]">
                     <p>{channel?.channel}</p>
                   </div>
@@ -96,7 +102,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {topic?.topic ? "Topic " : "Topic "}
                     </p>
                   </div>
-            
+
                   <div className="pt-1 pb-1  ml-1  w-[90%]">
                     <p>{topic?.topic}</p>
                   </div>
@@ -107,7 +113,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {model?.model ? "Model " : "Model "}
                     </p>
                   </div>
-  
+
                   <div className="pt-1 pb-1  ml-1  w-[90%]">
                     <p>{model?.model}</p>
                   </div>
@@ -118,11 +124,9 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                       {outro?.outro ? "Outro " : "Outro "}
                     </p>
                   </div>
-    
+
                   <div className="pt-1 pb-1  ml-1  w-[90%]">
-                    <p>
-                      {outro?.outro}
-                    </p>
+                    <p>{outro?.outro}</p>
                   </div>
                 </div>
                 {/* <div className="pt-2 pb-2 border ps-2 pe-2">
@@ -132,7 +136,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({ ScriptData, Jobdata }) => {
                   <div className="w-[10%] flex">
                     <p className="font-bold pe-3 font-text">{"Script "}</p>
                   </div>
-          
+
                   <div className="pt-2 pb-2 w-[90%] ml-1 border me-2 pe-3 scriptData whitespace-pre-line">
                     <p>{Jobdata?.script}</p>
                   </div>

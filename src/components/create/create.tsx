@@ -24,7 +24,7 @@ const steps = [
   "LANGUAGE MODEL",
   "TOPIC",
   "OUTRO",
-  "VOICE",
+  // "VOICE",
   "REVIEW",
 ];
 
@@ -40,12 +40,11 @@ const Create = () => {
     outro: "",
     script: "",
     wordCount: 0,
-    voice: "",
+    // voice: "",
     channel: "",
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
   const [channelId, setChannelId] = useState<string>("");
-  console.log(ScriptData, "ScriptData");
 
   const [Open, setOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
@@ -107,21 +106,30 @@ const Create = () => {
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <ChannelAndCategory setScriptData={handleStateUpdate} setChannelId={setChannelId} />;
+        return (
+          <ChannelAndCategory
+            setScriptData={handleStateUpdate}
+            setChannelId={setChannelId}
+          />
+        );
       case 1:
         return <BasicData setScriptData={handleStateUpdate} />;
       // return <Script setScriptData={handleStateUpdate} />;
       case 2:
         return <LanguageModel setScriptData={handleStateUpdate} />;
       case 3:
-        return <Topic setScriptData={handleStateUpdate} channelId={channelId} />;
+        return (
+          <Topic setScriptData={handleStateUpdate} channelId={channelId} />
+        );
       case 4:
-        return <Outro setScriptData={handleStateUpdate} channelId={channelId}  />;
+        return (
+          <Outro setScriptData={handleStateUpdate} channelId={channelId} />
+        );
+      // case 5:
+      //   return <Voice setScriptData={handleStateUpdate} />;
       case 5:
-        return <Voice setScriptData={handleStateUpdate} />;
-      case 6:
         return <Review ScriptData={ScriptData} />;
-      case 7:
+      case 6:
         return <ReviewData Jobdata={data} ScriptData={ScriptData} />;
     }
   };
@@ -200,7 +208,7 @@ const Create = () => {
                     Back
                   </Button>
                 )}
-                {activeStep > 6 ? (
+                {activeStep > 5 ? (
                   <Button
                     variant="contained"
                     className="button-black ms-2 me-2"
