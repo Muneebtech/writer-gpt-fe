@@ -5,7 +5,7 @@ import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import { useState } from "react";
 import { useTopic } from "@/services/topic";
 import { Box, Button, Modal, Popover, Typography } from "@mui/material";
-import { FaTrash } from "react-icons/fa";
+import { FaSpinner, FaTrash } from "react-icons/fa";
 import { UseDeleteTopic } from "@/services/topic/hooks/useDeleteTopic";
 import { LoadingButton } from "@mui/lab";
 interface TopicDataListProps {
@@ -52,6 +52,8 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
     const Deletetopic = TopicFilterData?.filter((items) => items?.id !== id);
     mutate(id);
   };
+  const rotateAnimation = `spin 1s linear infinite`;
+
   const { isLoading: TopicDataLoading } = useTopic();
   return (
     <>
@@ -90,15 +92,26 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
                           className="flex items-center border-red-600 border-btn-red"
                           variant="outlined"
                         >
-                          <FaTrash className="text-red-600" />{" "}
+                          {isLoading ? (
+                            <></>
+                          ) : (
+                            <>
+                              {" "}
+                              <FaTrash className="text-red-600" />{" "}
+                            </>
+                          )}
                           <span className="ps-2 pe-2 text-red-600">
                             {isLoading ? (
-                              <LoadingButton
-                                loading
-                                loadingIndicator="Loading…"
-                                variant="outlined"
-                                color="error"
-                              ></LoadingButton>
+                              <div className="flex items-center">
+                                <FaSpinner
+                                  size={16}
+                                  style={{
+                                    animation: rotateAnimation,
+                                    marginRight: "10px",
+                                  }}
+                                ></FaSpinner>
+                                <span className="ms-1"> Delete</span>
+                              </div>
                             ) : (
                               "Delete"
                             )}

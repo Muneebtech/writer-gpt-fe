@@ -3,7 +3,7 @@ import { UseDeleteOutro, useGetOutro } from "@/services/outro";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useState } from "react";
 import { Box, Button, Modal, Popover, Typography } from "@mui/material";
-import { FaTrash } from "react-icons/fa";
+import { FaSpinner, FaTrash } from "react-icons/fa";
 import Spinner from "@/modules/spinner/spinner";
 import buttonSpinner from "@/common/buttonspinner/buttonSpinner";
 import { LoadingButton } from "@mui/lab";
@@ -40,6 +40,7 @@ const Outros: React.FC<OutroProps> = ({
   showdeleteOutroModal,
   handleOpenEditModal,
 }) => {
+  const rotateAnimation = `spin 1s linear infinite`;
   const [totalPagesCount, setTotalPages] = useState(1);
   const { mutate, isSuccess, isLoading } = UseDeleteOutro();
   const [currentPage, setCurrentPage] = useState(1);
@@ -123,16 +124,29 @@ const Outros: React.FC<OutroProps> = ({
                           className="flex items-center border-red-600 border-btn-red"
                           variant="outlined"
                         >
-                          <FaTrash className="text-red-600" />
+                          {isLoading ? (
+                            <></>
+                          ) : (
+                            <>
+                              {" "}
+                              <FaTrash className="text-red-600" />
+                            </>
+                          )}
                           <span className="ps-2 pe-2 text-red-600">
                             {/* {isLoading ? "" : <> <buttonSpinner/> </>} */}
                             {isLoading ? (
-                              <LoadingButton
-                                loading
-                                loadingIndicator="Loading…"
-                                variant="outlined"
-                                color="error"
-                              ></LoadingButton>
+                              <>
+                                <div className="flex items-center">
+                                  <FaSpinner
+                                    size={16}
+                                    style={{
+                                      animation: rotateAnimation,
+                                      marginRight: "10px",
+                                    }}
+                                  ></FaSpinner>
+                                  <span className="ms-1"> Delete</span>
+                                </div>
+                              </>
                             ) : (
                               "Delete"
                             )}

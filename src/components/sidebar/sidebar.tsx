@@ -21,7 +21,7 @@ import { decryptData } from "@/utils/localStorage";
 import { useLogout } from "@/services/auth";
 import Cookies from "js-cookie";
 import { Box, Button, Modal, Typography } from "@mui/material";
-import { FaTrash } from "react-icons/fa";
+import { FaSpinner, FaTrash } from "react-icons/fa";
 import { User } from "../Types/user.type";
 const Sidebar: React.FC = () => {
   const [showdeleteModal, setDeleteModal] = useState(false);
@@ -51,6 +51,8 @@ const Sidebar: React.FC = () => {
   const handleCloseDeleteModal = () => {
     setDeleteModal(false);
   };
+  const rotateAnimation = `spin 1s linear infinite`;
+
   return (
     <>
       {isSuccess ? (
@@ -79,15 +81,26 @@ const Sidebar: React.FC = () => {
                     className="flex items-center border-red-600 border-btn-red"
                     variant="outlined"
                   >
-                    <FiLogOut className="text-red-600" />{" "}
+                    {logOutLoading ? (
+                      <></>
+                    ) : (
+                      <>
+                        {" "}
+                        <FiLogOut className="text-red-600" />{" "}
+                      </>
+                    )}
                     <span className="ps-2 pe-2 text-red-600">
                       {logOutLoading ? (
-                        <LoadingButton
-                          loading
-                          loadingIndicator="Loading…"
-                          variant="outlined"
-                          color="error"
-                        ></LoadingButton>
+                        <div className="flex items-center">
+                          <FaSpinner
+                            size={16}
+                            style={{
+                              animation: rotateAnimation,
+                              marginRight: "10px",
+                            }}
+                          ></FaSpinner>
+                          <span className="ms-1"> LoggingOut</span>
+                        </div>
                       ) : (
                         "Logout"
                       )}
