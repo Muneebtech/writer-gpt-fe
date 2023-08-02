@@ -1,23 +1,22 @@
-import { decryptData } from '@/utils/localStorage';
-import { useRouter } from 'next/router';
-import React, { ReactNode, useEffect } from 'react'
+import { decryptData } from "@/utils/localStorage"
+import { useRouter } from "next/router"
+import React, { ReactNode, useEffect } from "react"
 interface PrivateRouteProps {
-    children: ReactNode;
+  children: ReactNode
 }
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-    const router = useRouter();
-    const user = decryptData('userdata')
+  const router = useRouter()
+  const user = decryptData("userdata")
 
-    const isAuthenticated = user?.active ?? false
+  const isAuthenticated = user?.active ?? false
 
-    useEffect(() => {
-        if (!isAuthenticated) {
-            router.push('/signin'); // Redirect to sign-in page
-        }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/signin") // Redirect to sign-in page
+    }
+  }, [isAuthenticated, router])
 
-    }, [isAuthenticated, router]);
-
-    return <>{children}</>;
-};
+  return <>{children}</>
+}
 
 export default PrivateRoute

@@ -1,25 +1,25 @@
-import { memo, useState } from 'react';
-import { NextPageWithLayout } from '@/utils/types';
-import { useSignIn } from '@/services/auth';
-import { encryptData } from '@/utils/localStorage';
-import { useRouter } from 'next/router';
+import { memo, useState } from "react"
+import { NextPageWithLayout } from "@/utils/types"
+import { useSignIn } from "@/services/auth"
+import { encryptData } from "@/utils/localStorage"
+import { useRouter } from "next/router"
 const SignInPage: NextPageWithLayout = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const router = useRouter()
-  const [forcedInput, setForcedInput] = useState(false);
+  const [forcedInput, setForcedInput] = useState(false)
   const { data, mutate, isSuccess } = useSignIn()
   const handleSubmit = (e: React.FormEvent) => {
     e.stopPropagation()
-    e.preventDefault();
+    e.preventDefault()
     mutate({ email, password, forced: forcedInput })
     // Perform sign-in logic here
-  };
+  }
 
   if (isSuccess) {
-    encryptData(data?.user, 'userdata')
-    encryptData(data?.tokens, 'token')
-    router.push('/brands')
+    encryptData(data?.user, "userdata")
+    encryptData(data?.tokens, "token")
+    router.push("/brands")
   }
   const styles = `
   .bgImage {
@@ -27,12 +27,12 @@ const SignInPage: NextPageWithLayout = () => {
     background-size: cover;
     /* Add any other background properties you want */
   }
-`;
+`
 
   return (
     <>
-      <div className='flex w-full items-center bg-white'>
-        <div className='bgImage me-12 flex items-center flex-col justify-center pt-6'>
+      <div className="flex w-full items-center bg-white">
+        <div className="bgImage me-12 flex items-center flex-col justify-center pt-6">
           {/* <span className='ps-8 text-white leading-none pe-3 text-5xl font-sm'>Artificial Intelligence scriptwriting and voiceover</span>
           <span className='text-white ps-8 pt-4 '>A Private Web-based application on which a user can make scripts and voiceovers using Chat GPT 4.</span> */}
         </div>
@@ -52,9 +52,9 @@ const SignInPage: NextPageWithLayout = () => {
                   id="email"
                   className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   required
-                  placeholder='ENTER YOUR USERNAME'
+                  placeholder="ENTER YOUR USERNAME"
                 />
               </div>
               <div className="mb-6">
@@ -63,7 +63,7 @@ const SignInPage: NextPageWithLayout = () => {
                   id="password"
                   className="w-full px-3 text-black py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   required
                 />
               </div>
@@ -84,7 +84,7 @@ const SignInPage: NextPageWithLayout = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 SignInPage.isProtected = true
-export default memo(SignInPage);
+export default memo(SignInPage)

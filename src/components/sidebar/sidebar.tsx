@@ -156,10 +156,10 @@ const Sidebar: React.FC = () => {
                         </Link>
                     </li> */}
             <li>
-              <Link href="/brands">
+              <Link href="/">
                 <span
                   className={` ${
-                    router.pathname === "/brands" ? "selected" : ""
+                    router.pathname === "/" ? "selected" : ""
                   } font-semibold flex items-center hover:bg-neutral-800 rounded-md p-2 border-l-4 border-transparent hover:border-neutral-600`}
                 >
                   <span className="w-6 mr-2">
