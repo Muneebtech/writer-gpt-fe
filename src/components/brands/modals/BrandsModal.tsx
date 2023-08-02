@@ -64,7 +64,7 @@ const BrandsEditModal: React.FC<ChildProps> = ({
         onClose={handleCloseModal}
         className="flex justify-center items-center w-full"
       >
-        <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height-1 w-11/12 ">
+        <div className="bg-white p-4 rounded-lg overflow-y-auto h-[90%] modal-max-height-1 w-[75%] ">
           <Typography className="" variant="h6" gutterBottom>
             <div className="table-bb-gray mt-1 ms-3 me-4 flex items-center justify-between">
               {value === 1 ? (

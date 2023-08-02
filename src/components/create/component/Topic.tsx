@@ -52,8 +52,8 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                   <div
                     onClick={() => handleClick(id)}
                     key={id}
-                    className="flex
-                            cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
+                    className="flex h-[20%]
+                            cursor-pointer justify-between items-center ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
                   >
                     <div className="flex items-center">
                       <div className="ps-2 ">

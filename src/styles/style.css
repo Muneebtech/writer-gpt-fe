@@ -49,13 +49,16 @@ textarea {
 
 .modal-max-height {
   max-height: 95% !important;
+  position: absolute;
+  left: 20%;
 }
 
 .modal-max-height-1 {
-  height: 95vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: absolute;
+  left: 20%;
 }
 
 .position-btn {
@@ -180,7 +183,7 @@ textarea {
 }
 
 .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
-  color: black !important;
+  color: black;
 }
 
 .css-1e6y48t-MuiButtonBase-root-MuiButton-root.Mui-disabled {

@@ -281,7 +281,7 @@ const Brands = () => {
                   onClose={handleCloseModal}
                   className="flex justify-center items-center"
                 >
-                  <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-11/12">
+                  <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-9/12">
                     <Typography className="" variant="h6" gutterBottom>
                       <div className="table-bb-gray mt-1 ms-3 me-4 flex items-center justify-between">
                         <Header title="ADD CHANNELS" />
