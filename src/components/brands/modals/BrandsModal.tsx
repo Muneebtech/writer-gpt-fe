@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import React, { useState } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaSpinner, FaTimes } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { useAddTopic } from "@/services/topic";
 import { UseAddManagers } from "@/services/managers";
@@ -21,6 +21,9 @@ interface ChildProps {
     topic: string;
   };
   openModal: boolean;
+  OutroLoading:boolean;
+  TopicLoading:boolean;
+  ManagerLoading:boolean;
   handleCloseModal: () => void;
   handleOpenModal: () => void;
   HandleAddOutro: () => void;
@@ -51,11 +54,11 @@ const BrandsEditModal: React.FC<ChildProps> = ({
   handleClearTextFieldData,
   handleAddManagersList,
   handleAddManagerDataLists,
+  OutroLoading,
+  TopicLoading,
+  ManagerLoading,
   value,
 }) => {
-  const { isLoading: OutroLoading } = useAddOutro();
-  const { isLoading: TopicLoading } = useAddTopic();
-  const { isLoading: ManagerLoading } = UseAddManagers();
   return (
     <div>
       {" "}
@@ -154,13 +157,51 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                     ? handleAddNewVideoTopic()
                     : value === 5
                     ? handleAddManagersList()
-                    : null;
-                  handleClearTextFieldData();
+                    : null
+                  handleClearTextFieldData()
                 }}
                 variant="contained"
                 className="button-black ps-4 pe-4"
               >
-                <FiPlus size={25} className="pe-1 ps-1" />
+                {!OutroLoading && !TopicLoading && !ManagerLoading && (
+                  <>
+                    <FiPlus size={25} className="pe-1 ps-1" />
+                  </>
+                )}
+
+                {OutroLoading && (
+                  <>
+                    <FaSpinner
+                      size={16}
+                      className="rotate"
+                      style={{
+                        marginRight: "10px",
+                      }}
+                    ></FaSpinner>
+                  </>
+                )}
+                {TopicLoading && (
+                  <>
+                    <FaSpinner
+                      size={16}
+                      className="rotate"
+                      style={{
+                        marginRight: "10px",
+                      }}
+                    ></FaSpinner>
+                  </>
+                )}
+                {ManagerLoading && (
+                  <>
+                    <FaSpinner
+                      size={16}
+                      className="rotate"
+                      style={{
+                        marginRight: "10px",
+                      }}
+                    ></FaSpinner>
+                  </>
+                )}
                 {value === 1
                   ? "ADD OUTRO"
                   : value === 3
@@ -168,42 +209,6 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                   : value === 5
                   ? "ADD MANAGER"
                   : null}
-                {OutroLoading ? (
-                  <>
-                    <LoadingButton
-                      loading
-                      loadingIndicator="Loading…"
-                      variant="outlined"
-                      color="error"
-                    ></LoadingButton>
-                  </>
-                ) : (
-                  <></>
-                )}
-                {TopicLoading ? (
-                  <>
-                    <LoadingButton
-                      loading
-                      loadingIndicator="Loading…"
-                      variant="outlined"
-                      color="error"
-                    ></LoadingButton>
-                  </>
-                ) : (
-                  <></>
-                )}
-                {ManagerLoading ? (
-                  <>
-                    <LoadingButton
-                      loading
-                      loadingIndicator="Loading…"
-                      variant="outlined"
-                      color="error"
-                    ></LoadingButton>
-                  </>
-                ) : (
-                  <></>
-                )}
               </Button>
             </div>
           </div>

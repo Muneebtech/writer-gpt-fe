@@ -45,6 +45,7 @@ const Create = () => {
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
   const [channelId, setChannelId] = useState<string>("");
+  console.log(ScriptData, "ScriptData::ScriptData::ScriptData");
 
   const [Open, setOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
@@ -65,19 +66,39 @@ const Create = () => {
     let newSkipped = skipped;
     newSkipped = new Set(newSkipped.values());
     newSkipped.delete(activeStep);
-    if (activeStep < 6) {
-      setActiveStep(prevActiveStep => prevActiveStep + 1);
+    if (activeStep === 0 && ScriptData?.channel === "") {
+      alert("Please Add Channel First ");
+      setActiveStep(0);
+    } else if (
+      activeStep === 1 &&
+      ScriptData?.name === "" &&
+      ScriptData?.photoPath === undefined
+    ) {
+      alert("Please Add Basic data First");
+      setActiveStep(1);
+    } else if (activeStep === 2 && ScriptData?.model === "") {
+      alert("Please Add Model Data First");
+      setActiveStep(2);
+    } else if (activeStep === 3 && ScriptData?.topic === "") {
+      alert("Please Add Topic Data First");
+      setActiveStep(3);
+    } else if (activeStep === 4 && ScriptData?.outro === "") {
+      alert("Please Add Outro Data First");
+      setActiveStep(4);
+    } else if (activeStep < 6) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     setSkipped(newSkipped);
   };
+  console.log(activeStep, "activeStep");
 
   const handleBack = () => {
     if (activeStep > 0) {
-      setActiveStep(prevActiveStep => prevActiveStep - 1);
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }
   };
   const handleStateUpdate = (updatedState: Partial<Job>) => {
-    setScriptData(prevState => ({
+    setScriptData((prevState) => ({
       ...prevState,
       ...updatedState,
     }));

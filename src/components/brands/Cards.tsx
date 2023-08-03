@@ -181,7 +181,7 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
         <div className="w-24 h-24 relative">
           <Image
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover" ,borderRadius:"50%"}}
             src={data?.photoPath ? src : "/channel.jpg"}
             loader={() => (data?.photoPath ? src : "/channel.jpg")}
             alt="no image"

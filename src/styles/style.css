@@ -197,8 +197,8 @@ textarea {
   overflow: hidden;
 }
 
-body {
-  /* Light gray background color */
+.rotate{
+  animation: spin 1s linear infinite;
 }
 
 .spinner {

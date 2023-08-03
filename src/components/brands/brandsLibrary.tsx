@@ -109,7 +109,7 @@ const brandsLibrary = () => {
   const [openPopoverTopic, setopenPopoverTopic] = useState<string>("");
   const {
     data: ManagerData,
-    isLoading: ManagerLoading,
+    isLoading: ManagerLoadings,
     isSuccess,
     mutate: managersMutate,
   } = UseGetManagers();
@@ -130,7 +130,7 @@ const brandsLibrary = () => {
   const {
     data,
     mutate,
-    isLoading: managerLoading,
+    isLoading: ManagerLoading,
     isSuccess: managerSuccess,
   } = UseAddManagers();
   const [textValue, setTextValue] = useState({
@@ -174,7 +174,7 @@ const brandsLibrary = () => {
   // creating  Topic //
   const {
     data: AddTopic,
-    isLoading: AddTopicLoading,
+    isLoading: TopicLoading,
     isSuccess: AddTopicSuccess,
     mutate: AddTopicMutate,
   } = useAddTopic();
@@ -470,6 +470,9 @@ const brandsLibrary = () => {
       />
       {/* Modals */}
       <BrandsModal
+      ManagerLoading={ManagerLoading}
+      TopicLoading={TopicLoading}
+      OutroLoading={OutroLoading}
         addNewTopicVideo={addNewTopicVideo}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
