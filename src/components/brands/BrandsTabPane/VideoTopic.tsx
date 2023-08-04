@@ -189,7 +189,7 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
                 <>
                   {(TopicFilterData?.length > 0 ? TopicFilterData : data)?.map(
                     (item: Topic, index) => {
-                      const { id, topic, description } = item;
+                      const { id, topic, description, status } = item;
                       return (
                         <>
                           <div
@@ -204,15 +204,13 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
                                 <p className="text-sm">{description}</p>
                                 <p className="text-sm">{topic}</p>
                               </div>
-                              {/* <div>
-                        <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
-                          {item?.status === null
-                            ? "New" || items?.status === "New"
-                              ? " New"
-                              : "Used"
-                            : ""}
-                        </p>
-                      </div> */}
+                              <div>
+                                <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
+                                  {status === null || status === "New"
+                                    ? "New"
+                                    : "Used"}
+                                </p>
+                              </div>
                               <div
                                 className="pt-2 cursor-pointer "
                                 onClick={(event) =>

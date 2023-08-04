@@ -225,6 +225,7 @@ const Outros: React.FC<OutroProps> = ({
                   {FilterData?.map((items: outroDataTypes, index) => {
                     return (
                       <>
+                        {console.log(items, "items")}
                         <div
                           key={items?.id}
                           className="border-b-2 mt-2 mb-2 ms-2 me-2 "
@@ -238,11 +239,10 @@ const Outros: React.FC<OutroProps> = ({
                             </div>
                             <div>
                               <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
-                                {items?.status === null
-                                  ? "New" || items?.status === "New"
-                                    ? " New"
-                                    : "Used"
-                                  : ""}
+                                {items?.status === null ||
+                                items?.status === "New"
+                                  ? "New"
+                                  : "Used"}
                               </p>
                             </div>
                             <div
@@ -259,51 +259,6 @@ const Outros: React.FC<OutroProps> = ({
                     );
                   })}
                 </>
-              </div>
-              <div>
-                <div className="flex justify-end m-2 gap-1">
-                  <button
-                    className={`px-2 py-1 border border-gray-300 rounded-md ${
-                      currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                    }`}
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                  >
-                    Previous
-                  </button>
-                  {startPage > 1 && (
-                    <button className="px-2 py-1 border border-gray-300 rounded-md">
-                      ...
-                    </button>
-                  )}
-                  {visiblePages.map((page) => (
-                    <button
-                      className={`px-2 py-1 border border-gray-300 rounded-md ${
-                        page === currentPage ? "bg-blue-500 text-white" : ""
-                      }`}
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                  {endPage < totalPagesCount && (
-                    <button className="px-2 py-1 border border-gray-300 rounded-md">
-                      ...
-                    </button>
-                  )}
-                  <button
-                    className={`px-2 py-1 border border-gray-300 rounded-md ${
-                      currentPage === totalPagesCount
-                        ? "cursor-not-allowed opacity-50"
-                        : ""
-                    }`}
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPagesCount}
-                  >
-                    Next
-                  </button>
-                </div>
               </div>
             </div>
           </div>

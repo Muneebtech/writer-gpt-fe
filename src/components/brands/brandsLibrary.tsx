@@ -29,6 +29,7 @@ import EditBrands from "./EditBrands";
 import { isAdminOrManager } from "@/utils/authorisation";
 import { useUpdateOutro } from "@/services/outro/hooks/useUpdateOutro";
 import { decryptData } from "@/utils/localStorage";
+import Toaster from "@/common/Toaster/Toaster";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -470,9 +471,9 @@ const brandsLibrary = () => {
       />
       {/* Modals */}
       <BrandsModal
-      ManagerLoading={ManagerLoading}
-      TopicLoading={TopicLoading}
-      OutroLoading={OutroLoading}
+        ManagerLoading={ManagerLoading}
+        TopicLoading={TopicLoading}
+        OutroLoading={OutroLoading}
         addNewTopicVideo={addNewTopicVideo}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
@@ -486,6 +487,11 @@ const brandsLibrary = () => {
         handleAddManagerDataLists={handleAddManagerDataLists}
         handleAddManagersList={handleAddManagersList}
       />
+      {outroSuccess ? (
+        <>
+          <Toaster />
+        </>
+      ) : null}
       <div className="flex items-center justify-between fade-out pb-3">
         <div className="flex items-center">
           <div className="flex items-center ">

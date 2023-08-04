@@ -46,8 +46,9 @@ const Create = () => {
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
   const [channelId, setChannelId] = useState<string>("");
   console.log(ScriptData, "ScriptData::ScriptData::ScriptData");
-
+  const [alertMessage, setAlertMessage] = useState("");
   const [Open, setOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
   const { data, isLoading, isSuccess, mutate } = useCreateJob();
   // Load the active step value from local storage on component mount
@@ -62,36 +63,66 @@ const Create = () => {
     localStorage.setItem("activeStep", activeStep.toString());
   }, [activeStep]);
 
+  // const handleNext = () => {
+  //   let newSkipped = skipped;
+  //   newSkipped = new Set(newSkipped.values());
+  //   newSkipped.delete(activeStep);
+  //   if (activeStep === 0 && ScriptData?.channel === "") {
+  //     <Alert severity="error">Please Add Channel First</Alert>
+  //     setActiveStep(0);
+  //   } else if (
+  //     activeStep === 1 &&
+  //     ScriptData?.name === "" &&
+  //     ScriptData?.photoPath === undefined
+  //   ) {
+  //     alert("Please Add Basic data First");
+  //     setActiveStep(1);
+  //   } else if (activeStep === 2 && ScriptData?.model === "") {
+  //     alert("Please Add Model Data First");
+  //     setActiveStep(2);
+  //   } else if (activeStep === 3 && ScriptData?.topic === "") {
+  //     alert("Please Add Topic Data First");
+  //     setActiveStep(3);
+  //   } else if (activeStep === 4 && ScriptData?.outro === "") {
+  //     alert("Please Add Outro Data First");
+  //     setActiveStep(4);
+  //   } else if (activeStep < 6) {
+  //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  //   }
+  //   setSkipped(newSkipped);
+  // };
+  console.log(activeStep, "activeStep");
+
   const handleNext = () => {
     let newSkipped = skipped;
     newSkipped = new Set(newSkipped.values());
     newSkipped.delete(activeStep);
+
+    // Your existing validation checks
     if (activeStep === 0 && ScriptData?.channel === "") {
-      alert("Please Add Channel First ");
+      setAlertMessage("Please Add Channel First");
       setActiveStep(0);
     } else if (
       activeStep === 1 &&
-      ScriptData?.name === "" &&
-      ScriptData?.photoPath === undefined
+      (ScriptData?.name === "" || ScriptData?.photoPath === undefined)
     ) {
-      alert("Please Add Basic data First");
+      setAlertMessage("Please Add Basic data First");
       setActiveStep(1);
     } else if (activeStep === 2 && ScriptData?.model === "") {
-      alert("Please Add Model Data First");
+      setAlertMessage("Please Add Model Data First");
       setActiveStep(2);
     } else if (activeStep === 3 && ScriptData?.topic === "") {
-      alert("Please Add Topic Data First");
+      setAlertMessage("Please Add Topic Data First");
       setActiveStep(3);
     } else if (activeStep === 4 && ScriptData?.outro === "") {
-      alert("Please Add Outro Data First");
+      setAlertMessage("Please Add Outro Data First");
       setActiveStep(4);
     } else if (activeStep < 6) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
+
     setSkipped(newSkipped);
   };
-  console.log(activeStep, "activeStep");
-
   const handleBack = () => {
     if (activeStep > 0) {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -157,6 +188,7 @@ const Create = () => {
   const SlideTransition = (props: SlideProps) => {
     return <Slide {...props} direction="left" />;
   };
+
   useEffect(() => {
     if (isSuccess) {
       setOpen(true);
@@ -166,6 +198,19 @@ const Create = () => {
   useEffect(() => {}, []);
   return (
     <div>
+      {/* <Snackbar
+        open={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        autoHideDuration={3000}
+        TransitionComponent={SlideTransition}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      > */}
+      {alertMessage && (
+        <Alert onClose={() => setAlertOpen(false)} severity="error">
+          {alertMessage}
+        </Alert>
+      )}
+      {/* </Snackbar> */}
       <div className="mb-2 mt-1">
         <Header title="CREATE SCRIPT" />
       </div>
