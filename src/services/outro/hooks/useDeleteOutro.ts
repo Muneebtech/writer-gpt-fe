@@ -3,7 +3,7 @@ import { OutroServices } from "../OutroServices";
 
 export function UseDeleteOutro() {
   const queryClient = useQueryClient();
-  const { data, isLoading, isSuccess, mutate } = useMutation(
+  const { data, isLoading, isSuccess, mutate,isError } = useMutation(
     "",
     (id: string) => OutroServices.deleteOutro(id),
     {
@@ -13,5 +13,5 @@ export function UseDeleteOutro() {
     }
   );
 
-  return { data, isLoading, isSuccess, mutate };
+  return { data, isLoading, isSuccess, mutate,isError };
 }

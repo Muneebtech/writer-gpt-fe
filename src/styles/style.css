@@ -77,7 +77,8 @@ textarea {
 .css-3bmhjh-MuiPaper-root-MuiPopover-paper {
   /* top: 261px !important;
   left: 441px !important; */
-  width: 16% !important;
+  width: 12% !important;
+  height: 95px !important;
 }
 
 .css-6hp17o-MuiList-root-MuiMenu-list {
@@ -625,14 +626,14 @@ label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
   right: 23px;
   z-index: 1111111;
   top: 80px;
-  background: green;
   border-radius: 8px;
   box-shadow: 0px 0px 5px -3px #111;
 }
 
 .info__icon {
-  width: 20px;
-  height: 20px;
+  padding-top: 9px;
+  /* width: 20px;
+  height: 20px; */
   transform: translateY(-2px);
   margin-right: 8px;
 }
@@ -656,4 +657,7 @@ label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
 
 .info__close path {
   fill: #fff;
+}
+.css-sghohy-MuiButtonBase-root-MuiButton-root{
+  padding: 5px 15px !important;
 }

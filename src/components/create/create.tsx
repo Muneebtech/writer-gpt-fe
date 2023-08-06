@@ -18,6 +18,7 @@ import { FiBook } from "react-icons/fi";
 import LanguageModel from "./component/LanguageModel";
 import Topic from "./component/Topic";
 import Outro from "./component/Outro";
+import Toaster from "@/common/Toaster/Toaster";
 const steps = [
   "CHANNEL",
   "BASIC",
@@ -45,6 +46,7 @@ const Create = () => {
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
   const [channelId, setChannelId] = useState<string>("");
+  const [showToaster, setShowToaster] = useState("");
   console.log(ScriptData, "ScriptData::ScriptData::ScriptData");
   const [alertMessage, setAlertMessage] = useState("");
   const [Open, setOpen] = useState(false);
@@ -100,22 +102,22 @@ const Create = () => {
 
     // Your existing validation checks
     if (activeStep === 0 && ScriptData?.channel === "") {
-      setAlertMessage("Please Add Channel First");
       setActiveStep(0);
+      setShowToaster("0");
     } else if (
       activeStep === 1 &&
       (ScriptData?.name === "" || ScriptData?.photoPath === undefined)
     ) {
-      setAlertMessage("Please Add Basic data First");
+      setShowToaster("1");
       setActiveStep(1);
     } else if (activeStep === 2 && ScriptData?.model === "") {
-      setAlertMessage("Please Add Model Data First");
+      setShowToaster("2");
       setActiveStep(2);
     } else if (activeStep === 3 && ScriptData?.topic === "") {
-      setAlertMessage("Please Add Topic Data First");
+      setShowToaster("3");
       setActiveStep(3);
     } else if (activeStep === 4 && ScriptData?.outro === "") {
-      setAlertMessage("Please Add Outro Data First");
+      setShowToaster("4");
       setActiveStep(4);
     } else if (activeStep < 6) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -198,19 +200,51 @@ const Create = () => {
   useEffect(() => {}, []);
   return (
     <div>
-      {/* <Snackbar
-        open={alertOpen}
-        onClose={() => setAlertOpen(false)}
-        autoHideDuration={3000}
-        TransitionComponent={SlideTransition}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      > */}
-      {alertMessage && (
-        <Alert onClose={() => setAlertOpen(false)} severity="error">
-          {alertMessage}
-        </Alert>
+      {showToaster === "0" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Select the Channel First"
+          />
+        </>
       )}
-      {/* </Snackbar> */}
+      {showToaster === "1" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Add Basic Data First"
+          />
+        </>
+      )}
+      {showToaster === "2" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Select Language Model First"
+          />
+        </>
+      )}
+      {showToaster === "3" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Select Topic First"
+          />
+        </>
+      )}
+      {showToaster === "4" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Add Outro First"
+          />
+        </>
+      )}
       <div className="mb-2 mt-1">
         <Header title="CREATE SCRIPT" />
       </div>

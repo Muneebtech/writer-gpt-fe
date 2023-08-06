@@ -4,7 +4,7 @@ import { TopicServices } from "../topicServices";
 
 export function UseDeleteTopic() {
     const queryClient = useQueryClient();
-    const { data, isLoading, isSuccess, mutate } = useMutation("", (id: string) =>
+    const { data, isLoading, isSuccess, mutate, isError } = useMutation("", (id: string) =>
         TopicServices.getDeleteTopic(id),
         {
             onSuccess: () => {
@@ -14,5 +14,5 @@ export function UseDeleteTopic() {
         }
     )
 
-    return { data, isLoading, isSuccess, mutate }
+    return { data, isLoading, isSuccess, mutate,isError }
 }

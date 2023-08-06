@@ -1,12 +1,11 @@
 import { outroDataTypes } from "@/components/Types/Outro.type";
 import { UseDeleteOutro, useGetOutro } from "@/services/outro";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import Spinner from "@/modules/spinner/spinner";
-import buttonSpinner from "@/common/buttonspinner/buttonSpinner";
-import { LoadingButton } from "@mui/lab";
+import Toaster from "@/common/Toaster/Toaster";
 interface OutroProps {
   data: outroDataTypes[];
   FilterData: outroDataTypes[];
@@ -42,7 +41,7 @@ const Outros: React.FC<OutroProps> = ({
 }) => {
   const rotateAnimation = `spin 1s linear infinite`;
   const [totalPagesCount, setTotalPages] = useState(1);
-  const { mutate, isSuccess, isLoading } = UseDeleteOutro();
+  const { mutate, isSuccess, isLoading, isError } = UseDeleteOutro();
   const [currentPage, setCurrentPage] = useState(1);
   let startPage = Math.max(currentPage - 2, 1);
   let endPage = Math.min(startPage + 4, totalPagesCount);
@@ -82,95 +81,111 @@ const Outros: React.FC<OutroProps> = ({
     const DeleteOutroData = FilterData?.filter((items) => items?.id !== id);
     mutate(id);
   };
-  const { isLoading: OutroDataLoading } = useGetOutro();
+  useEffect(() => {
+    if (isSuccess || isError) {
+      handleCloseDeleteModal();
+      handlePopoverClosed();
+    }
+  }, [isSuccess,isError]);
   return (
     <div>
-      {OutroDataLoading ? (
+      {outroLoading && (
         <>
           <Spinner />
         </>
-      ) : (
+      )}
+      {!outroLoading && (
         <>
           <>
             {/* Modal-Delete */}
-            {isSuccess ? (
-              <></>
-            ) : (
+            {isSuccess && (
               <>
-                <Modal
-                  open={showdeleteOutroModal}
-                  onClose={handleCloseDeleteModal}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                  className="flex justify-center items-center"
-                >
-                  <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
-                    <Typography
-                      id="modal-modal-title"
-                      variant="h6"
-                      component="h2"
-                    >
-                      DELETING CHANNEL
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      Are you sure you want to delete this channel? Delete
-                      Cancel
-                    </Typography>
-                    <div className="flex justify-end pt-4">
-                      <div className="pe-2 ps-2">
-                        <Button
-                          disabled={isLoading}
-                          onClick={() => HandleDeleteChannel(openPopover)}
-                          className="flex items-center border-red-600 border-btn-red"
-                          variant="outlined"
-                        >
-                          {isLoading ? (
-                            <></>
-                          ) : (
-                            <>
-                              {" "}
-                              <FaTrash className="text-red-600" />
-                            </>
-                          )}
-                          <span className="ps-2 pe-2 text-red-600">
-                            {/* {isLoading ? "" : <> <buttonSpinner/> </>} */}
-                            {isLoading ? (
-                              <>
-                                <div className="flex items-center">
-                                  <FaSpinner
-                                    size={16}
-                                    style={{
-                                      animation: rotateAnimation,
-                                      marginRight: "10px",
-                                    }}
-                                  ></FaSpinner>
-                                  <span className="ms-1"> Delete</span>
-                                </div>
-                              </>
-                            ) : (
-                              "Delete"
-                            )}
-                          </span>
-                        </Button>
-                      </div>
-                      <div>
-                        <Button
-                          onClick={handleCloseDeleteModal}
-                          variant="contained"
-                          className="btn-black button-black-modal"
-                        >
-                          <span className="ps-2 pe-2">Cancel</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </Box>
-                </Modal>
+                {" "}
+                <Toaster
+                  Success={true}
+                  title="Outro Deleted SuccessFully"
+                  Color="green"
+                />
               </>
             )}
-
-            {isSuccess ? (
-              <></>
-            ) : (
+            {isError && (
+              <>
+                {" "}
+                <Toaster
+                  Error={true}
+                  title="An Error Occurred During Outro Deletion"
+                  Color="red"
+                />
+              </>
+            )}
+            <>
+              <Modal
+                open={showdeleteOutroModal}
+                onClose={handleCloseDeleteModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                className="flex justify-center items-center"
+              >
+                <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    DELETING CHANNEL
+                  </Typography>
+                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Are you sure you want to delete this channel? Delete Cancel
+                  </Typography>
+                  <div className="flex justify-end pt-4">
+                    <div className="pe-2 ps-2">
+                      <Button
+                        disabled={isLoading}
+                        onClick={() => HandleDeleteChannel(openPopover)}
+                        className="flex items-center border-red-600 border-btn-red"
+                        variant="outlined"
+                      >
+                        {isLoading ? (
+                          <></>
+                        ) : (
+                          <>
+                            {" "}
+                            <FaTrash className="text-red-600" />
+                          </>
+                        )}
+                        <span className="ps-2 pe-2 text-red-600">
+                          {isLoading ? (
+                            <>
+                              <div className="flex items-center">
+                                <FaSpinner
+                                  size={16}
+                                  style={{
+                                    animation: rotateAnimation,
+                                    marginRight: "10px",
+                                  }}
+                                ></FaSpinner>
+                                <span className="ms-1"> Delete</span>
+                              </div>
+                            </>
+                          ) : (
+                            "Delete"
+                          )}
+                        </span>
+                      </Button>
+                    </div>
+                    <div>
+                      <Button
+                        onClick={handleCloseDeleteModal}
+                        variant="contained"
+                        className="btn-black button-black-modal"
+                      >
+                        <span className="ps-2 pe-2">Cancel</span>
+                      </Button>
+                    </div>
+                  </div>
+                </Box>
+              </Modal>
+            </>
               <>
                 <Popover
                   open={isPopoverOpen}
@@ -201,12 +216,10 @@ const Outros: React.FC<OutroProps> = ({
                       sx={{ mt: 1 }}
                     >
                       Delete
-                      {/* {isLoading ? "Deleting..." : "Delete"} */}
                     </Typography>
                   </Box>
                 </Popover>
               </>
-            )}
           </>
           <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
             <div className="flex items-center justify-between pe-16 ps-6 pt-4">

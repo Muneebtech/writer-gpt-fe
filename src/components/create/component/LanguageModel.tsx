@@ -55,7 +55,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               </div>
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
-            <div className="pt-2 ps-4 h-[10%] mt-2">
+            <div className="pt-3 ps-4 h-[10%] mt-2">
               <div className="searchBar border-2">
                 <FiSearch className="text-gray-500" />
                 <input

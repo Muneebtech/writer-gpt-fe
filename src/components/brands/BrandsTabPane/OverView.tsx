@@ -13,6 +13,10 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiDownload, FiPlus } from "react-icons/fi";
 const OverView = () => {
   const router = useRouter();
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLElement | null>(
+    null
+  );
   const { id } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
@@ -94,6 +98,30 @@ const OverView = () => {
   // const HandleDeleteModal = () => {
   //   setOpenEditModal(false);
   // };
+
+  const handleOpenEditModal = () => {
+    // Your logic to handle the Edit action
+    console.log("Edit action clicked");
+    setPopoverOpen(false);
+  };
+
+  const handleDeleteModal = () => {
+    // Your logic to handle the Delete action
+    console.log("Delete action clicked");
+    setPopoverOpen(false);
+  };
+
+  const handlePopoverOpen = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
+    setPopoverAnchorEl(event.currentTarget);
+    setPopoverOpen(true);
+  };
+
+  const handlePopoverClose = () => {
+    setPopoverOpen(false);
+  };
+
   return (
     <>
       {isLoading ? (
@@ -194,12 +222,12 @@ const OverView = () => {
                               )
                             }
                           >
-                            <FiDownload />
+                            <FiDownload onClick={() => downloadFiles(row)} />
                           </Button>
                         </div>
                         <BsThreeDotsVertical
-                          style={{ marginRight: "-10px" }}
-                          onClick={() => downloadFiles(row)} // Call the downloadFiles function when the three-dot icon is clicked
+                          style={{ marginRight: "-10px", cursor: "pointer" }}
+                          onClick={handlePopoverOpen}
                         />
                       </td>
                       {/* <td className="py-4 px-4 text-center">{row.date}</td> */}
@@ -224,7 +252,7 @@ const OverView = () => {
                   ...
                 </button>
               )}
-              {visiblePages.map(page => (
+              {visiblePages.map((page) => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""
@@ -254,10 +282,10 @@ const OverView = () => {
             </div>
           </div>
 
-          {/* <Popover
+          <Popover
             open={isPopoverOpen}
             anchorEl={popoverAnchorEl}
-            onClose={HandleDeleteModal}
+            onClose={handlePopoverClose}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "left",
@@ -269,7 +297,7 @@ const OverView = () => {
           >
             <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
               <Typography
-                onClick={() => handleOpenEditModal()}
+                onClick={handleOpenEditModal}
                 className="cursor-pointer"
                 id="modal-modal-description"
                 sx={{ mt: 1 }}
@@ -277,7 +305,7 @@ const OverView = () => {
                 Edit
               </Typography>
               <Typography
-                onClick={() => HandleDeleteModal()}
+                onClick={handleDeleteModal}
                 className="cursor-pointer"
                 id="modal-modal-description"
                 sx={{ mt: 1 }}
@@ -285,7 +313,7 @@ const OverView = () => {
                 Delete
               </Typography>
             </Box>
-          </Popover> */}
+          </Popover>
         </>
       )}
     </>

@@ -139,6 +139,7 @@ const brandsLibrary = () => {
     outro: "",
     id: "",
     managers: "",
+    topicDescripition: "",
   });
 
   const handleAddManagersList = () => {
@@ -185,9 +186,16 @@ const brandsLibrary = () => {
     isSuccess: updateTopicSuccess,
   } = useUpdateTopic();
 
-  const { mutate: mutateUpdateOutro, isSuccess: OutroUpdateSuccess } =
-    useUpdateOutro();
-  const { data: topicData, isLoading, mutate: mutateTopic } = useTopic();
+  const {
+    mutate: mutateUpdateOutro,
+    isSuccess: OutroUpdateSuccess,
+    isLoading: OutroUpdateLoading,
+  } = useUpdateOutro();
+  const {
+    data: topicData,
+    isLoading: topicLoading,
+    mutate: mutateTopic,
+  } = useTopic();
   const [topicDataList, setTopicList] = useState<Topic[]>(topicData || []);
   const [addNewTopicVideo, setAddNewTopicVideo] = useState({
     description: "",
@@ -307,7 +315,11 @@ const brandsLibrary = () => {
           setTextValue({ ...textValue, outro: event.target.value });
           break;
         case 3:
-          setTextValue({ ...textValue, topic: event.target.value });
+          setTextValue({
+            ...textValue,
+            topic: event.target.value,
+          });
+          setTextValue({ ...textValue, topicDescripition: event.target.value });
           break;
       }
     }
@@ -430,6 +442,7 @@ const brandsLibrary = () => {
     setpopoverAnchorElTopic(event.currentTarget);
     setopenPopoverTopic(id);
     setTextValue({ ...textValue, topic: data.description, id: data.id });
+    setTextValue({ ...textValue, topicDescripition: data.topic, id: data.id });
   };
 
   const handleEditTopic = (id: string) => {
@@ -455,10 +468,12 @@ const brandsLibrary = () => {
       handleCloseEditodal();
     }
   }, [updateTopicSuccess, OutroUpdateSuccess]);
-
+  const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${channelData?.photoPath}`;
   return (
     <div>
       <EditBrands
+        updateTopicLoading={updateTopicLoading}
+        OutroUpdateLoading={OutroUpdateLoading}
         openEditModal={openEditModal}
         handleCloseEditodal={handleCloseEditodal}
         value={value}
@@ -487,19 +502,80 @@ const brandsLibrary = () => {
         handleAddManagerDataLists={handleAddManagerDataLists}
         handleAddManagersList={handleAddManagersList}
       />
+      {/* Toasters */}
       {outroSuccess ? (
         <>
-          <Toaster />
+          <Toaster
+            Success={true}
+            Color="green"
+            title="Outro Created SuccessFully"
+          />
         </>
       ) : null}
+      {AddTopicSuccess ? (
+        <>
+          <Toaster
+            Success={true}
+            Color="green"
+            title="Topic Created SuccessFully"
+          />
+        </>
+      ) : null}
+      {managerSuccess ? (
+        <>
+          <Toaster
+            Success={true}
+            Color="green"
+            title="mannager Created SuccessFully"
+          />
+        </>
+      ) : null}
+      {updateTopicSuccess ? (
+        <>
+          {" "}
+          <Toaster
+            Success={true}
+            Color="green"
+            title="Topic Update SuccessFully"
+          />
+        </>
+      ) : null}
+      {OutroUpdateSuccess ? (
+        <>
+          {" "}
+          <Toaster
+            Success={true}
+            Color="#00cc00f"
+            title="Outro Update SuccessFully"
+          />
+        </>
+      ) : null}
+
       <div className="flex items-center justify-between fade-out pb-3">
         <div className="flex items-center">
           <div className="flex items-center ">
             <div onClick={handleCardClick} className="ps-1 pe-1 cursor-pointer">
               <AiOutlineLeft />
             </div>
+            {/* {console.log(channelData, "channel Data")} */}
+
             <div className="ps-1 pe-1">
-              <Image src="/chaneel.png" alt="channel" width={30} height={30} />
+              <Image
+                src={
+                  channelData?.photoPath != "http://localhost:3000/uploads/null"
+                    ? src
+                    : "/channel.jpg"
+                }
+                loader={() =>
+                  channelData?.photoPath != "http://localhost:3000/uploads/null"
+                    ? src
+                    : "/channel.jpg"
+                }
+                alt="channel"
+                width={35}
+                height={35}
+                style={{borderRadius:"50%"}}
+              />
             </div>
             <div className="ps-1 pe-1">
               {" "}
@@ -598,6 +674,7 @@ const brandsLibrary = () => {
             <CustomTabPanel value={value} index={3}>
               <div>
                 <VideoTopic
+                  topicLoading={topicLoading}
                   openPopoverTopic={openPopoverTopic}
                   setIsPopoverOpenTopic={setIsPopoverOpenTopic}
                   isPopoverOpenTopic={isPopoverOpenTopic}

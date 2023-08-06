@@ -16,8 +16,8 @@ export class OutroServices {
     });
   }
   static addOutroData(data: outroDataTypes) {
-    console.log(data,"OutrpAddData");
-    
+    console.log(data, "OutrpAddData");
+
     return request({
       url: "/outro",
       method: "POST",
@@ -25,6 +25,8 @@ export class OutroServices {
     });
   }
   static deleteOutro(id: string) {
+    console.log(id, "Outro Delete");
+
     return request({
       url: `/outro/${id}`,
       method: "DELETE",
