@@ -1,3 +1,4 @@
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 import {
   ChannelCategoryDataMap,
   VoiceData,
@@ -53,7 +54,7 @@ const Voice = ({ setScriptData }: ChildComponentProps) => {
   }, [Data]);
 
   useEffect(() => {
-    Object.values(audioRefs.current).forEach(audio => {
+    Object.values(audioRefs.current).forEach((audio) => {
       if (audio) {
         audio.addEventListener("ended", () => {
           setCurrentAudio(null);
@@ -66,7 +67,7 @@ const Voice = ({ setScriptData }: ChildComponentProps) => {
     <div>
       {loading ? (
         <>
-          <Spinner />
+          <LottieSpinner />
         </>
       ) : (
         <>

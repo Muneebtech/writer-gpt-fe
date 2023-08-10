@@ -1,4 +1,5 @@
 import Header from "@/common/Header/header";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 import { tableData, TableListData } from "@/constants/library";
 import Spinner from "@/modules/spinner/spinner";
 import { useGetJobs } from "@/services/Jobs";
@@ -126,7 +127,7 @@ const OverView = () => {
     <>
       {isLoading ? (
         <>
-          <Spinner />
+          <LottieSpinner />
         </>
       ) : (
         <>

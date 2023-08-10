@@ -35,6 +35,7 @@ import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { isAdminOrManager } from "@/utils/authorisation";
 import { decryptData } from "@/utils/localStorage";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 interface FormData {
   channel: string;
   category: string;
@@ -245,7 +246,7 @@ const Brands = () => {
     <>
       {isLoading ? (
         <>
-          <Spinner />
+          <LottieSpinner />
         </>
       ) : (
         <>

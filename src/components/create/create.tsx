@@ -19,6 +19,8 @@ import LanguageModel from "./component/LanguageModel";
 import Topic from "./component/Topic";
 import Outro from "./component/Outro";
 import Toaster from "@/common/Toaster/Toaster";
+import ScriptSuccessPage from "./component/ScriptSuccessPage";
+import ScriptsButtons from "./component/ScriptsButtons";
 const steps = [
   "CHANNEL",
   "BASIC",
@@ -168,6 +170,8 @@ const Create = () => {
         );
       case 1:
         return <BasicData setScriptData={handleStateUpdate} />;
+        // return <ScriptSuccessPage />;
+        // return <ScriptsButtons />;
       // return <Script setScriptData={handleStateUpdate} />;
       case 2:
         return <LanguageModel setScriptData={handleStateUpdate} />;

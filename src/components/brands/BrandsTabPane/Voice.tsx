@@ -8,6 +8,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 import { useState, useRef, useEffect } from "react";
 import Spinner from "@/modules/spinner/spinner";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 
 const Voice = () => {
   const audioRefs = useRef<Record<string, HTMLAudioElement>>({});
@@ -52,7 +53,7 @@ const Voice = () => {
   }, [Data]);
 
   useEffect(() => {
-    Object.values(audioRefs.current).forEach(audio => {
+    Object.values(audioRefs.current).forEach((audio) => {
       if (audio) {
         audio.addEventListener("ended", () => {
           setCurrentAudio(null);
@@ -66,7 +67,7 @@ const Voice = () => {
       {loading ? (
         <>
           {" "}
-          <Spinner />{" "}
+          <LottieSpinner />
         </>
       ) : (
         <>

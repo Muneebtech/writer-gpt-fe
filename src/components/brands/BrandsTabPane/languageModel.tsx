@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useModel } from "@/services/Script/hooks/useModel";
 import Spinner from "@/modules/spinner/spinner";
 import { ModelList } from "@/constants/languageModel";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 
 const LanguageModel= () => {
   const { data: modelData, isLoading: modelLoading } = useModel();
@@ -36,7 +37,7 @@ const LanguageModel= () => {
     <div>
       {modelLoading ? (
         <>
-          <Spinner />
+         <LottieSpinner />
         </>
       ) : (
         <>

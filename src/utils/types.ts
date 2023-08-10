@@ -18,3 +18,46 @@ export enum Environment {
   Production = 'production',
   Test = 'test',
 }
+
+export type ChangePasswordTypes = {
+  oldPassword: string
+  password: string;
+  renterpassword: string
+  email?: string
+}
+
+export type AuthTypes = {
+  active?
+  :
+  string
+  createdAt?
+  :
+  string
+  email?
+  :
+  string
+  firstName?
+  :
+  string
+  id?
+  :
+  string
+  lastName?
+  :
+  string
+  password?
+  :
+  string
+  photoPath?
+  :
+  null
+  role?
+  :
+  string
+  updatedAt?
+  :
+  string
+  __v?
+  :
+  number
+}

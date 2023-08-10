@@ -1,3 +1,4 @@
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 import { Job } from "@/components/Types/job.type";
 import { Topic, TopicData, TopicModalData } from "@/constants/Topic";
 import Spinner from "@/modules/spinner/spinner";
@@ -31,7 +32,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
     <div>
       {isLoading ? (
         <>
-          <Spinner />
+        <LottieSpinner />
         </>
       ) : (
         <>

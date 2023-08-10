@@ -1,11 +1,18 @@
 import Header from "@/common/Header/header";
-import { Button, Switch } from "@mui/material";
-import { useState } from "react";
-import { AiOutlineLeft } from "react-icons/ai";
+import { Button, Switch, TextField } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { AiOutlineLeft, AiOutlineUpload } from "react-icons/ai";
 import Image from "next/image";
+import ProfileEidtModal from "./ProfileEidtModal";
+import { decryptData } from "@/utils/localStorage";
+// import { useSignIn } from "@/services/auth";
+import { AuthTypes } from "@/utils/types";
 
 const Setting = () => {
   const [showProfile, setShowprofile] = useState(true);
+  const [userData, setUserData] = useState<AuthTypes>({});
+  const [userTokens, setUserTokens] = useState(null);
+  console.log(userData, "userData");
 
   const handleOpenProfile = () => {
     setShowprofile(false);
@@ -13,8 +20,49 @@ const Setting = () => {
   const handleCloseProfile = () => {
     setShowprofile(true);
   };
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  useEffect(() => {
+    const decryptedUserData = decryptData("userdata");
+    const decryptedUserTokens = decryptData("token");
+
+    if (decryptedUserData) {
+      setUserData(decryptedUserData);
+    }
+
+    if (decryptedUserTokens) {
+      setUserTokens(decryptedUserTokens);
+    }
+  }, []);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadPictureClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleProfileImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedImage = event.target.files[0];
+      setProfileImage(selectedImage);
+    }
+  };
   return (
     <>
+      <ProfileEidtModal
+        userData={userData}
+        handleCloseModal={handleCloseModal}
+        handleOpenModal={handleOpenModal}
+        openModal={openModal}
+      />
       {showProfile ? (
         <>
           <div>
@@ -73,51 +121,63 @@ const Setting = () => {
             <Header title="Profile History" />
           </div>
           <div className="table-bb-gray mt-1 ms-4 me-4"></div>
-
+          <TextField className="pt-2 pb-2 w-3/6" label="Full Name"></TextField>
           <div className="mt-4">
             <div className="flex justify-between items-center">
               <div className="">
                 <div className="flex items-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleProfileImageChange}
+                  />
                   <Image
-                    width={170}
-                    height={170}
+                    width={145}
+                    height={145}
                     className="rounded-full mr-2"
-                    src="/ProfileAvatar.png"
+                    src={
+                      profileImage
+                        ? URL.createObjectURL(profileImage)
+                        : "/ProfileAvatar.png"
+                    }
                     alt="Profile"
                   />
-                  <div className="ps-4 ">
-                    <div>
-                      <span className="text-2xl font-bold">Joe Harrison</span>
+                  <div className="ps-3 pe-3">
+                    <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                      <AiOutlineUpload size={20} />
+                      <span
+                        onClick={handleUploadPictureClick}
+                        className="ps-1 pe-1 border-b-2 border-gray-400"
+                      >
+                        Upload Picture
+                      </span>
                     </div>
-                    <div>
-                      <span className="font-medium">Manager</span>
+                    <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                      <AiOutlineUpload size={20} />
+                      <span className="ps-1 pe-1 border-b-2 border-gray-400">
+                        Select Picture
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div>
-                <Button className="button-black ps-4 pe-4 pt-2 pb-2">
-                  Edit
-                </Button>
-              </div>
             </div>
-            <div className="flex mt-6">
-              <div className="border-e-2 ps-3 pe-3">
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">Email</span>
-                </div>
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">Number</span>
-                </div>
+            <div>
+              <div className="mt-4 pb-2 cursor-pointer">
+                <p className="border-b-2 w-[9.2%] border-b-black">
+                  More Setting
+                </p>
               </div>
-              <div className="table-bb-gray"></div>
-              <div className="ps-3 pe-3">
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">joeharrison@gmail.com</span>
-                </div>
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">+154826846849</span>
-                </div>
+              <div className="pt-3">
+                <Button
+                  onClick={handleOpenModal}
+                  variant="outlined"
+                  className="mt-3 rounded-lg"
+                >
+                  Change Password
+                </Button>
               </div>
             </div>
           </div>

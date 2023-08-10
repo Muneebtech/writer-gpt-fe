@@ -6,6 +6,7 @@ import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import Spinner from "@/modules/spinner/spinner";
 import Toaster from "@/common/Toaster/Toaster";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 interface OutroProps {
   data: outroDataTypes[];
   FilterData: outroDataTypes[];
@@ -91,7 +92,7 @@ const Outros: React.FC<OutroProps> = ({
     <div>
       {outroLoading && (
         <>
-          <Spinner />
+       <LottieSpinner />
         </>
       )}
       {!outroLoading && (

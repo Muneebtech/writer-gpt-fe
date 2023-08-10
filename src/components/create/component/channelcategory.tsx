@@ -7,6 +7,7 @@ import { useGetChannels } from "@/services/channel";
 import Spinner from "@/modules/spinner/spinner";
 
 import { Job } from "@/components/Types/job.type";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
   setChannelId: (channelId: string) => void;
@@ -32,7 +33,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
     <div>
       {loading ? (
         <>
-          <Spinner />
+       <LottieSpinner />
         </>
       ) : (
         <>

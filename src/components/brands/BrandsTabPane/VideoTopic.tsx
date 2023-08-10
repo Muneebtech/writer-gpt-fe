@@ -10,6 +10,7 @@ import { UseDeleteTopic } from "@/services/topic/hooks/useDeleteTopic";
 import { LoadingButton } from "@mui/lab";
 import Toaster from "@/common/Toaster/Toaster";
 import Spinner from "@/modules/spinner/spinner";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 interface TopicDataListProps {
   data: Topic[];
   TopicFilterData: Topic[];
@@ -71,7 +72,7 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
     <>
       {topicLoading && (
         <>
-          <Spinner />
+          <LottieSpinner />
         </>
       )}
       {!topicLoading && (

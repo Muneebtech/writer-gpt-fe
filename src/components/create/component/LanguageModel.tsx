@@ -8,6 +8,7 @@ import { FiSearch } from "react-icons/fi";
 import { useModel } from "@/services/Script/hooks/useModel";
 import Spinner from "@/modules/spinner/spinner";
 import { ModelList } from "@/constants/languageModel";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
 }
@@ -43,7 +44,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     <div>
       {modelLoading ? (
         <>
-          <Spinner />
+      <LottieSpinner />
         </>
       ) : (
         <>

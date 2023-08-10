@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
 }
@@ -64,7 +65,7 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     <div>
       {modelLoading || outroLoading || topicLoading ? (
         <>
-          <Spinner />
+         <LottieSpinner />
         </>
       ) : (
         <>
