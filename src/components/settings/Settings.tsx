@@ -1,5 +1,5 @@
 import Header from "@/common/Header/header";
-import { Button, Switch, TextField } from "@mui/material";
+import { Button, InputLabel, Switch, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineLeft, AiOutlineUpload } from "react-icons/ai";
 import Image from "next/image";
@@ -55,6 +55,7 @@ const Setting = () => {
       setProfileImage(selectedImage);
     }
   };
+
   return (
     <>
       <ProfileEidtModal
@@ -110,7 +111,7 @@ const Setting = () => {
           </div>
         </>
       ) : (
-        <>
+        <div className="">
           <div
             className="flex items-center cursor-pointer"
             onClick={handleCloseProfile}
@@ -121,8 +122,14 @@ const Setting = () => {
             <Header title="Profile History" />
           </div>
           <div className="table-bb-gray mt-1 ms-4 me-4"></div>
-          <TextField className="pt-2 pb-2 w-3/6" label="Full Name"></TextField>
           <div className="mt-4">
+            <InputLabel>Full Name</InputLabel>
+            <TextField
+              className="pt-2 pb-2 w-3/6 "
+              label="Full Name"
+            ></TextField>
+          </div>
+          <div className="mt-4 h-[calc(100vh-15rem)]">
             <div className="flex justify-between items-center">
               <div className="">
                 <div className="flex items-center">
@@ -165,11 +172,6 @@ const Setting = () => {
               </div>
             </div>
             <div>
-              <div className="mt-4 pb-2 cursor-pointer">
-                <p className="border-b-2 w-[9.2%] border-b-black">
-                  More Setting
-                </p>
-              </div>
               <div className="pt-3">
                 <Button
                   onClick={handleOpenModal}
@@ -179,6 +181,33 @@ const Setting = () => {
                   Change Password
                 </Button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showProfile ? (
+        <></>
+      ) : (
+        <>
+          <div className="table-bb-gray mt-1 ms-4 me-4"></div>
+          <div className="flex justify-between items-center pt-4">
+            <div>
+              <Button
+                className="text-black ms-2 me-2"
+                variant="outlined"
+                onClick={handleCloseProfile}
+              >
+                Back
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                className="button-black ms-2 me-2"
+                // onClick={handleNext}
+              >
+                Save
+              </Button>
             </div>
           </div>
         </>

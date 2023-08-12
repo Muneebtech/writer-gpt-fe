@@ -21,8 +21,8 @@ export enum Environment {
 
 export type ChangePasswordTypes = {
   oldPassword: string
-  password: string;
-  renterpassword: string
+  newPassword: string;
+  renterPassword?: string
   email?: string
 }
 

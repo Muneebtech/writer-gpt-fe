@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import React, { useState } from "react";
 import { FaSpinner, FaTimes } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
@@ -21,9 +22,10 @@ interface ChildProps {
     topic: string;
   };
   openModal: boolean;
-  OutroLoading:boolean;
-  TopicLoading:boolean;
-  ManagerLoading:boolean;
+  OutroLoading: boolean;
+  TopicLoading: boolean;
+  ManagerLoading: boolean;
+  showError: boolean;
   handleCloseModal: () => void;
   handleOpenModal: () => void;
   HandleAddOutro: () => void;
@@ -58,6 +60,7 @@ const BrandsEditModal: React.FC<ChildProps> = ({
   TopicLoading,
   ManagerLoading,
   value,
+  showError,
 }) => {
   return (
     <div>
@@ -100,8 +103,19 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         label="ADD OUTRO"
                         multiline
                         rows={6}
+                        error={showError}
                         className="w-full mt-2 mb-2"
                       />
+                      {showError ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">Please Add Outro</span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : value === 3 ? (
                     <>
@@ -111,7 +125,20 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         label="ADD TOPIC DESCRIPTION"
                         className="w-full mt-2 mb-2"
                         name="topic"
+                        error={showError}
                       />
+                      {showError ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">
+                              Please Add Topic Description
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                       <div className="pt-4">
                         <TextField
                           onChange={handleAddTopic}
@@ -119,8 +146,19 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                           label="ADD TOPIC HERE"
                           className="w-full mt-2 mb-2"
                           name="description"
+                          error={showError}
                         />
                       </div>
+                      {showError ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">Please Add Topic </span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : value === 5 ? (
                     <>
@@ -131,7 +169,20 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         onChange={handleAddManagerDataLists}
                         label="abc@gmail.com"
                         className="w-full"
+                        error={showError}
                       />
+                      {showError ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">
+                              Please Add Manager Email{" "}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : null}
                 </div>
@@ -157,8 +208,8 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                     ? handleAddNewVideoTopic()
                     : value === 5
                     ? handleAddManagersList()
-                    : null
-                  handleClearTextFieldData()
+                    : null;
+                  handleClearTextFieldData();
                 }}
                 variant="contained"
                 className="button-black ps-4 pe-4"

@@ -21,6 +21,8 @@ const OverView = () => {
   const { id } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
+  console.log(data, "data::library  ");
+  
   const [Data, setData] = useState<TableListData[]>();
   const [totalPagesCount, setTotalPages] = useState(1);
   // const [isPopoverOpen, setIsPopoverOpen] = useState(false);

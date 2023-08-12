@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import React from "react";
-
 const ScriptsButtons = () => {
   return (
     <div>
@@ -16,5 +15,4 @@ const ScriptsButtons = () => {
     </div>
   );
 };
-
 export default ScriptsButtons;

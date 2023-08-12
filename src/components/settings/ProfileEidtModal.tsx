@@ -9,10 +9,13 @@ import {
   Typography,
   InputAdornment,
 } from "@mui/material";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import { AuthTypes, ChangePasswordTypes } from "@/utils/types";
+import { FaSpinner } from "react-icons/fa";
+import Toaster from "@/common/Toaster/Toaster";
 interface ChildProps {
   handleCloseModal: () => void;
   handleOpenModal: () => void;
@@ -25,7 +28,7 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
   openModal,
   userData,
 }) => {
-  // const { mutate, isLoading, isSuccess } = useChangePassword();
+  const { mutate, isLoading, isSuccess } = useChangePassword();
   const [showPasswords, setShowPasswords] = useState({
     oldPassword: false,
     newPassword: false,
@@ -33,18 +36,23 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
   });
   const [changepassword, setchangePassword] = useState<ChangePasswordTypes>({
     oldPassword: "",
-    password: "",
-    renterpassword: "",
+    newPassword: "",
+    renterPassword: "",
   });
   const [userChangePassword, setUserChangePassword] = useState<
     ChangePasswordTypes[]
   >([]);
+  const [passwordCheck, setPasswordCheck] = useState(false);
   console.log(userChangePassword, "userChangePassword");
 
   console.log(changepassword, "changepassword::changepassword");
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const SearchValue = event.target.value;
+    if (SearchValue) {
+      setPasswordCheck(false);
+    }
     setchangePassword((prevState) => ({
       ...prevState,
       [name]: value,
@@ -62,12 +70,20 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
     const NewFile: ChangePasswordTypes = {
       oldPassword: changepassword.oldPassword,
       email: userData?.email || "", // Provide a default value if userData?.email is undefined
-      password: changepassword.password,
-      renterpassword: changepassword.renterpassword,
+      newPassword: changepassword.newPassword,
     };
     setUserChangePassword([...userChangePassword, NewFile]);
+    if (changepassword.newPassword !== changepassword.renterPassword) {
+      setPasswordCheck(true);
+    } else if (changepassword.newPassword === changepassword.renterPassword) {
+      setchangePassword({
+        newPassword: "",
+        oldPassword: "",
+        renterPassword: "",
+      });
+      return mutate(NewFile);
+    }
   };
-  useEffect(() => {});
   return (
     <div>
       <Modal
@@ -76,124 +92,162 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
         className="flex justify-center items-center"
       >
         <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-9/12 Profile_modal">
-          <Header title="Change Password" />
-          <div className=" table-bb-gray mt-1"></div>
-          <div className="pt-2 pb-2">
-            <InputLabel>Enter Old Password</InputLabel>
-            <TextField
-              autoComplete="off"
-              value={changepassword.oldPassword}
-              name="oldPassword"
-              onChange={handleInputChange}
-              placeholder="Enter Old Password"
-              className="w-full"
-              type={showPasswords.oldPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {showPasswords.oldPassword ? (
-                      <RiEyeCloseLine
-                        onClick={() => handleTogglePassword("oldPassword")}
-                        className="eye-icon cursor-pointer"
-                      />
+          {isSuccess ? (
+            <>
+              <div
+                className={`bg-white rounded-lg ${
+                  isSuccess ? `h-5/6` : `h-5/6`
+                } `}
+              >
+                <p className="font-bold flex justify-center  ">
+                  Change Password Successfully
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <Header title="Change Password" />
+              <div className=" table-bb-gray mt-1"></div>
+              <div className="pt-2 pb-2">
+                <InputLabel>Enter Old Password</InputLabel>
+                <TextField
+                  autoComplete="off"
+                  value={changepassword.oldPassword}
+                  name="oldPassword"
+                  onChange={handleInputChange}
+                  placeholder="Enter Old Password"
+                  className="w-full"
+                  type={showPasswords.oldPassword ? "text" : "password"}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {showPasswords.oldPassword ? (
+                          <RiEyeCloseLine
+                            onClick={() => handleTogglePassword("oldPassword")}
+                            className="eye-icon cursor-pointer"
+                          />
+                        ) : (
+                          <RiEyeLine
+                            onClick={() => handleTogglePassword("oldPassword")}
+                            className="eye-icon cursor-pointer"
+                          />
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+              <div className="pt-2 pb-2">
+                <InputLabel>Enter New Password</InputLabel>
+                <TextField
+                  autoComplete="off"
+                  value={changepassword.newPassword}
+                  name="newPassword"
+                  onChange={handleInputChange}
+                  placeholder="Enter New Password"
+                  className="w-full"
+                  type={showPasswords.newPassword ? "text" : "password"}
+                  error={passwordCheck}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {showPasswords.newPassword ? (
+                          <RiEyeCloseLine
+                            onClick={() => handleTogglePassword("newPassword")}
+                            className="eye-icon cursor-pointer"
+                          />
+                        ) : (
+                          <RiEyeLine
+                            onClick={() => handleTogglePassword("newPassword")}
+                            className="eye-icon cursor-pointer"
+                          />
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+              <div className="pt-2 pb-2">
+                <InputLabel>Re-enter New Password</InputLabel>
+                <TextField
+                  autoComplete="off"
+                  value={changepassword.renterPassword}
+                  name="renterPassword"
+                  onChange={handleInputChange}
+                  placeholder="Re-enter New Password"
+                  className="w-full"
+                  type={showPasswords.reenterPassword ? "text" : "password"}
+                  error={passwordCheck}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {showPasswords.reenterPassword ? (
+                          <RiEyeCloseLine
+                            onClick={() =>
+                              handleTogglePassword("reenterPassword")
+                            }
+                            className="eye-icon cursor-pointer"
+                          />
+                        ) : (
+                          <RiEyeLine
+                            onClick={() =>
+                              handleTogglePassword("reenterPassword")
+                            }
+                            className="eye-icon cursor-pointer"
+                          />
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                {passwordCheck ? (
+                  <>
+                    <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                      <AiOutlineExclamationCircle />{" "}
+                      <span className="ps-1">Password Dose Not Match !</span>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div className="table-bb-gray mt-2"></div>
+              <div className="flex justify-end items-center pt-4 pb-2">
+                <Button
+                  onClick={handleCloseModal}
+                  variant="outlined"
+                  className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={SubmitChangePasswordData}
+                  variant="contained"
+                  className="button-black ps-2 pe-2 ms-1 me-1"
+                >
+                  <>
+                    {isLoading ? (
+                      <>
+                        {" "}
+                        <div className="flex items-center">
+                          <FaSpinner
+                            size={16}
+                            className="rotate"
+                            style={{
+                              marginRight: "10px",
+                            }}
+                          ></FaSpinner>
+                        </div>
+                      </>
                     ) : (
-                      <RiEyeLine
-                        onClick={() => handleTogglePassword("oldPassword")}
-                        className="eye-icon cursor-pointer"
-                      />
+                      <></>
                     )}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <div className="pt-2 pb-2">
-            <InputLabel>Enter New Password</InputLabel>
-            <TextField
-              autoComplete="off"
-              value={changepassword.password}
-              name="password"
-              onChange={handleInputChange}
-              placeholder="Enter New Password"
-              className="w-full"
-              type={showPasswords.newPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {showPasswords.newPassword ? (
-                      <RiEyeCloseLine
-                        onClick={() => handleTogglePassword("newPassword")}
-                        className="eye-icon cursor-pointer"
-                      />
-                    ) : (
-                      <RiEyeLine
-                        onClick={() => handleTogglePassword("newPassword")}
-                        className="eye-icon cursor-pointer"
-                      />
-                    )}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <div className="pt-2 pb-2">
-            <InputLabel>Re-enter New Password</InputLabel>
-            <TextField
-              autoComplete="off"
-              value={changepassword.renterpassword}
-              name="renterpassword"
-              onChange={handleInputChange}
-              placeholder="Re-enter New Password"
-              className="w-full"
-              type={showPasswords.reenterPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {showPasswords.reenterPassword ? (
-                      <RiEyeCloseLine
-                        onClick={() => handleTogglePassword("reenterPassword")}
-                        className="eye-icon cursor-pointer"
-                      />
-                    ) : (
-                      <RiEyeLine
-                        onClick={() => handleTogglePassword("reenterPassword")}
-                        className="eye-icon cursor-pointer"
-                      />
-                    )}
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <div className="table-bb-gray mt-2"></div>
-          <div className="flex justify-end items-center pt-4 pb-2">
-            <Button
-              onClick={SubmitChangePasswordData}
-              variant="contained"
-              className="button-black ps-2 pe-2"
-            >
-              <> {/* <FiPlus size={25} className="pe-1 ps-1" /> */}</>
-              <>
-                <div className="flex items-center">
-                  {/* <FaSpinner
-                                size={16}
-                                style={{
-                                  animation: rotateAnimation,
-                                  marginRight: "10px",
-                                }}
-                  ></FaSpinner> */}
-                </div>
-              </>
-              <>Change Password</>
-            </Button>
-            <Button
-              onClick={handleCloseModal}
-              variant="outlined"
-              className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
-            >
-              Cancel
-            </Button>
-          </div>
+                  </>
+                  <>Change Password</>
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </Modal>
     </div>

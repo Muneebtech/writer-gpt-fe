@@ -145,21 +145,29 @@ const brandsLibrary = () => {
   const handleAddManagersList = () => {
     const addNewManager = [...managerDataList, addNewManagerData];
     setManagerDataList(addNewManager);
-    setAddNewManagerData({
-      id: (parseInt(addNewManagerData.id) + 1).toString(),
-      status: true,
-      firstName: "",
-      email: "",
-      photoPath: "",
-      role: "",
-      lastName: "",
-    });
-    mutate({ email: addNewManagerData.email, id: id });
+    if (addNewManagerData.email === "") {
+      setShowError(true);
+    } else if (addNewManagerData.email !== "") {
+      setAddNewManagerData({
+        id: (parseInt(addNewManagerData.id) + 1).toString(),
+        status: true,
+        firstName: "",
+        email: "",
+        photoPath: "",
+        role: "",
+        lastName: "",
+      });
+      mutate({ email: addNewManagerData.email, id: id });
+    }
   };
 
   const handleAddManagerDataLists = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    const SearchValues = event.target.value;
+    if (SearchValues) {
+      setShowError(false);
+    }
     setAddNewManagerData({
       ...addNewManagerData,
       firstName: event.target.value,
@@ -176,7 +184,7 @@ const brandsLibrary = () => {
   // creating  Topic //
   const {
     data: AddTopic,
-    isLoading: TopicLoading,
+    isLoading: TopicLoading,  
     isSuccess: AddTopicSuccess,
     mutate: AddTopicMutate,
   } = useAddTopic();
@@ -202,20 +210,28 @@ const brandsLibrary = () => {
     topic: "",
   });
   const handleAddNewVideoTopic = () => {
-    const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
-    setTopicList(AddNewTopicVideo as any);
-    setAddNewTopicVideo({
-      description: "",
-      topic: "",
-    });
-    AddTopicMutate({
-      topic: addNewTopicVideo.topic,
-      description: addNewTopicVideo.description,
-      channel: id as any,
-    });
+    if (addNewTopicVideo.topic === "") {
+      setShowError(true);
+    } else if (addNewTopicVideo.topic !== "") {
+      const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
+      setTopicList(AddNewTopicVideo as any);
+      setAddNewTopicVideo({
+        description: "",
+        topic: "",
+      });
+      AddTopicMutate({
+        topic: addNewTopicVideo.topic,
+        description: addNewTopicVideo.description,
+        channel: id as any,
+      });
+    }
   };
   const handleAddTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const SearchValues = event.target.value;
+    if (SearchValues) {
+      setShowError(false);
+    }
     setAddNewTopicVideo((prevTopic) => ({
       ...prevTopic,
       [name]: value,
@@ -244,6 +260,7 @@ const brandsLibrary = () => {
   } = useGetOutro();
   const [showdeleteOutroModal, setdeleteOutroModal] = useState(false);
   const [showTopicDeleteModal, setshowTopicDeleteModal] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [OutroDataList, setOutroDataList] = useState<outroDataTypes[]>(
     Outrodata || []
   );
@@ -286,12 +303,9 @@ const brandsLibrary = () => {
     console.log(newOutroData, "trigger:: start");
     console.log(newOutroData?.description.trim() !== "", "Outro");
     console.log(channelId, "ChannelId");
-    if (newOutroData?.description.trim() !== "") {
-      // const AddNewOutro: outroDataTypes = {
-      //   description: newOutroData.description,
-      // };
-
-      // setOutroDataList([...OutroDataList, AddNewOutro]);
+    if (newOutroData.description === "") {
+      setShowError(true);
+    } else if (newOutroData?.description.trim() !== "") {
       PostOutros({
         description: newOutroData.description,
         channel: channelId as any,
@@ -309,6 +323,11 @@ const brandsLibrary = () => {
     value: number,
     text: string
   ) => {
+    const SearchValues = event.target.value;
+    if (SearchValues) {
+      setShowError(false);
+    }
+
     if (text === "edit") {
       switch (value) {
         case 1:
@@ -494,6 +513,7 @@ const brandsLibrary = () => {
         handleCloseModal={handleCloseModal}
         handleOpenModal={handleOpenModal}
         value={value}
+        showError={showError}
         HandleAddOutro={HandleAddOutro}
         handleInputChange={handleInputChange}
         handleAddNewVideoTopic={handleAddNewVideoTopic}
@@ -574,7 +594,7 @@ const brandsLibrary = () => {
                 alt="channel"
                 width={35}
                 height={35}
-                style={{borderRadius:"50%"}}
+                style={{ borderRadius: "50%" }}
               />
             </div>
             <div className="ps-1 pe-1">
