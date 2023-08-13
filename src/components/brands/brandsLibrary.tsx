@@ -146,7 +146,7 @@ const brandsLibrary = () => {
     const addNewManager = [...managerDataList, addNewManagerData];
     setManagerDataList(addNewManager);
     if (addNewManagerData.email === "") {
-      setShowError(true);
+      setshowErrorManager(true);
     } else if (addNewManagerData.email !== "") {
       setAddNewManagerData({
         id: (parseInt(addNewManagerData.id) + 1).toString(),
@@ -166,7 +166,7 @@ const brandsLibrary = () => {
   ) => {
     const SearchValues = event.target.value;
     if (SearchValues) {
-      setShowError(false);
+      setshowErrorManager(false);
     }
     setAddNewManagerData({
       ...addNewManagerData,
@@ -184,7 +184,7 @@ const brandsLibrary = () => {
   // creating  Topic //
   const {
     data: AddTopic,
-    isLoading: TopicLoading,  
+    isLoading: TopicLoading,
     isSuccess: AddTopicSuccess,
     mutate: AddTopicMutate,
   } = useAddTopic();
@@ -210,8 +210,8 @@ const brandsLibrary = () => {
     topic: "",
   });
   const handleAddNewVideoTopic = () => {
-    if (addNewTopicVideo.topic === "") {
-      setShowError(true);
+    if (addNewTopicVideo.topic === "" || addNewTopicVideo.description === "") {
+      setShowErrorTopic(true);
     } else if (addNewTopicVideo.topic !== "") {
       const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
       setTopicList(AddNewTopicVideo as any);
@@ -230,7 +230,7 @@ const brandsLibrary = () => {
     const { name, value } = event.target;
     const SearchValues = event.target.value;
     if (SearchValues) {
-      setShowError(false);
+      setShowErrorTopic(false);
     }
     setAddNewTopicVideo((prevTopic) => ({
       ...prevTopic,
@@ -261,6 +261,9 @@ const brandsLibrary = () => {
   const [showdeleteOutroModal, setdeleteOutroModal] = useState(false);
   const [showTopicDeleteModal, setshowTopicDeleteModal] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [showErrorTopic, setShowErrorTopic] = useState(false);
+  const [showErrorManager, setshowErrorManager] = useState(false);
+
   const [OutroDataList, setOutroDataList] = useState<outroDataTypes[]>(
     Outrodata || []
   );
@@ -379,6 +382,7 @@ const brandsLibrary = () => {
   const [value, setValue] = React.useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [closePopOver, setClosePopOver] = useState(false);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -488,9 +492,16 @@ const brandsLibrary = () => {
     }
   }, [updateTopicSuccess, OutroUpdateSuccess]);
   const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${channelData?.photoPath}`;
+  const ClosePopOver = () => {
+    setClosePopOver(false);
+  };
+  const handleOpenPopOver = () => {
+    setClosePopOver(true);
+  };
   return (
     <div>
       <EditBrands
+        ClosePopOver={ClosePopOver}
         updateTopicLoading={updateTopicLoading}
         OutroUpdateLoading={OutroUpdateLoading}
         openEditModal={openEditModal}
@@ -505,6 +516,8 @@ const brandsLibrary = () => {
       />
       {/* Modals */}
       <BrandsModal
+        showErrorManager={showErrorManager}
+        showErrorTopic={showErrorTopic}
         ManagerLoading={ManagerLoading}
         TopicLoading={TopicLoading}
         OutroLoading={OutroLoading}
@@ -594,9 +607,10 @@ const brandsLibrary = () => {
                 alt="channel"
                 width={35}
                 height={35}
-                style={{ borderRadius: "50%" }}
+                style={{ borderRadius: "50%", objectFit: "cover" }}
               />
             </div>
+
             <div className="ps-1 pe-1">
               {" "}
               <span>{channelData?.channel}</span>
@@ -671,6 +685,8 @@ const brandsLibrary = () => {
             <CustomTabPanel value={value} index={1}>
               <div>
                 <Outros
+                  handleOpenPopOver={handleOpenPopOver}
+                  closePopOver={closePopOver}
                   handleOpenEditModal={handleOpenEditModal}
                   showdeleteOutroModal={showdeleteOutroModal}
                   handleCloseDeleteModal={handleCloseDeleteModal}
@@ -694,6 +710,8 @@ const brandsLibrary = () => {
             <CustomTabPanel value={value} index={3}>
               <div>
                 <VideoTopic
+                closePopOver={closePopOver}
+                  handleOpenPopOver={handleOpenPopOver}
                   topicLoading={topicLoading}
                   openPopoverTopic={openPopoverTopic}
                   setIsPopoverOpenTopic={setIsPopoverOpenTopic}

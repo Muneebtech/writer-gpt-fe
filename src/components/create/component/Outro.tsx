@@ -9,7 +9,7 @@ interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
   channelId: string;
 }
-const Outro: React.FC<ChildComponentProps> = ({ setScriptData,channelId }) => {
+const Outro: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
   const { data: Outrodata, isLoading: outroLoading, mutate } = useGetOutro();
   console.log(Outrodata, "Outrodata");
   console.log(Outrodata, "Outrodata::Outrodata::Outrodata  ");
@@ -108,44 +108,49 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData,channelId }) => {
               Add Outro
             </Button>
           </div>
-          <div className="ps-4 pe-4 pt-2">
-            <div className="border-2 overflow-scroll height-outro">
-              {dataList?.length < 0 ? (
-                <>
-                  <div>
-                    <p>No Outro to Show</p>
-                  </div>
-                </>
-              ) : (
-                <>
-                  {dataList?.map((items: outroDataTypes) => {
-                    const isHovered = items.id === hoveredId;
-                    return (
-                      <>
-                        <div
-                          onClick={() => handleOutroData(items?.id || "")}
-                          onMouseEnter={() => setHoveredId(items?.id || "")}
-                          onMouseLeave={() => setHoveredId(null)}
-                          key={items?.id}
-                          className="outro-item mt-2 mb-2 ms-2 me-2 cursor-pointer"
-                        >
-                          <div className="flex ps-2 pe-2 pt-2 pb-2">
-                            <p>{items?.description}</p>
-                            <div
-                              className="pt-1 cursor-pointer ps-2"
-                              onClick={() => handleOutroData(items?.id || "")}
-                            >
-                              {isHovered && <FaPlus />}
+          {dataList?.length > 0 ? (
+            <>
+              {" "}
+              <div className="ps-4 pe-4 pt-2">
+                <div className="border-2 overflow-scroll height-outro">
+                  <>
+                    {dataList?.map((items: outroDataTypes) => {
+                      const isHovered = items.id === hoveredId;
+                      return (
+                        <>
+                          <div
+                            onClick={() => handleOutroData(items?.id || "")}
+                            onMouseEnter={() => setHoveredId(items?.id || "")}
+                            onMouseLeave={() => setHoveredId(null)}
+                            key={items?.id}
+                            className="outro-item mt-2 mb-2 ms-2 me-2 cursor-pointer"
+                          >
+                            <div className="flex ps-2 pe-2 pt-2 pb-2">
+                              <p>{items?.description}</p>
+                              <div
+                                className="pt-1 cursor-pointer ps-2"
+                                onClick={() => handleOutroData(items?.id || "")}
+                              >
+                                {isHovered && <FaPlus />}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </>
-              )}
-            </div>
-          </div>
+                        </>
+                      );
+                    })}
+                  </>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-center items-center h-[80%]">
+                <p className="font-[600] text-[15px]">
+                  No Outro Data Available
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

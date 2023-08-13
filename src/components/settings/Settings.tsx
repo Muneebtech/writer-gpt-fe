@@ -123,9 +123,9 @@ const Setting = () => {
           </div>
           <div className="table-bb-gray mt-1 ms-4 me-4"></div>
           <div className="mt-4">
-            <InputLabel>Full Name</InputLabel>
+            <InputLabel className="pt-2 pb-2">Full Name</InputLabel>
             <TextField
-              className="pt-2 pb-2 w-3/6 "
+              className="pt-1 pb-1 w-3/6 "
               label="Full Name"
             ></TextField>
           </div>

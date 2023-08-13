@@ -25,7 +25,9 @@ interface ChildProps {
   OutroLoading: boolean;
   TopicLoading: boolean;
   ManagerLoading: boolean;
+  showErrorTopic: boolean;
   showError: boolean;
+  showErrorManager: boolean;
   handleCloseModal: () => void;
   handleOpenModal: () => void;
   HandleAddOutro: () => void;
@@ -61,6 +63,8 @@ const BrandsEditModal: React.FC<ChildProps> = ({
   ManagerLoading,
   value,
   showError,
+  showErrorTopic,
+  showErrorManager,
 }) => {
   return (
     <div>
@@ -125,9 +129,9 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         label="ADD TOPIC DESCRIPTION"
                         className="w-full mt-2 mb-2"
                         name="topic"
-                        error={showError}
+                        error={showErrorTopic}
                       />
-                      {showError ? (
+                      {showErrorTopic ? (
                         <>
                           <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
                             <AiOutlineExclamationCircle />{" "}
@@ -146,10 +150,10 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                           label="ADD TOPIC HERE"
                           className="w-full mt-2 mb-2"
                           name="description"
-                          error={showError}
+                          error={showErrorTopic}
                         />
                       </div>
-                      {showError ? (
+                      {showErrorTopic ? (
                         <>
                           <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
                             <AiOutlineExclamationCircle />{" "}
@@ -171,7 +175,7 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         className="w-full"
                         error={showError}
                       />
-                      {showError ? (
+                      {showErrorManager ? (
                         <>
                           <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
                             <AiOutlineExclamationCircle />{" "}

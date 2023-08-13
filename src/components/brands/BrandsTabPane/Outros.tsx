@@ -4,10 +4,11 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { FaSpinner, FaTrash } from "react-icons/fa";
-import Spinner from "@/modules/spinner/spinner";
 import Toaster from "@/common/Toaster/Toaster";
 import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 interface OutroProps {
+  handleOpenPopOver: () => void;
+  closePopOver: boolean;
   data: outroDataTypes[];
   FilterData: outroDataTypes[];
   setIsPopoverOpen: (value: boolean) => void;
@@ -39,6 +40,8 @@ const Outros: React.FC<OutroProps> = ({
   HandleDeleteModal,
   showdeleteOutroModal,
   handleOpenEditModal,
+  closePopOver,
+  handleOpenPopOver,
 }) => {
   const rotateAnimation = `spin 1s linear infinite`;
   const [totalPagesCount, setTotalPages] = useState(1);
@@ -87,12 +90,12 @@ const Outros: React.FC<OutroProps> = ({
       handleCloseDeleteModal();
       handlePopoverClosed();
     }
-  }, [isSuccess,isError]);
+  }, [isSuccess, isError]);
   return (
     <div>
       {outroLoading && (
         <>
-       <LottieSpinner />
+          <LottieSpinner />
         </>
       )}
       {!outroLoading && (
@@ -187,40 +190,46 @@ const Outros: React.FC<OutroProps> = ({
                 </Box>
               </Modal>
             </>
-              <>
-                <Popover
-                  open={isPopoverOpen}
-                  anchorEl={popoverAnchorEl}
-                  onClose={handlePopoverClosed}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                >
-                  <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
-                    <Typography
-                      onClick={() => handleOpenEditModal(openPopover as any)}
-                      className="cursor-pointer"
-                      id="modal-modal-description"
-                      sx={{ mt: 1 }}
-                    >
-                      Edit
-                    </Typography>
-                    <Typography
-                      onClick={() => HandleDeleteModal(openPopover)}
-                      className="cursor-pointer"
-                      id="modal-modal-description"
-                      sx={{ mt: 1 }}
-                    >
-                      Delete
-                    </Typography>
-                  </Box>
-                </Popover>
-              </>
+            <>
+              {closePopOver ? (
+                <>
+                  <Popover
+                    open={isPopoverOpen}
+                    anchorEl={popoverAnchorEl}
+                    onClose={handlePopoverClosed}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                  >
+                    <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+                      <Typography
+                        onClick={() => handleOpenEditModal(openPopover as any)}
+                        className="cursor-pointer"
+                        id="modal-modal-description"
+                        sx={{ mt: 1 }}
+                      >
+                        Edit
+                      </Typography>
+                      <Typography
+                        onClick={() => HandleDeleteModal(openPopover)}
+                        className="cursor-pointer"
+                        id="modal-modal-description"
+                        sx={{ mt: 1 }}
+                      >
+                        Delete
+                      </Typography>
+                    </Box>
+                  </Popover>
+                </>
+              ) : (
+                <></>
+              )}
+            </>
           </>
           <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
             <div className="flex items-center justify-between pe-16 ps-6 pt-4">
@@ -261,9 +270,14 @@ const Outros: React.FC<OutroProps> = ({
                             </div>
                             <div
                               className="pt-2 cursor-pointer"
-                              onClick={(event) =>
-                                handlePopoverOpen(items?.id || "", event, items)
-                              }
+                              onClick={(event) => {
+                                handlePopoverOpen(
+                                  items?.id || "",
+                                  event,
+                                  items
+                                );
+                                handleOpenPopOver();
+                              }}
                             >
                               <BsThreeDotsVertical />
                             </div>

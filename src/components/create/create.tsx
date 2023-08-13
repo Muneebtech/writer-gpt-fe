@@ -124,7 +124,6 @@ const Create = () => {
     } else if (activeStep < 6) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-
     setSkipped(newSkipped);
   };
   const handleBack = () => {
@@ -170,8 +169,8 @@ const Create = () => {
         );
       case 1:
         return <BasicData setScriptData={handleStateUpdate} />;
-        // return <ScriptSuccessPage />;
-        // return <ScriptsButtons />;
+      // return <ScriptSuccessPage />;
+      // return <ScriptsButtons />;
       // return <Script setScriptData={handleStateUpdate} />;
       case 2:
         return <LanguageModel setScriptData={handleStateUpdate} />;
@@ -201,7 +200,6 @@ const Create = () => {
       setDataFlag(true);
     }
   }, [isSuccess]);
-  useEffect(() => {}, []);
   return (
     <div>
       {showToaster === "0" && (

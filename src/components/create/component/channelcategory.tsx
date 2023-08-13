@@ -33,7 +33,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
     <div>
       {loading ? (
         <>
-       <LottieSpinner />
+          <LottieSpinner />
         </>
       ) : (
         <>
@@ -48,58 +48,70 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
               </div>
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
-            <div className="flex flex-wrap flex-start mt-4 mb-4 h-[90%] overflow-scroll">
-              {Data?.map((item: Channel) => {
-                const { id, channel, description } = item;
-                return (
-                  <div
-                    onClick={() => handleClick(id)}
-                    key={id}
-                    className="flex
+            <div></div>
+            {Data?.length > 0 ? (
+              <div className="flex flex-wrap flex-start mt-4 mb-4 h-[90%] overflow-scroll">
+                {Data?.map((item: Channel) => {
+                  const { id, channel, description } = item;
+                  return (
+                    <div
+                      onClick={() => handleClick(id)}
+                      key={id}
+                      className="flex
                             cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
-                  >
-                    <div className="flex items-center">
-                      <div>
-                        <Image
-                          src="/chaneel.png"
-                          alt="channel"
-                          width={30}
-                          height={30}
-                        />
-                      </div>
-                      <div className="ps-2 ">
-                        <div className="pt-1 pb-1">
-                          <p className=" font-bold text-sm">{channel}</p>
-                        </div>
+                    >
+                      <div className="flex items-center">
                         <div>
-                          <p className="text-green-400 text-xs">
-                            {description}
-                          </p>
+                          <Image
+                            src="/chaneel.png"
+                            alt="channel"
+                            width={30}
+                            height={30}
+                          />
+                        </div>
+                        <div className="ps-2 ">
+                          <div className="pt-1 pb-1">
+                            <p className=" font-bold text-sm">{channel}</p>
+                          </div>
+                          <div>
+                            <p className="text-green-400 text-xs">
+                              {description}
+                            </p>
+                          </div>
                         </div>
                       </div>
+                      {/* SelectCard */}
+                      <div className="">
+                        {selectedItemId === item.id ? (
+                          <Image
+                            src="/SelectCard.png"
+                            alt="round"
+                            width={12}
+                            height={12}
+                          />
+                        ) : (
+                          <Image
+                            src="/Round.png"
+                            alt="round"
+                            width={12}
+                            height={12}
+                          />
+                        )}
+                      </div>
                     </div>
-                    {/* SelectCard */}
-                    <div className="">
-                      {selectedItemId === item.id ? (
-                        <Image
-                          src="/SelectCard.png"
-                          alt="round"
-                          width={12}
-                          height={12}
-                        />
-                      ) : (
-                        <Image
-                          src="/Round.png"
-                          alt="round"
-                          width={12}
-                          height={12}
-                        />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <>
+                <div className="flex justify-center items-center h-[80%]">
+                  <p className="font-[600] text-[15px]">
+                    No Channel Data Available
+                  </p>
+                </div>
+              </>
+            )}
+
             {/* <div className="ps-2 pb-6">
               <div>
                 <Button

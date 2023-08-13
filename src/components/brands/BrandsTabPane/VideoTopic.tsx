@@ -29,6 +29,8 @@ interface TopicDataListProps {
   setIsPopoverOpenTopic: (value: boolean) => void;
   openPopoverTopic: string;
   topicLoading: boolean;
+  handleOpenPopOver: () => void;
+  closePopOver: boolean;
 }
 const VideoTopic: React.FC<TopicDataListProps> = ({
   data,
@@ -43,14 +45,12 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
   openPopoverTopic,
   handleTopicDeleteModalopen,
   topicLoading,
+  handleOpenPopOver,
+  closePopOver,
 }) => {
   const handlePopoverClosed = () => {
     setIsPopoverOpenTopic(false);
   };
-  // const handleClick = (id: string) => {
-  //   setSelectTopic(id === selectTopic ? null : id);
-  //   setScriptData({ topic: id });
-  // };
   const { mutate, isLoading, isSuccess, isError } = UseDeleteTopic();
 
   const HandleDeleteTopic = (id: string) => {
@@ -164,38 +164,46 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
               </Modal>
             </>
             <>
-              <Popover
-                open={isPopoverOpenTopic}
-                anchorEl={popoverAnchorElTopic}
-                onClose={handlePopoverClosed}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-              >
-                <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
-                  <Typography
-                    onClick={() => handleEditTopic(openPopoverTopic)}
-                    className="cursor-pointer"
-                    id="modal-modal-description"
-                    sx={{ mt: 1 }}
+              {closePopOver ? (
+                <>
+                  <Popover
+                    open={isPopoverOpenTopic}
+                    anchorEl={popoverAnchorElTopic}
+                    onClose={handlePopoverClosed}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
                   >
-                    Edit
-                  </Typography>
-                  <Typography
-                    onClick={() => handleTopicDeleteModalopen(openPopoverTopic)}
-                    className="cursor-pointer"
-                    id="modal-modal-description"
-                    sx={{ mt: 1 }}
-                  >
-                    Delete
-                  </Typography>
-                </Box>
-              </Popover>
+                    <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+                      <Typography
+                        onClick={() => handleEditTopic(openPopoverTopic)}
+                        className="cursor-pointer"
+                        id="modal-modal-description"
+                        sx={{ mt: 1 }}
+                      >
+                        Edit
+                      </Typography>
+                      <Typography
+                        onClick={() =>
+                          handleTopicDeleteModalopen(openPopoverTopic)
+                        }
+                        className="cursor-pointer"
+                        id="modal-modal-description"
+                        sx={{ mt: 1 }}
+                      >
+                        Delete
+                      </Typography>
+                    </Box>
+                  </Popover>
+                </>
+              ) : (
+                <></>
+              )}
             </>
             <div className="mt-6 rounded-md border-2 h-[calc(100vh-11.5rem)]">
               <div className="flex items-center justify-between pe-16 ps-6 pt-4">
@@ -236,9 +244,10 @@ const VideoTopic: React.FC<TopicDataListProps> = ({
                               </div>
                               <div
                                 className="pt-2 cursor-pointer "
-                                onClick={(event) =>
-                                  handlePopoverOpenTopic(id || "", event, item)
-                                }
+                                onClick={(event) => {
+                                  handlePopoverOpenTopic(id || "", event, item);
+                                  handleOpenPopOver();
+                                }}
                               >
                                 <BsThreeDotsVertical />
                               </div>

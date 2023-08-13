@@ -32,7 +32,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
     <div>
       {isLoading ? (
         <>
-        <LottieSpinner />
+          <LottieSpinner />
         </>
       ) : (
         <>
@@ -46,45 +46,58 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
               </div>
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
-            <div className="flex flex-wrap justify-center mt-4 mb-4 h-[90%] overflow-scroll">
-              {topicData?.map((item: Topic) => {
-                const { id, topic, description } = item;
-                return (
-                  <div
-                    onClick={() => handleClick(id)}
-                    key={id}
-                    className="flex h-[20%]
+            {topicData?.length > 0 ? (
+              <>
+                <div className="flex flex-wrap justify-center mt-4 mb-4 h-[90%] overflow-scroll">
+                  {topicData?.map((item: Topic) => {
+                    const { id, topic, description } = item;
+                    return (
+                      <div
+                        onClick={() => handleClick(id)}
+                        key={id}
+                        className="flex h-[20%]
                             cursor-pointer justify-between items-center ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
-                  >
-                    <div className="flex items-center">
-                      <div className="ps-2 ">
-                        <div className="pt-1 pb-1">
-                          <p className=" font-bold text-sm">{topic}</p>
+                      >
+                        <div className="flex items-center">
+                          <div className="ps-2 ">
+                            <div className="pt-1 pb-1">
+                              <p className=" font-bold text-sm">{topic}</p>
+                            </div>
+                          </div>
+                        </div>
+                        {/* SelectCard */}
+                        <div className="">
+                          {selectTopic === item.id ? (
+                            <Image
+                              src="/SelectCard.png"
+                              alt="round"
+                              width={12}
+                              height={12}
+                            />
+                          ) : (
+                            <Image
+                              src="/Round.png"
+                              alt="round"
+                              width={12}
+                              height={12}
+                            />
+                          )}
                         </div>
                       </div>
-                    </div>
-                    {/* SelectCard */}
-                    <div className="">
-                      {selectTopic === item.id ? (
-                        <Image
-                          src="/SelectCard.png"
-                          alt="round"
-                          width={12}
-                          height={12}
-                        />
-                      ) : (
-                        <Image
-                          src="/Round.png"
-                          alt="round"
-                          width={12}
-                          height={12}
-                        />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-center items-center h-[80%]">
+                  <p className="font-[600] text-[15px]">
+                    No Topic Data Available
+                  </p>
+                </div>
+              </>
+            )}
+
             {/* <div className="ps-2 pb-6">
               <div>
                 <Button

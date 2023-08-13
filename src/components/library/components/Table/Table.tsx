@@ -8,6 +8,7 @@ import { FiDownload } from "react-icons/fi";
 import { Box, Button, Modal } from "@mui/material";
 import Header from "@/common/Header/header";
 import Voice from "../voice";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading: loading, data: Data } = useGetJobs();
@@ -93,7 +94,9 @@ const Table = () => {
           {" "}
           <>
             {" "}
-            <Spinner />
+            <div>
+              <LottieSpinner />
+            </div>
           </>
         </>
       ) : (
@@ -247,7 +250,7 @@ const Table = () => {
                   ...
                 </button>
               )}
-              {visiblePages.map(page => (
+              {visiblePages.map((page) => (
                 <button
                   className={`px-2 py-1 border border-gray-300 rounded-md ${
                     page === currentPage ? "bg-blue-500 text-white" : ""

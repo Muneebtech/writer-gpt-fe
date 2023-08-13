@@ -39,10 +39,23 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
     newPassword: "",
     renterPassword: "",
   });
+
+  const HandleEmptyFeild = () => {
+    setchangePassword({
+      oldPassword: "",
+      newPassword: "",
+      renterPassword: "",
+    });
+  };
   const [userChangePassword, setUserChangePassword] = useState<
     ChangePasswordTypes[]
   >([]);
   const [passwordCheck, setPasswordCheck] = useState(false);
+  const [emptyFields, setEmptyFields] = useState({
+    oldPassword: false,
+    newPassword: false,
+    renterPassword: false,
+  });
   console.log(userChangePassword, "userChangePassword");
 
   console.log(changepassword, "changepassword::changepassword");
@@ -52,6 +65,12 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
     const SearchValue = event.target.value;
     if (SearchValue) {
       setPasswordCheck(false);
+    }
+    if (emptyFields[name as keyof typeof emptyFields] && value) {
+      setEmptyFields((prevFields) => ({
+        ...prevFields,
+        [name]: false,
+      }));
     }
     setchangePassword((prevState) => ({
       ...prevState,
@@ -73,7 +92,15 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
       newPassword: changepassword.newPassword,
     };
     setUserChangePassword([...userChangePassword, NewFile]);
-    if (changepassword.newPassword !== changepassword.renterPassword) {
+    const { oldPassword, newPassword, renterPassword } = changepassword;
+    const newEmptyFields = {
+      oldPassword: oldPassword === "",
+      newPassword: newPassword === "",
+      renterPassword: renterPassword === "",
+    };
+    setEmptyFields(newEmptyFields);
+    if (newPassword === "" || oldPassword === "" || renterPassword === "") {
+    } else if (changepassword.newPassword !== changepassword.renterPassword) {
       setPasswordCheck(true);
     } else if (changepassword.newPassword === changepassword.renterPassword) {
       setchangePassword({
@@ -136,6 +163,16 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
                     ),
                   }}
                 />
+                {emptyFields.oldPassword ? (
+                  <>
+                    <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                      <AiOutlineExclamationCircle />{" "}
+                      <span className="ps-1"> Fill Old Password Field</span>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="pt-2 pb-2">
                 <InputLabel>Enter New Password</InputLabel>
@@ -166,6 +203,16 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
                     ),
                   }}
                 />
+                {emptyFields.newPassword ? (
+                  <>
+                    <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                      <AiOutlineExclamationCircle />{" "}
+                      <span className="ps-1">Fill Password Field</span>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="pt-2 pb-2">
                 <InputLabel>Re-enter New Password</InputLabel>
@@ -210,18 +257,31 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
                 ) : (
                   <></>
                 )}
+                {emptyFields.renterPassword ? (
+                  <>
+                    <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                      <AiOutlineExclamationCircle />{" "}
+                      <span className="ps-1">Fill Re-Enter Password Field</span>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
               <div className="table-bb-gray mt-2"></div>
               <div className="flex justify-end items-center pt-4 pb-2">
                 <Button
-                  onClick={handleCloseModal}
+                  onClick={() => {
+                    handleCloseModal();
+                    HandleEmptyFeild();
+                  }}
                   variant="outlined"
                   className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
                 >
                   Cancel
                 </Button>
                 <Button
-                  onClick={SubmitChangePasswordData}
+                  onClick={()=>{SubmitChangePasswordData()}}
                   variant="contained"
                   className="button-black ps-2 pe-2 ms-1 me-1"
                 >

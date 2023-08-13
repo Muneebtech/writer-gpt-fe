@@ -10,6 +10,7 @@ import React from "react";
 import { FaSpinner, FaTimes } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 interface CHildModalProps {
+  ClosePopOver: () => void;
   updateTopicLoading: boolean;
   OutroUpdateLoading: boolean;
   handleCloseEditodal: () => void;
@@ -38,6 +39,7 @@ const EditBrands: React.FC<CHildModalProps> = ({
   handleAddManagersList,
   handleClearTextFieldData,
   handleInputChange,
+  ClosePopOver,
 }) => {
   return (
     <div>
@@ -64,7 +66,10 @@ const EditBrands: React.FC<CHildModalProps> = ({
                 </>
               ) : null}
               <FaTimes
-                onClick={handleCloseEditodal}
+                onClick={() => {
+                  handleCloseEditodal();
+                  ClosePopOver();
+                }}
                 className="cursor-pointer"
               />
             </div>
@@ -133,7 +138,10 @@ const EditBrands: React.FC<CHildModalProps> = ({
             <div className="table-bb-gray "></div>
             <div className="flex justify-between items-center pt-4 pb-2">
               <Button
-                onClick={handleCloseEditodal}
+                onClick={() => {
+                  handleCloseEditodal();
+                  ClosePopOver();
+                }}
                 variant="outlined"
                 className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
               >

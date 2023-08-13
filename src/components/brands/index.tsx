@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import Cards from "./Cards";
 import Header from "@/common/Header/header";
+import Card from "@mui/material/Card";
 import {
   Box,
   Button,

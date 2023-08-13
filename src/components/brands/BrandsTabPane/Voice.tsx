@@ -129,9 +129,6 @@ const Voice = () => {
                           />
                         )}
                       </div>
-                      <div className="pt-2 cursor-pointer ">
-                        <BsThreeDotsVertical />
-                      </div>
                     </div>
                   </div>
                 );

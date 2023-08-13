@@ -44,7 +44,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     <div>
       {modelLoading ? (
         <>
-      <LottieSpinner />
+          <LottieSpinner />
         </>
       ) : (
         <>
@@ -69,62 +69,75 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
               </div>
             </div>
             {/* <div className=" mt-4 mb-4 h-[calc(100vh-22.5rem)] overflow-scroll"> */}
-            <div className="flex flex-wrap flex-start mt-4 mb-4 overflow-scroll h-[80%]  ">
-              {[
-                ...FilterData,
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-                // { model: "fsafas", description: "sfas", id: "3523" },
-              ]?.map((item: ModelList) => {
-                const { id, description, model } = item;
-                return (
-                  <div
-                    onClick={() => handleClick(id)}
-                    key={id}
-                    className="flex h-[20%]
+            {FilterData?.length > 0 ? (
+              <>
+                {" "}
+                <div className="flex flex-wrap flex-start mt-4 mb-4 overflow-scroll h-[80%]  ">
+                  {[
+                    ...FilterData,
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                    // { model: "fsafas", description: "sfas", id: "3523" },
+                  ]?.map((item: ModelList) => {
+                    const { id, description, model } = item;
+                    return (
+                      <div
+                        onClick={() => handleClick(id)}
+                        key={id}
+                        className="flex h-[20%]
                             cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 w-[30%] "
-                  >
-                    <div className="flex items-center">
-                      <div className="ps-2 ">
-                        <div className="pt-1 pb-1">
-                          <p className=" font-bold text-sm">{model}</p>
+                      >
+                        <div className="flex items-center">
+                          <div className="ps-2 ">
+                            <div className="pt-1 pb-1">
+                              <p className=" font-bold text-sm">{model}</p>
+                            </div>
+                          </div>
+                        </div>
+                        {/* SelectCard */}
+                        <div className="">
+                          {selectTopic === item.id ? (
+                            <Image
+                              src="/SelectCard.png"
+                              alt="round"
+                              width={12}
+                              height={12}
+                            />
+                          ) : (
+                            <Image
+                              src="/Round.png"
+                              alt="round"
+                              width={12}
+                              height={12}
+                            />
+                          )}
                         </div>
                       </div>
-                    </div>
-                    {/* SelectCard */}
-                    <div className="">
-                      {selectTopic === item.id ? (
-                        <Image
-                          src="/SelectCard.png"
-                          alt="round"
-                          width={12}
-                          height={12}
-                        />
-                      ) : (
-                        <Image
-                          src="/Round.png"
-                          alt="round"
-                          width={12}
-                          height={12}
-                        />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-center items-center h-[80%]">
+                  <p className="font-[600] text-[15px]">
+                    No Model Data Available
+                  </p>
+                </div>
+              </>
+            )}
           </div>
           {/* </div> */}
         </>
