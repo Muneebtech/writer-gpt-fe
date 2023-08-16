@@ -5,7 +5,7 @@ import Spinner from "@/modules/spinner/spinner";
 import { ModelList } from "@/constants/languageModel";
 import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 
-const LanguageModel= () => {
+const LanguageModel = () => {
   const { data: modelData, isLoading: modelLoading } = useModel();
   console.log(modelData, "modelData");
   const [languageModelData, setlanguageModelData] = useState<ModelList[]>(
@@ -37,7 +37,22 @@ const LanguageModel= () => {
     <div>
       {modelLoading ? (
         <>
-         <LottieSpinner />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
+          </div>
         </>
       ) : (
         <>

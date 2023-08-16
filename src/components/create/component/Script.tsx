@@ -65,7 +65,22 @@ const Script: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     <div>
       {modelLoading || outroLoading || topicLoading ? (
         <>
-         <LottieSpinner />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
+          </div>{" "}
         </>
       ) : (
         <>

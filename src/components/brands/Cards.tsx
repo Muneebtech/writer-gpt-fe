@@ -22,10 +22,20 @@ interface CardProps {
     photoPath: File | any;
     subscribers: string;
   };
+  handleClosePopover: () => void;
+  closePopover: boolean;
+  handleOpenPopover: () => void;
   key: string;
   HandleDeleteChannel: (id: string) => void;
 }
-const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
+const Cards: React.FC<CardProps> = ({
+  data,
+  key,
+  HandleDeleteChannel,
+  closePopover,
+  handleOpenPopover,
+  handleClosePopover,
+}) => {
   const [selectedData, setSelectedData] = useState<getChannelTypes | null>(
     null
   );
@@ -76,6 +86,7 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
   return (
     <>
       <EditChannel
+        handleClosePopover={handleClosePopover}
         handleShowEditModal={handleShowEditModal}
         handleHideEditModal={handleHideEditModal}
         showeditModal={showeditModal}
@@ -125,47 +136,55 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
           {isSuccess ? (
             <></> // Render nothing when isSuccess is true
           ) : (
-            <Popover
-              open={
-                isPopoverOpen &&
-                data?.category?.id ===
-                  popoverAnchorEl?.getAttribute("data-category-id")
-              }
-              anchorEl={popoverAnchorEl}
-              onClose={handlePopoverClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-            >
-              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
-                <Typography
-                  onClick={() => handleShowEditModal(data?.id, data)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
-                >
-                  Edit
-                </Typography>
-                <Typography
-                  onClick={() => HandleDeleteModal(data?.category?.id)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
-                >
-                  {isLoading ? "Deleting..." : "Delete"}
-                </Typography>
-              </Box>
-            </Popover>
+            <></>
           )}
         </>
       )}
+      {closePopover ? (
+        <>
+          {" "}
+          <Popover
+            open={
+              isPopoverOpen &&
+              data?.category?.id ===
+                popoverAnchorEl?.getAttribute("data-category-id")
+            }
+            anchorEl={popoverAnchorEl}
+            onClose={handlePopoverClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+              <Typography
+                onClick={() => handleShowEditModal(data?.id, data)}
+                className="cursor-pointer"
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+              >
+                Edit
+              </Typography>
+              <Typography
+                onClick={() => HandleDeleteModal(data?.category?.id)}
+                className="cursor-pointer"
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+              >
+                {isLoading ? "Deleting..." : "Delete"}
+              </Typography>
+            </Box>
+          </Popover>
+        </>
+      ) : (
+        <></>
+      )}
       <div
-        onClick={event => handleCardClick(data?.id, event)}
+        onClick={(event) => handleCardClick(data?.id, event)}
         key={key}
         className="w-1/6 flex flex-col justify-start items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
       >
@@ -181,7 +200,7 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
         <div className="w-24 h-24 relative">
           <Image
             fill
-            style={{ objectFit: "cover" ,borderRadius:"50%"}}
+            style={{ objectFit: "cover", borderRadius: "50%" }}
             src={data?.photoPath ? src : "/channel.jpg"}
             loader={() => (data?.photoPath ? src : "/channel.jpg")}
             alt="no image"
@@ -211,9 +230,10 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
           {isAdminOrManager() ? (
             <>
               <div
-                onClick={event => {
+                onClick={(event) => {
                   event.stopPropagation();
                   handlePopoverOpen(event);
+                  handleOpenPopover();
                 }}
                 className="rounded-2xl px-3 z-1000 py-1 flex justify-center items-center border-gray-200 border popover-trigger"
                 data-category-id={data?.category?.id}

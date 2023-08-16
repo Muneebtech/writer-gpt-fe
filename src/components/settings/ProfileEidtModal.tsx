@@ -281,7 +281,9 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
                   Cancel
                 </Button>
                 <Button
-                  onClick={()=>{SubmitChangePasswordData()}}
+                  onClick={() => {
+                    SubmitChangePasswordData();
+                  }}
                   variant="contained"
                   className="button-black ps-2 pe-2 ms-1 me-1"
                 >

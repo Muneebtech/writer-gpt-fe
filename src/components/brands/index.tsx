@@ -21,6 +21,7 @@ import {
   Popover,
 } from "@mui/material";
 import { FiCopy, FiPlus } from "react-icons/fi";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaSpinner, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import { AiOutlineUpload } from "react-icons/ai";
@@ -91,6 +92,8 @@ const Brands = () => {
     "Gold",
     "Violet",
   ];
+  const [closePopover, setClosePopover] = useState(false);
+  console.log(closePopover, "closePopover");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const {
     mutate: mutateChannel,
@@ -104,7 +107,15 @@ const Brands = () => {
     youtubeLink: "",
     photoPath: "",
   });
+  const [validationChannel, setvalidationChannel] = useState({
+    channel: false,
+    category: false,
+    discordLink: false,
+    youtubeLink: false,
+    photoPath: false,
+  });
 
+  const [showValidation, setShowValidation] = useState(false);
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
@@ -153,6 +164,13 @@ const Brands = () => {
     event: ChangeEvent<{ name?: string; value: string }>
   ) => {
     const { name, value } = event.target;
+    if (validationChannel[name as keyof typeof validationChannel] && value) {
+      setvalidationChannel((prevFields) => ({
+        ...prevFields,
+        [name as keyof typeof validationChannel]: false,
+      }));
+    }
+
     setFormData((prevState) => ({
       ...prevState,
       [name || ""]: value,
@@ -160,28 +178,55 @@ const Brands = () => {
   };
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
+
+    if (name === "category") {
+      setvalidationChannel((prevFields) => ({
+        ...prevFields,
+        category: false,
+      }));
+    }
+
     setFormData((prevState) => ({
       ...prevState,
       [name || ""]: value,
     }));
   };
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    const formdata = new FormData();
-    formdata.append("channel", formData.channel as string);
-    formdata.append("category", formData.category as string);
-    formdata.append("youtubeUrl", formData.youtubeLink as string);
-    formdata.append("discordUrl", formData.discordLink as string);
-    formdata.append("photoPath", profileImage as File);
-    mutate(formdata);
-    setFormData({
-      channel: "",
-      category: "",
-      discordLink: "",
-      youtubeLink: "",
-      photoPath: "",
-    });
-    setProfileImage(null);
+    const { channel, category, youtubeLink, discordLink, photoPath } = formData;
+
+    const NewValidationFeilds = {
+      channel: channel === "",
+      category: category === "",
+      youtubeLink: youtubeLink === "",
+      discordLink: discordLink === "",
+      photoPath: photoPath === "",
+    };
+    if (
+      channel === "" ||
+      category === "" ||
+      youtubeLink === "" ||
+      discordLink === "" ||
+      photoPath === ""
+    ) {
+      setvalidationChannel(NewValidationFeilds);
+    } else {
+      event.preventDefault();
+      const formdata = new FormData();
+      formdata.append("channel", formData.channel as string);
+      formdata.append("category", formData.category as string);
+      formdata.append("youtubeUrl", formData.youtubeLink as string);
+      formdata.append("discordUrl", formData.discordLink as string);
+      formdata.append("photoPath", profileImage as File);
+      mutate(formdata);
+      setFormData({
+        channel: "",
+        category: "",
+        discordLink: "",
+        youtubeLink: "",
+        photoPath: "",
+      });
+      setProfileImage(null);
+    }
   };
   const handleUploadPictureClick = () => {
     if (fileInputRef.current) {
@@ -242,12 +287,32 @@ const Brands = () => {
     mutateChannel(id);
   };
   const rotateAnimation = `spin 1s linear infinite`;
-
+  const handleOpenPopover = () => {
+    setClosePopover(true);
+  };
+  const handleClosePopover = () => {
+    setClosePopover(false);
+  };
   return (
     <>
       {isLoading ? (
         <>
-          <LottieSpinner />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
+          </div>
         </>
       ) : (
         <>
@@ -288,7 +353,10 @@ const Brands = () => {
                       <div className="table-bb-gray mt-1 ms-3 me-4 flex items-center justify-between">
                         <Header title="ADD CHANNELS" />
                         <FaTimes
-                          onClick={handleCloseModal}
+                          onClick={() => {
+                            handleCloseModal();
+                            handleClosePopover();
+                          }}
                           className="cursor-pointer"
                         />
                       </div>
@@ -308,6 +376,18 @@ const Brands = () => {
                               placeholder="Enter Your Name"
                               className="border ps-4 pe-4 pt-2 pb-2 input-size "
                             />
+                            {validationChannel?.channel ? (
+                              <>
+                                <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                                  <AiOutlineExclamationCircle />{" "}
+                                  <span className="ps-1">
+                                    Please Enter Channel Name!
+                                  </span>
+                                </div>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </div>
                           <div>
                             <div className="flex items-center justify-between w-10/12">
@@ -331,6 +411,18 @@ const Brands = () => {
                                 </MenuItem>
                               ))}
                             </Select>
+                            {validationChannel?.category ? (
+                              <>
+                                <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                                  <AiOutlineExclamationCircle />{" "}
+                                  <span className="ps-1">
+                                    Please Enter Channel Category!
+                                  </span>
+                                </div>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                           </div>
                           <div className="pt-2 pb-2">
                             <InputLabel
@@ -349,6 +441,18 @@ const Brands = () => {
                               // inputRef={youtubeLinkSelectRef}
                               className="py-1  px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
                             />
+                            {validationChannel?.youtubeLink ? (
+                              <>
+                                <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                                  <AiOutlineExclamationCircle />{" "}
+                                  <span className="ps-1">
+                                    Please Enter Youtube Link!
+                                  </span>
+                                </div>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                             <Button
                               onClick={() => copyToClipboard("youtubeLink")}
                               title="Copy Link"
@@ -385,6 +489,18 @@ const Brands = () => {
                                       src={URL.createObjectURL(profileImage)}
                                       alt="Profile"
                                     />
+                                    {validationChannel?.photoPath ? (
+                                      <>
+                                        <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                                          <AiOutlineExclamationCircle />{" "}
+                                          <span className="ps-1">
+                                            Please Add Image!
+                                          </span>
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <></>
+                                    )}
                                   </div>
                                 ) : (
                                   <div className="profileImage">
@@ -435,6 +551,18 @@ const Brands = () => {
                               inputRef={discordLinkInputRef}
                               className="py-1 px-3 border  border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
                             />
+                            {validationChannel?.discordLink ? (
+                              <>
+                                <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                                  <AiOutlineExclamationCircle />{" "}
+                                  <span className="ps-1">
+                                    Please Enter Discord Link!
+                                  </span>
+                                </div>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                             <Button
                               onClick={() => copyToClipboard("discordLink")}
                               title="Copy Link"
@@ -449,7 +577,9 @@ const Brands = () => {
                     <div className="table-bb-gray "></div>
                     <div className="flex justify-between items-center pt-4 pb-2">
                       <Button
-                        onClick={handleCloseModal}
+                        onClick={() => {
+                          handleCloseModal();
+                        }}
                         variant="outlined"
                         className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
                       >
@@ -520,6 +650,9 @@ const Brands = () => {
               ) : (
                 filteredData?.map((data: getChannelTypes) => (
                   <Cards
+                    handleClosePopover={handleClosePopover}
+                    handleOpenPopover={handleOpenPopover}
+                    closePopover={closePopover}
                     HandleDeleteChannel={HandleDeleteChannel}
                     data={data}
                     key={data.id}

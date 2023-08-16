@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaSpinner, FaTimes } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 interface CHildModalProps {
@@ -41,6 +41,12 @@ const EditBrands: React.FC<CHildModalProps> = ({
   handleInputChange,
   ClosePopOver,
 }) => {
+  useEffect(() => {
+    if (textValue) {
+      console.log(textValue, "textValue:;textValue", value);
+    }
+  }, [textValue]);
+
   return (
     <div>
       <Modal
@@ -95,21 +101,23 @@ const EditBrands: React.FC<CHildModalProps> = ({
                     <>
                       <div className="pt-2 pb-2">
                         <TextField
+                          name="topic"
                           onChange={(event) =>
                             handleInputChange(event, value, "edit")
                           }
                           label="TOPIC"
-                          value={textValue.topic as any}
+                          value={textValue?.topic as any}
                           className="w-full mt-2 mb-2"
                         />
                       </div>
                       <div className="pt-2 pb-2">
                         <TextField
+                          name="topicDescripition"
                           onChange={(event) =>
                             handleInputChange(event, value, "edit")
                           }
                           label="Descripition"
-                          value={textValue.topicDescripition as any}
+                          value={textValue?.topicDescripition as any}
                           className="w-full mt-2 mb-2"
                         />
                       </div>

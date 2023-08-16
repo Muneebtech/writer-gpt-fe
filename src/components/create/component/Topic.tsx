@@ -7,7 +7,7 @@ import { useTopic } from "@/services/topic";
 import { Button } from "@mui/material";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-
+import Tooltip from "@mui/material/Tooltip";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
   channelId: string;
@@ -32,7 +32,22 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
     <div>
       {isLoading ? (
         <>
-          <LottieSpinner />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
+          </div>{" "}
         </>
       ) : (
         <>
@@ -47,8 +62,8 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
             {topicData?.length > 0 ? (
-              <>
-                <div className="flex flex-wrap justify-center mt-4 mb-4 h-[90%] overflow-scroll">
+              <div className="overflow-scroll h-[90%]">
+                <div className="flex flex-wrap justify-start mt-4 mb-4 ">
                   {topicData?.map((item: Topic) => {
                     const { id, topic, description } = item;
                     return (
@@ -61,12 +76,17 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                         <div className="flex items-center">
                           <div className="ps-2 ">
                             <div className="pt-1 pb-1">
-                              <p className=" font-bold text-sm">{topic}</p>
+                              <Tooltip title={topic}>
+                                <p className=" font-bold text-sm truncate-text">
+                                  {topic}
+                                </p>
+                              </Tooltip>
                             </div>
                           </div>
                         </div>
                         {/* SelectCard */}
                         <div className="">
+                          
                           {selectTopic === item.id ? (
                             <Image
                               src="/SelectCard.png"
@@ -87,7 +107,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                     );
                   })}
                 </div>
-              </>
+              </div>
             ) : (
               <>
                 <div className="flex justify-center items-center h-[80%]">

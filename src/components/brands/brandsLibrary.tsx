@@ -330,8 +330,12 @@ const brandsLibrary = () => {
     if (SearchValues) {
       setShowError(false);
     }
+    console.log(event.target.value, "Text::Upper Outside Condition");
 
     if (text === "edit") {
+      // console.log(text, "text", value, "value");
+      console.log(event.target.value, "Text");
+
       switch (value) {
         case 1:
           setTextValue({ ...textValue, outro: event.target.value });
@@ -339,10 +343,14 @@ const brandsLibrary = () => {
         case 3:
           setTextValue({
             ...textValue,
-            topic: event.target.value,
+            topic: SearchValues,
           });
-          setTextValue({ ...textValue, topicDescripition: event.target.value });
           break;
+        case 4:
+          setTextValue({
+            ...textValue,
+            topicDescripition: SearchValues,
+          });
       }
     }
     console.log("newOutroData", event.target.value, "Text", text);
@@ -461,11 +469,18 @@ const brandsLibrary = () => {
     event: React.MouseEvent<HTMLDivElement>,
     data: any
   ) => {
+    console.log(data, "data::data::data::data::data");
+
     setIsPopoverOpenTopic(true);
     setpopoverAnchorElTopic(event.currentTarget);
     setopenPopoverTopic(id);
-    setTextValue({ ...textValue, topic: data.description, id: data.id });
-    setTextValue({ ...textValue, topicDescripition: data.topic, id: data.id });
+    setTextValue({
+      ...textValue,
+      topic: data.description,
+      id: data.id,
+      topicDescripition: data.topic,
+    });
+    // setTextValue({ ...textValue, topicDescripition: data.topic, id: data.id });
   };
 
   const handleEditTopic = (id: string) => {
@@ -497,6 +512,9 @@ const brandsLibrary = () => {
   };
   const handleOpenPopOver = () => {
     setClosePopOver(true);
+  };
+  const HandleCreateScript = () => {
+    router.push(`/script/create/${id}`);
   };
   return (
     <div>
@@ -590,24 +608,24 @@ const brandsLibrary = () => {
             <div onClick={handleCardClick} className="ps-1 pe-1 cursor-pointer">
               <AiOutlineLeft />
             </div>
-            {/* {console.log(channelData, "channel Data")} */}
-
             <div className="ps-1 pe-1">
               <Image
+                width={50}
+                height={50}
+                className="w-8 h-8 rounded-full mr-1"
+                alt="Profile"
                 src={
-                  channelData?.photoPath != "http://localhost:3000/uploads/null"
+                  channelData?.photoPath !==
+                  "http://localhost:3000/uploads/null"
                     ? src
                     : "/channel.jpg"
                 }
                 loader={() =>
-                  channelData?.photoPath != "http://localhost:3000/uploads/null"
+                  channelData?.photoPath !==
+                  "http://localhost:3000/uploads/null"
                     ? src
                     : "/channel.jpg"
                 }
-                alt="channel"
-                width={35}
-                height={35}
-                style={{ borderRadius: "50%", objectFit: "cover" }}
               />
             </div>
 
@@ -628,13 +646,18 @@ const brandsLibrary = () => {
             <Button
               suppressHydrationWarning={true}
               onClick={() => {
-                value === 1
-                  ? handleOpenModal()
-                  : value === 3
-                  ? handleOpenModal()
-                  : value === 5
-                  ? handleOpenModal()
-                  : null;
+                if (value === 0) {
+                  HandleCreateScript();
+                }
+                if (value === 1) {
+                  handleOpenModal();
+                }
+                if (value === 3) {
+                  handleOpenModal();
+                }
+                if (value === 5) {
+                  handleOpenModal();
+                }
               }}
               variant="contained"
               className="button-black ps-4 pe-4"
@@ -710,7 +733,8 @@ const brandsLibrary = () => {
             <CustomTabPanel value={value} index={3}>
               <div>
                 <VideoTopic
-                closePopOver={closePopOver}
+                  ClosePopOver={ClosePopOver}
+                  closePopOver={closePopOver}
                   handleOpenPopOver={handleOpenPopOver}
                   topicLoading={topicLoading}
                   openPopoverTopic={openPopoverTopic}

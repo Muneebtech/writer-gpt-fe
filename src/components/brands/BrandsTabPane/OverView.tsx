@@ -22,7 +22,7 @@ const OverView = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { isLoading, data, isSuccess } = useGetBrandsJobs(id as string);
   console.log(data, "data::library  ");
-  
+
   const [Data, setData] = useState<TableListData[]>();
   const [totalPagesCount, setTotalPages] = useState(1);
   // const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -129,7 +129,22 @@ const OverView = () => {
     <>
       {isLoading ? (
         <>
-          <LottieSpinner />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
+          </div>
         </>
       ) : (
         <>

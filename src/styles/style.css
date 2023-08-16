@@ -63,10 +63,11 @@ textarea {
 
 .position-btn {
   position: relative;
-  right: 75px;
+  right: 150px;
   background-color: transparent;
   font-size: 20px;
   color: black;
+  bottom: 50px;
 }
 
 .button-black-modal {
@@ -227,6 +228,14 @@ textarea {
 .Profile_modal {
   width: 35% !important;
   left: 40% !important;
+}
+
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .spinner .spinner-blade {

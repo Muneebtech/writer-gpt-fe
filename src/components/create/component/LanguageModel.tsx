@@ -44,7 +44,22 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
     <div>
       {modelLoading ? (
         <>
-          <LottieSpinner />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
+          </div>{" "}
         </>
       ) : (
         <>
@@ -70,9 +85,9 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
             </div>
             {/* <div className=" mt-4 mb-4 h-[calc(100vh-22.5rem)] overflow-scroll"> */}
             {FilterData?.length > 0 ? (
-              <>
+              <div className="overflow-scroll h-[90%]">
                 {" "}
-                <div className="flex flex-wrap flex-start mt-4 mb-4 overflow-scroll h-[80%]  ">
+                <div className="flex flex-wrap flex-start mt-4 mb-4  ">
                   {[
                     ...FilterData,
                     // { model: "fsafas", description: "sfas", id: "3523" },
@@ -128,7 +143,7 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                     );
                   })}
                 </div>
-              </>
+              </div>
             ) : (
               <>
                 <div className="flex justify-center items-center h-[80%]">
