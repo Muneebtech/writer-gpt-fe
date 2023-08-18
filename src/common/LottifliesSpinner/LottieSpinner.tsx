@@ -9,9 +9,10 @@ const LottieSpinner = () => {
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
+    
   };
   return (
-    <div>
+    <div className="backdrop-blur-3xl">
       <Lottie options={defaultOptions} height={100} width={100} />
       {/* You can adjust height and width as needed */}
     </div>

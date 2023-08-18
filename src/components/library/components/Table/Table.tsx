@@ -19,6 +19,7 @@ const Table = () => {
     setSearchKeyword(keyword);
   };
   const [openModal, setOpenModal] = useState(false);
+  console.log(Data, "Data");
 
   useEffect(() => {
     if (Data) {
@@ -249,51 +250,58 @@ const Table = () => {
               {/* Pagination */}
             </div>
           </div>
-          <div className="postion-Pagination ">
-            <div className="flex justify-end gap-0.5">
-              <button
-                className={`px-2 py-1 border border-gray-300 rounded-md ${
-                  currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                }`}
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-              {startPage > 1 && (
-                <button className="px-2 py-1 border border-gray-300 rounded-md">
-                  ...
-                </button>
-              )}
-              {visiblePages.map((page) => (
-                <button
-                  className={`px-2 py-1 border border-gray-300 rounded-md ${
-                    page === currentPage ? "bg-blue-500 text-white" : ""
-                  }`}
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </button>
-              ))}
-              {endPage < totalPagesData && (
-                <button className="px-2 py-1 border border-gray-300 rounded-md">
-                  ...
-                </button>
-              )}
-              <button
-                className={`px-2 py-1 border border-gray-300 rounded-md ${
-                  currentPage === totalPagesData
-                    ? "cursor-not-allowed opacity-50"
-                    : ""
-                }`}
-                onClick={handleNextPage}
-                disabled={currentPage === totalPagesData}
-              >
-                Next
-              </button>
-            </div>
-          </div>
+          {Data?.page === 1 ? (
+            <></>
+          ) : (
+            <>
+              <div className="postion-Pagination ">
+                <div className="flex justify-end gap-0.5">
+                  <button
+                    className={`px-2 py-1 border border-gray-300 rounded-md ${
+                      currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                    }`}
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  {startPage > 1 && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  {visiblePages.map((page) => (
+                    <button
+                      className={`px-2 py-1 border border-gray-300 rounded-md ${
+                        page === currentPage ? "bg-blue-500 text-white" : ""
+                      }`}
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  {endPage < totalPagesData && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  <button
+                    className={`px-2 py-1 border border-gray-300 rounded-md ${
+                      currentPage === totalPagesData
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPagesData}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+
           <Modal
             open={openModal}
             onClose={handleCloseModal}

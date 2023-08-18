@@ -30,6 +30,7 @@ const OverView = () => {
   //   null
   // );
   // const [openEditModal, setOpenEditModal] = useState(false);
+  console.log(totalPagesCount, "totalPagesCount:;totalPagesCount");
 
   useEffect(() => {
     setTotalPages(data?.totalPages);
@@ -255,49 +256,56 @@ const OverView = () => {
               </tbody>
             </table>
             {/* Pagination */}
-            <div className="flex justify-end m-2 gap-1">
-              <button
-                className={`px-2 py-1 border border-gray-300 rounded-md ${
-                  currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                }`}
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-              {startPage > 1 && (
-                <button className="px-2 py-1 border border-gray-300 rounded-md">
-                  ...
-                </button>
-              )}
-              {visiblePages.map((page) => (
-                <button
-                  className={`px-2 py-1 border border-gray-300 rounded-md ${
-                    page === currentPage ? "bg-blue-500 text-white" : ""
-                  }`}
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </button>
-              ))}
-              {endPage < totalPagesCount && (
-                <button className="px-2 py-1 border border-gray-300 rounded-md">
-                  ...
-                </button>
-              )}
-              <button
-                className={`px-2 py-1 border border-gray-300 rounded-md ${
-                  currentPage === totalPagesCount
-                    ? "cursor-not-allowed opacity-50"
-                    : ""
-                }`}
-                onClick={handleNextPage}
-                disabled={currentPage === totalPagesCount}
-              >
-                Next
-              </button>
-            </div>
+            {data?.page === 1 ? (
+              <></>
+            ) : (
+              <>
+                <div className="flex justify-end m-2 gap-1">
+                  <button
+                    className={`px-2 py-1 border border-gray-300 rounded-md ${
+                      currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                    }`}
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  {startPage > 1 && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  {visiblePages.map((page) => (
+                    <button
+                      className={`px-2 py-1 border border-gray-300 rounded-md ${
+                        page === currentPage ? "bg-blue-500 text-white" : ""
+                      }`}
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  {endPage < totalPagesCount && (
+                    <button className="px-2 py-1 border border-gray-300 rounded-md">
+                      ...
+                    </button>
+                  )}
+                  <button
+                    className={`px-2 py-1 border border-gray-300 rounded-md ${
+                      currentPage === totalPagesCount
+                        ? "cursor-not-allowed opacity-50"
+                        : ""
+                    }`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPagesCount}
+                  >
+                    Next
+                  </button>
+                </div>
+              </>
+            )}
           </div>
 
           <Popover

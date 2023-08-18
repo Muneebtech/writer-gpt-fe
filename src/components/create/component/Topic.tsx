@@ -73,7 +73,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                         className="flex h-[20%]
                             cursor-pointer justify-between items-center ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
                       >
-                        <div className="flex items-center">
+                        <div className="flex items-center h-[calc(100vh-32.6rem)]">
                           <div className="ps-2 ">
                             <div className="pt-1 pb-1">
                               <Tooltip title={topic}>
@@ -85,7 +85,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                           </div>
                         </div>
                         {/* SelectCard */}
-                        <div className="">
+                        <div className="flex items-center">
                           
                           {selectTopic === item.id ? (
                             <Image
