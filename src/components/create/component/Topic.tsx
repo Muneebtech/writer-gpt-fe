@@ -62,7 +62,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
               <div className="table-bb-gray mt-4 ms-4 me-4"></div>
             </div>
             {topicData?.length > 0 ? (
-              
+
               <div className="overflow-scroll h-[90%]">
                 <div className="flex flex-wrap justify-start mt-4 mb-4 ">
                   {topicData?.map((item: Topic) => {
