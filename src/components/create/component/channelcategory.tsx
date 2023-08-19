@@ -8,15 +8,40 @@ import Spinner from "@/modules/spinner/spinner";
 
 import { Job } from "@/components/Types/job.type";
 import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
+import { useRouter } from "next/router";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
   setChannelId: (channelId: string) => void;
 }
+
+type ChannelId = {
+  id: string;
+};
 const ChannelAndCategory: React.FC<ChildComponentProps> = ({
   setScriptData,
   setChannelId,
 }) => {
+  const [selectedItemIdChannel, setSelectedItemIdChannel] =
+    useState<ChannelId | null>(null);
+  const router = useRouter();
+  const { data } = router.query;
+
+  useEffect(() => {
+    if (data) {
+      try {
+        const channelData = JSON.parse(data as string);
+        // Assuming channelData has an 'id' property
+        if (channelData.id) {
+          setSelectedItemIdChannel(channelData.id);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
+  }, [data]);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  console.log(selectedItemId, "selectedItemId");
+
   const {
     isLoading: loading,
     data: Data,
@@ -68,12 +93,18 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
               <div className="flex flex-wrap flex-start mt-4 mb-4 h-[90%] overflow-scroll">
                 {Data?.map((item: Channel) => {
                   const { id, channel, description } = item;
+                  const isSelected =
+                    selectedItemId === id ||
+                    (selectedItemIdChannel && selectedItemIdChannel?.id === id);
                   return (
                     <div
-                      onClick={() => handleClick(id)}
+                      onClick={() => {
+                        handleClick(id);
+                      }}
                       key={id}
-                      className="flex
-                            cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
+                      className={`flex cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card ${
+                        isSelected ? "Selected" : ""
+                      }`}
                     >
                       <div className="flex items-center">
                         <div>
@@ -97,7 +128,9 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                       </div>
                       {/* SelectCard */}
                       <div className="">
-                        {selectedItemId === item.id ? (
+                        {selectedItemId === item.id ||
+                        (selectedItemIdChannel &&
+                          selectedItemIdChannel.id === item.id) ? (
                           <Image
                             src="/SelectCard.png"
                             alt="round"

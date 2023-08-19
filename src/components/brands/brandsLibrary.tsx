@@ -514,7 +514,12 @@ const brandsLibrary = () => {
     setClosePopOver(true);
   };
   const HandleCreateScript = () => {
-    router.push(`/script/create/${id}`);
+    if (channelData) {
+      router.push({
+        pathname: "/script/create",
+        query: { data: JSON.stringify(channelData) },
+      });
+    }
   };
   return (
     <div>

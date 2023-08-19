@@ -73,7 +73,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                         className="flex h-[20%]
                             cursor-pointer justify-between items-center ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
                       >
-                        <div className="flex items-center h-[calc(100vh-32.6rem)]">
+                        <div className="flex items-center h-[50px]">
                           <div className="ps-2 ">
                             <div className="pt-1 pb-1">
                               <Tooltip title={topic}>
@@ -117,17 +117,6 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                 </div>
               </>
             )}
-
-            {/* <div className="ps-2 pb-6">
-              <div>
-                <Button
-                  variant="outlined"
-                  className="widht-card pt-2 pb-2 text-black border-black-btn"
-                >
-                  <FaPlus size={30} className="ps-2 pe-2" /> Add Channel
-                </Button>
-              </div>
-            </div> */}
           </div>
         </>
       )}

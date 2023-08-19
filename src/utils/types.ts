@@ -25,7 +25,10 @@ export type ChangePasswordTypes = {
   renterPassword?: string
   email?: string
 }
-
+export type ProfileuserName = {
+  id?: string | undefined;
+  name?: string;
+};
 export type AuthTypes = {
   active?
   :

@@ -6,14 +6,35 @@ import Image from "next/image";
 import ProfileEidtModal from "./ProfileEidtModal";
 import { decryptData } from "@/utils/localStorage";
 // import { useSignIn } from "@/services/auth";
-import { AuthTypes } from "@/utils/types";
+import { AuthTypes, ProfileuserName } from "@/utils/types";
+import { useProfileUpdate } from "@/services/Profile";
+import { FaSpinner } from "react-icons/fa";
+import Toaster from "@/common/Toaster/Toaster";
 
 const Setting = () => {
+  const [updateProfileUserName, setUpdateProfileUserName] =
+    useState<ProfileuserName>({
+      name: "",
+      id: "",
+    });
+  console.log(
+    updateProfileUserName,
+    "updateProfileUserName::updateProfileUserName"
+  );
+
+  const {
+    mutate: profileIsUpdate,
+    isLoading: profileIsLoading,
+    isSuccess: profileIsSuccess,
+  } = useProfileUpdate();
   const [showProfile, setShowprofile] = useState(true);
   const [userData, setUserData] = useState<AuthTypes>({});
   const [userTokens, setUserTokens] = useState(null);
   console.log(userData, "userData");
-
+  // const [updateuserName, setUpdateUserName] = useState<ProfileuserName>({
+  //   userName: "",
+  //   id: "",
+  // });
   const handleOpenProfile = () => {
     setShowprofile(false);
   };
@@ -42,6 +63,17 @@ const Setting = () => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [updateProfileName, setUpdateProfileName] = useState({
+    id: userData?.id,
+    name: "",
+  });
+  useEffect(() => {
+    if (updateProfileName) {
+      setUpdateProfileUserName(updateProfileName);
+    }
+  }, [updateProfileName]);
+  console.log(updateProfileName, "updateProfileName");
+
   const handleUploadPictureClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -55,9 +87,46 @@ const Setting = () => {
       setProfileImage(selectedImage);
     }
   };
+  const HandleChangeUserName = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const SearchValues = event.target.value;
+    console.log(SearchValues, "SearchValues");
 
+    setUpdateProfileName((prevProfile) => ({
+      ...prevProfile,
+      name: SearchValues,
+      id: userData?.id,
+    }));
+  };
+
+  const HandleSubmitUserName = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (updateProfileUserName) {
+      profileIsUpdate(updateProfileUserName);
+    }
+  };
+  useEffect(() => {
+    if (profileIsSuccess) {
+      setUpdateProfileName({
+        id: "",
+        name: "",
+      });
+    }
+  }, [profileIsSuccess]);
   return (
     <>
+      {profileIsSuccess ? (
+        <>
+          <>
+            <Toaster
+              Success={true}
+              Color="green"
+              title="Profile Updated Successfully"
+            />
+          </>
+        </>
+      ) : null}
       <ProfileEidtModal
         userData={userData}
         handleCloseModal={handleCloseModal}
@@ -125,6 +194,11 @@ const Setting = () => {
           <div className="mt-4">
             <InputLabel className="pt-2 pb-2">Full Name</InputLabel>
             <TextField
+              name="name"
+              value={updateProfileName.name}
+              onChange={HandleChangeUserName}
+              variant="outlined"
+              autoComplete="off"
               className="pt-1 pb-1 w-3/6 "
               label="Full Name"
             ></TextField>
@@ -204,9 +278,24 @@ const Setting = () => {
               <Button
                 variant="contained"
                 className="button-black ms-2 me-2"
-                // onClick={handleNext}
+                onClick={HandleSubmitUserName}
               >
-                Save
+                {profileIsLoading ? (
+                  <>
+                    <>
+                      <FaSpinner
+                        size={16}
+                        className="rotate"
+                        style={{
+                          marginRight: "10px",
+                        }}
+                      ></FaSpinner>
+                      Saving...
+                    </>
+                  </>
+                ) : (
+                  <> Save</>
+                )}
               </Button>
             </div>
           </div>

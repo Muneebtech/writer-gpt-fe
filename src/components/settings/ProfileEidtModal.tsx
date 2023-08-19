@@ -16,6 +16,7 @@ import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import { AuthTypes, ChangePasswordTypes } from "@/utils/types";
 import { FaSpinner } from "react-icons/fa";
 import Toaster from "@/common/Toaster/Toaster";
+import { useProfileUpdate } from "@/services/Profile";
 interface ChildProps {
   handleCloseModal: () => void;
   handleOpenModal: () => void;
@@ -28,6 +29,7 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
   openModal,
   userData,
 }) => {
+
   const { mutate, isLoading, isSuccess } = useChangePassword();
   const [showPasswords, setShowPasswords] = useState({
     oldPassword: false,
@@ -111,6 +113,7 @@ const ProfileEidtModal: React.FC<ChildProps> = ({
       return mutate(NewFile);
     }
   };
+
   return (
     <div>
       <Modal
