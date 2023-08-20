@@ -30,11 +30,9 @@ const Setting = () => {
   const [showProfile, setShowprofile] = useState(true);
   const [userData, setUserData] = useState<AuthTypes>({});
   const [userTokens, setUserTokens] = useState(null);
+  const [showToaster, setShowtoaster] = useState(false);
   console.log(userData, "userData");
-  // const [updateuserName, setUpdateUserName] = useState<ProfileuserName>({
-  //   userName: "",
-  //   id: "",
-  // });
+
   const handleOpenProfile = () => {
     setShowprofile(false);
   };
@@ -102,7 +100,11 @@ const Setting = () => {
 
   const HandleSubmitUserName = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    if (updateProfileUserName) {
+    if (updateProfileUserName.name === userData?.firstName) {
+      setShowtoaster(true);
+    } else if (updateProfileUserName?.name === "") {
+      setShowtoaster(true);
+    } else if (updateProfileUserName) {
       profileIsUpdate(updateProfileUserName);
     }
   };
@@ -116,6 +118,22 @@ const Setting = () => {
   }, [profileIsSuccess]);
   return (
     <>
+      {showToaster && (
+        <>
+          {" "}
+          <>
+            <Toaster Error={true} Color="red" title="User Name Already Exist" />
+          </>
+        </>
+      )}
+      {showToaster && (
+        <>
+          {" "}
+          <>
+            <Toaster Error={true} Color="red" title="Please Add User Name" />
+          </>
+        </>
+      )}
       {profileIsSuccess ? (
         <>
           <>
@@ -140,43 +158,17 @@ const Setting = () => {
           </div>
           <div className="table-bb-gray mt-1 ms-4 me-4"></div>
           <div
-            className="table-bb-gray mt-4 mb-4 cursor-pointer"
+            className=" cursor-pointer mt-4 mb-4"
             onClick={handleOpenProfile}
           >
             <span className="text-xl font-bold pb-1 pt-1">Profile Setting</span>
-            <p className="pt-2 pb-2 w-3/4 font-thin">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              vestibulum sapien ligula, eu eleifend quam efficitur sit amet.
-              Suspendisse et ligula eros. Duis sit amet aliquet libero. In sed
-              gravida justo. Nulla tempor lobortis massa at imperdiet. Integer
-              ut blandit dui.
-            </p>
           </div>
+          <div className="table-bb-gray mt-4 mb-4"></div>
           <div className="table-bb-gray mt-4 mb-4">
-            <div className="flex justify-between pe-4">
+            <div className="flex justify-between pe-4 mt-4 mb-4">
               <span className="text-xl font-bold pb-1 pt-1">History</span>
               <Switch className="text-black" />
             </div>
-            <p className="pt-2 pb-2 w-3/4 font-thin">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              vestibulum sapien ligula, eu eleifend quam efficitur sit amet.
-              Suspendisse et ligula eros. Duis sit amet aliquet libero. In sed
-              gravida justo. Nulla tempor lobortis massa at imperdiet. Integer
-              ut blandit dui.
-            </p>
-          </div>
-          <div className="table-bb-gray mt-4 mb-4">
-            <div className="flex justify-between pe-4">
-              <span className="text-xl font-bold pb-1 pt-1">Lorem Ipsum</span>
-              <Switch className="text-black" />
-            </div>
-            <p className="pt-2 pb-2 w-3/4 font-thin">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              vestibulum sapien ligula, eu eleifend quam efficitur sit amet.
-              Suspendisse et ligula eros. Duis sit amet aliquet libero. In sed
-              gravida justo. Nulla tempor lobortis massa at imperdiet. Integer
-              ut blandit dui.
-            </p>
           </div>
         </>
       ) : (
