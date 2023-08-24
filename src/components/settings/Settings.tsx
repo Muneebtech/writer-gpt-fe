@@ -63,8 +63,10 @@ const Setting = () => {
 
   const [updateProfileName, setUpdateProfileName] = useState({
     id: userData?.id,
-    name: "",
+    name: userData?.firstName,
   });
+  const [isEditing, setIsEditing] = useState(false);
+
   useEffect(() => {
     if (updateProfileName) {
       setUpdateProfileUserName(updateProfileName);
@@ -90,6 +92,7 @@ const Setting = () => {
   ) => {
     const SearchValues = event.target.value;
     console.log(SearchValues, "SearchValues");
+    setIsEditing(true);
 
     setUpdateProfileName((prevProfile) => ({
       ...prevProfile,
@@ -97,7 +100,9 @@ const Setting = () => {
       id: userData?.id,
     }));
   };
-
+  const ShowUserName = isEditing
+    ? updateProfileName?.name
+    : `${userData?.firstName} ${userData?.lastName}` || "";
   const HandleSubmitUserName = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (updateProfileUserName.name === userData?.firstName) {
@@ -156,17 +161,19 @@ const Setting = () => {
           <div>
             <Header title="Settings" />
           </div>
-          <div className="table-bb-gray mt-1 ms-4 me-4"></div>
+          <div className="table-bb-gray mt-2 mb-2 "></div>
           <div
-            className=" cursor-pointer mt-4 mb-4"
+            className=" cursor-pointer mt-2 mb-2"
             onClick={handleOpenProfile}
           >
-            <span className="text-xl font-bold pb-1 pt-1">Profile Setting</span>
+            <span className="text-lg font-normal pb-1 pt-1">
+              Profile Setting
+            </span>
           </div>
-          <div className="table-bb-gray mt-4 mb-4"></div>
-          <div className="table-bb-gray mt-4 mb-4">
-            <div className="flex justify-between pe-4 mt-4 mb-4">
-              <span className="text-xl font-bold pb-1 pt-1">History</span>
+          <div className="table-bb-gray mt-3 mb-3"></div>
+          <div className="table-bb-gray mt-3 mb-3">
+            <div className="flex justify-between pe-4 mt-2 mb-2">
+              <span className="text-lg font-normal pb-1 pt-1">History</span>
               <Switch className="text-black" />
             </div>
           </div>
@@ -187,7 +194,7 @@ const Setting = () => {
             <InputLabel className="pt-2 pb-2">Full Name</InputLabel>
             <TextField
               name="name"
-              value={updateProfileName.name}
+              value={ShowUserName}
               onChange={HandleChangeUserName}
               variant="outlined"
               autoComplete="off"

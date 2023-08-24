@@ -20,7 +20,7 @@ import {
   Popover,
 } from "@mui/material";
 import { FiCopy, FiPlus } from "react-icons/fi";
-import { FaTimes } from "react-icons/fa";
+import { FaSpinner, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import { AiOutlineUpload } from "react-icons/ai";
 import Image from "next/image";
@@ -34,6 +34,7 @@ import Spinner from "@/modules/spinner/spinner";
 import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { useUpdateChannel } from "@/services/channel/hooks/useUpdateChannel";
+import Toaster from "@/common/Toaster/Toaster";
 interface FormData {
   channel: string;
   category: string;
@@ -64,7 +65,12 @@ const EditChannel: React.FC<EditChannelProps> = ({
     isSuccess: success,
   } = useCategories();
 
-  const { data: ChannelData, mutate } = useUpdateChannel();
+  const {
+    data: ChannelData,
+    mutate,
+    isLoading,
+    isSuccess,
+  } = useUpdateChannel();
   const { fetchNextPage, currentPage, totalPages, isFetchingNextPage } =
     useGetChannels({ page: 1, limit: 10 });
   const CategoryData = Data?.results ?? [];
@@ -189,9 +195,23 @@ const EditChannel: React.FC<EditChannelProps> = ({
       }));
     }
   }, [selectedData]);
-
+  const rotateAnimation = `spin 1s linear infinite`;
+  useEffect(() => {
+    if (isSuccess) {
+      handleHideEditModal();
+    }
+  }, [isSuccess]);
   return (
     <div>
+      {isSuccess && (
+        <>
+          <Toaster
+            Success={true}
+            title="Channel Updated Successfully"
+            Color="green"
+          />
+        </>
+      )}
       <Modal
         open={showeditModal}
         onClose={handleHideEditModal}
@@ -387,7 +407,24 @@ const EditChannel: React.FC<EditChannelProps> = ({
               variant="contained"
               className="button-black ps-4 pe-4"
             >
-              <FiPlus size={25} className="pe-1 ps-1" />
+              {isLoading ? (
+                <>
+                  {" "}
+                  <FaSpinner
+                    size={16}
+                    style={{
+                      animation: rotateAnimation,
+                      marginRight: "10px",
+                    }}
+                  ></FaSpinner>
+                  Updating Channel...
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <FiPlus size={25} className="pe-1 ps-1" />
+                </>
+              )}
               Update Channel
             </Button>
           </div>
