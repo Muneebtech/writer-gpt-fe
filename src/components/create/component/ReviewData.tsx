@@ -185,9 +185,9 @@ const ReviewData: React.FC<ChildComponentProps> = ({
                     {/* <div className="pt-2 pb-2 border ps-2 pe-2">
                   <p>{Jobdata?.script}</p>
                 </div> */}
-                    <div className="flex justify-between items-center pb-4">
+                    <div className="flex justify-between items-center ">
                       <div className="w-[10%] flex">
-                        <p className="font-bold pe-3 font-text">{"Script "}</p>
+                        <p className="font-bold pe-3 font-text">{"Script"}</p>
                       </div>
                       <div className="pe-2">
                         <div className="flex items-center">
@@ -215,7 +215,6 @@ const ReviewData: React.FC<ChildComponentProps> = ({
                         value={Jobdata?.script}
                         className="w-[97.7%]"
                         multiline
-                        placeholder={Jobdata?.script || "Write Script Here"}
                       />
                     </div>
                   </div>
