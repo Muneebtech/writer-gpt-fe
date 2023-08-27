@@ -187,7 +187,7 @@ const Create = () => {
       case 5:
         return <Review ScriptData={ScriptData} />;
       case 6:
-        return <ReviewData Jobdata={data} ScriptData={ScriptData} />;
+        return <ReviewData isSuccess={isSuccess} Jobdata={data} ScriptData={ScriptData} />;
     }
   };
   const SlideTransition = (props: SlideProps) => {
