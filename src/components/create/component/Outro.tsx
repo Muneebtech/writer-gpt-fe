@@ -93,7 +93,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
             <Button
               onClick={ClearAllData}
               variant="outlined"
-              className="border-black-btn text-black ms-3 me-3"
+              className="border-black-btn text-black ms-3 me-3 button-gaps"
             >
               Clear All
             </Button>
@@ -103,7 +103,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                 handleClearTextField();
               }}
               variant="outlined"
-              className="border-black-btn text-black"
+              className="border-black-btn text-black button-gaps"
             >
               Add Outro
             </Button>

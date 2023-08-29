@@ -21,6 +21,7 @@ import Outro from "./component/Outro";
 import Toaster from "@/common/Toaster/Toaster";
 import ScriptSuccessPage from "./component/ScriptSuccessPage";
 import ScriptsButtons from "./component/ScriptsButtons";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 const steps = [
   "CHANNEL",
   "BASIC",
@@ -187,7 +188,14 @@ const Create = () => {
       case 5:
         return <Review ScriptData={ScriptData} />;
       case 6:
-        return <ReviewData isSuccess={isSuccess} Jobdata={data} ScriptData={ScriptData} />;
+        return (
+          <ReviewData
+            isLoading={isLoading}
+            isSuccess={isSuccess}
+            Jobdata={data}
+            ScriptData={ScriptData}
+          />
+        );
     }
   };
   const SlideTransition = (props: SlideProps) => {
@@ -247,6 +255,7 @@ const Create = () => {
           />
         </>
       )}
+
       <div className="mb-2 mt-1">
         <Header title="CREATE SCRIPT" />
       </div>
@@ -274,7 +283,7 @@ const Create = () => {
         })}
       </Stepper>
       <div className="mt-1 mb-1">{renderStepContent(activeStep)}</div>
-      {activeStep > 3 && <>{isLoading ? <Spinner></Spinner> : null}</>}
+      {/* {activeStep > 3 && <>{isLoading ? <LottieSpinner />  : null}</>} */}
       <div className="btn-postion">
         <div className="table-bb-gray mt-3 mb-3"></div>
         <div className="flex justify-between mt-3">

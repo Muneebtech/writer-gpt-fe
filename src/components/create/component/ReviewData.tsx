@@ -11,6 +11,7 @@ import { useGetChannels } from "@/services/channel";
 import { Channel } from "@/constants/channelcategories";
 import { Button, TextField } from "@mui/material";
 import ScriptSuccessPage from "./ScriptSuccessPage";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 
 type AdditionalCommandsData = {
   commands?: string;
@@ -22,11 +23,13 @@ interface ChildComponentProps {
     script: string;
   };
   isSuccess: boolean;
+  isLoading: boolean;
 }
 const ReviewData: React.FC<ChildComponentProps> = ({
   ScriptData,
   Jobdata,
-  isSuccess,
+  isSuccess = true,
+  isLoading,
 }) => {
   console.log(Jobdata?.script);
 
@@ -86,23 +89,9 @@ const ReviewData: React.FC<ChildComponentProps> = ({
             <h4 className="font-bold">REVIEW</h4>
           </div>
           <div className="table-bb-gray mt-4 ms-4 me-4"></div>
-          {isSuccess ? (
+          {isLoading ? (
             <>
-              <ScriptSuccessPage />
-
-              <div className="ps-1 pt-4 flex items-center justify-between">
-                <div className="w-[100%]">
-                  <TextField
-                    className="w-[100%]"
-                    placeholder="Write Additional Command Here "
-                  />
-                </div>
-                <div className="w-[20%] ps-3 pe-3">
-                  <Button variant="contained" className="button-black">
-                    Run Command
-                  </Button>
-                </div>
-              </div>
+              <LottieSpinner />
             </>
           ) : (
             <>
@@ -182,9 +171,6 @@ const ReviewData: React.FC<ChildComponentProps> = ({
                         <p>{outro?.outro}</p>
                       </div>
                     </div>
-                    {/* <div className="pt-2 pb-2 border ps-2 pe-2">
-                  <p>{Jobdata?.script}</p>
-                </div> */}
                     <div className="flex justify-between items-center ">
                       <div className="w-[10%] flex">
                         <p className="font-bold pe-3 font-text">{"Script"}</p>
@@ -193,23 +179,21 @@ const ReviewData: React.FC<ChildComponentProps> = ({
                         <div className="flex items-center">
                           <Button
                             variant="outlined"
-                            className="rounded-lg ms-1 me-1"
+                            className="rounded-lg ms-1 me-1 button-gaps"
                           >
                             Re-write
                           </Button>
                           <Button
                             variant="outlined"
-                            className="rounded-lg ms-1 me-1"
+                            className="rounded-lg ms-1 me-1 button-gaps"
                           >
                             Write More
                           </Button>
-                          <p className="ms-1 me-1 font-bold">
-                            {getWordCount()} Words
-                          </p>
+                          <p className="ms-1 me-1 font-bold">0</p>
                         </div>
                       </div>
                     </div>
-                    <div className=" flex pt-1 pb-1 w-full h-[70%]">
+                    <div className=" flex pt-3 pb-3 w-full">
                       <TextField
                         onChange={(event) => HandleScriptNumber(event)}
                         value={Jobdata?.script}
@@ -217,6 +201,30 @@ const ReviewData: React.FC<ChildComponentProps> = ({
                         multiline
                       />
                     </div>
+                    <>
+                      {true ? (
+                        <>
+                          <div className="ps-1 pt-4 flex items-center justify-between">
+                            <div className="w-[100%]">
+                              <TextField
+                                className="w-[100%]"
+                                placeholder="Write Additional Command Here "
+                              />
+                            </div>
+                            <div className="w-[20%] ps-3 pe-3">
+                              <Button
+                                variant="contained"
+                                className="button-black"
+                              >
+                                Run Command
+                              </Button>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   </div>
                 </div>
               </div>

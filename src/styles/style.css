@@ -681,3 +681,10 @@ label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   padding: 5px 15px !important;
 }
+.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root{
+  padding: 10px 0px!important;
+  height: 150px;
+}
+.button-gaps{
+  margin: 0px 5px !important;
+}

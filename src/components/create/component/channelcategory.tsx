@@ -23,6 +23,14 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
 }) => {
   const [selectedItemIdChannel, setSelectedItemIdChannel] =
     useState<ChannelId | null>(null);
+  const selectedItemIdChannelAsString =
+    selectedItemIdChannel?.toString() ?? "No selected item";
+
+  console.log(
+    typeof selectedItemIdChannelAsString,
+    "selectedItemIdChannel::::::::::"
+  );
+
   const router = useRouter();
   const { data } = router.query;
 
@@ -47,6 +55,12 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
     data: Data,
     isSuccess: success,
   } = useGetChannels({});
+
+  useEffect(() => {
+    if (selectedItemIdChannelAsString) {
+      setScriptData({ channel: selectedItemIdChannelAsString });
+    }
+  }, [selectedItemIdChannelAsString]);
 
   const handleClick = (id: string) => {
     setSelectedItemId(id === selectedItemId ? null : id);
@@ -93,9 +107,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
               <div className="flex flex-wrap flex-start mt-4 mb-4 h-[90%] overflow-scroll">
                 {Data?.map((item: Channel) => {
                   const { id, channel, description } = item;
-                  const isSelected =
-                    selectedItemId === id ||
-                    (selectedItemIdChannel && selectedItemIdChannel?.id === id);
+                  const isSelected = selectedItemId === id;
                   return (
                     <div
                       onClick={() => {
@@ -129,8 +141,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                       {/* SelectCard */}
                       <div className="">
                         {selectedItemId === item.id ||
-                        (selectedItemIdChannel &&
-                          selectedItemIdChannel.id === item.id) ? (
+                        selectedItemIdChannelAsString === item?.id ? (
                           <Image
                             src="/SelectCard.png"
                             alt="round"
