@@ -14,4 +14,18 @@ export class JobServices {
       data: data,
     });
   }
+  static rewriteJob(data: any) {
+    return request({
+      url: "/job/rewrite",
+      method: "POST",
+      data: data,
+    });
+  }
+  static newCommandJob(data: any) {
+    return request({
+      url: "/job/newCommand",
+      method: "POST",
+      data: data,
+    });
+  }
 }
