@@ -1,10 +1,12 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { NextPageWithLayout } from "@/utils/types";
 import { useSignIn } from "@/services/auth";
 import { encryptData } from "@/utils/localStorage";
 import { useRouter } from "next/router";
 import { TextField } from "@mui/material";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { FaSpinner } from "react-icons/fa";
+import Toaster from "@/common/Toaster/Toaster";
 const SignInPage: NextPageWithLayout = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +14,8 @@ const SignInPage: NextPageWithLayout = () => {
   const [forcedInput, setForcedInput] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const { data, mutate, isSuccess, isError } = useSignIn();
+  const { data, mutate, isSuccess, isError, isLoading } = useSignIn();
+  const [showToast, setShowToast] = useState(false);
   const handleSubmit = (e: React.FormEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -37,7 +40,9 @@ const SignInPage: NextPageWithLayout = () => {
     encryptData(data?.user, "userdata");
     encryptData(data?.tokens, "token");
     router.push("/brands");
+    // setShowToast(true);
   }
+
   const styles = `
   .bgImage {
     background-image: url('/path/to/your/image.jpg');
@@ -45,9 +50,27 @@ const SignInPage: NextPageWithLayout = () => {
     /* Add any other background properties you want */
   }
 `;
-
+  const rotateAnimation = `spin 1s linear infinite`;
+  useEffect(() => {
+    if (isError || isSuccess) {
+      setShowToast(true);
+    }
+  }, [isError, isSuccess]);
   return (
     <>
+      {isSuccess ? (
+        <>
+          <Toaster
+            title="Logged In Successfully"
+            Success={true}
+            Color="green"
+          />
+        </>
+      ) : isError ? (
+        <>
+          <Toaster title="Logged In Failed" Error={true} Color="red" />
+        </>
+      ) : null}
       <div className="flex w-full items-center bg-white">
         <div className="bgImage me-12 flex items-center flex-col justify-center pt-6">
           {/* <span className='ps-8 text-white leading-none pe-3 text-5xl font-sm'>Artificial Intelligence scriptwriting and voiceover</span>
@@ -85,14 +108,16 @@ const SignInPage: NextPageWithLayout = () => {
               {emailError && (
                 <>
                   <span className="pt-1 pb-1 text-red-600 flex items-center mb-2">
-                    <AiOutlineExclamationCircle /> <span className="ps-2 pe-2">{emailError}</span>
+                    <AiOutlineExclamationCircle />{" "}
+                    <span className="ps-2 pe-2">{emailError}</span>
                   </span>
                 </>
               )}
               {passwordError && (
                 <>
                   <span className="text-red-600 flex items-center mb-2">
-                    <AiOutlineExclamationCircle /> <span className="ps-2 pe-2">{passwordError}</span>
+                    <AiOutlineExclamationCircle />{" "}
+                    <span className="ps-2 pe-2">{passwordError}</span>
                   </span>
                 </>
               )}
@@ -100,7 +125,22 @@ const SignInPage: NextPageWithLayout = () => {
                 type="submit"
                 className="w-full button-black py-2 px-4 rounded-md hover:bg-white-600 transition duration-200"
               >
-                Sign In
+                {isLoading ? (
+                  <>
+                    <div className="flex justify-center items-center">
+                      <span className="ps-2 pe-2"> Signing In </span>
+                      <FaSpinner
+                        size={16}
+                        style={{
+                          animation: rotateAnimation,
+                          marginRight: "10px",
+                        }}
+                      ></FaSpinner>
+                    </div>
+                  </>
+                ) : (
+                  <>Sign In</>
+                )}
               </button>
               {/* <div className='flex justify-end cursor-pointer'>
                 <span className='ps-1 pe-1 border-b-2 border-black pt-1 text-sm'>Forget Passowrd</span>
