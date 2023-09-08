@@ -29,6 +29,7 @@ interface ChildComponentProps {
     script: string;
     id: string;
   };
+  setScriptData: (updatedState: Partial<Job>) => void;
   isSuccess: boolean;
   isLoading: boolean;
 }
@@ -36,6 +37,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({
   ScriptData,
   Jobdata,
   isSuccess = true,
+  setScriptData,
   isLoading,
 }) => {
   console.log(Jobdata, "jobData");
@@ -84,24 +86,7 @@ const ReviewData: React.FC<ChildComponentProps> = ({
     topicMutate({});
   }, []);
 
-  const [ScriptDataCount, setScriptDataCount] = useState<any>();
   const [NewCommand, setNewCommand] = useState<string | null>(null);
-  const HandleScriptNumber = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const SearchValue = event.target.value;
-    setScriptDataCount(SearchValue);
-  };
-  const getWordCount = () => {
-    // Split the text by whitespace and filter out empty strings
-    const words = ScriptDataCount?.trim()?.split(/\s+/)?.filter(Boolean);
-    return words?.length;
-  };
-
-  const [command, setCommands] = useState<AdditionalCommandsData[]>([]);
-  const [rewriteScript, setRewriteScript] = useState<RewriteScript[]>([]);
-  console.log(command, "command23232");
-  console.log(rewriteScript, "rewriteScript20202");
 
   const HandleAdditionalCommandData = () => {
     if (ScriptData) {
@@ -111,7 +96,6 @@ const ReviewData: React.FC<ChildComponentProps> = ({
       };
       commandMutate(data as any);
     }
-    setCommands(data as any);
     setNewCommand(null);
   };
   const handleRewrite = () => {
@@ -127,12 +111,15 @@ const ReviewData: React.FC<ChildComponentProps> = ({
   };
   const rotateAnimation = `spin 1s linear infinite`;
   useEffect(() => {
-    if (commandSuccess || rewriteSuccess) {
-      setCommands(commandData?.user_text);
-    } else if (rewriteSuccess) {
-      setRewriteScript(rewriteData?.script);
+    if (commandSuccess) {
+      setScriptData({script:commandData.script});
     }
-  }, [commandSuccess, rewriteSuccess]);
+  }, [commandSuccess,commandData]);
+  useEffect(() => {
+    if (rewriteSuccess) {
+      setScriptData({script:rewriteData.script});
+    }
+  }, [ rewriteSuccess,rewriteData]);
   return (
     <div>
       <div className="h-[calc(100vh-13.6rem)] mt-6 rounded-md border-2 ">
@@ -325,15 +312,8 @@ const ReviewData: React.FC<ChildComponentProps> = ({
                         </div>
                         <div className=" flex pt-3 pb-3 w-full">
                           <TextField
-                            onChange={(event) => HandleScriptNumber(event)}
                             value={
-                              Jobdata?.script
-                                ? Jobdata?.script
-                                : rewriteData?.script
-                                ? rewriteData?.script
-                                : commandData?.script
-                                ? commandData?.script
-                                : null
+                              ScriptData?.script
                             }
                             className="w-[97.7%]"
                             multiline

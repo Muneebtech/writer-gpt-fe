@@ -138,6 +138,7 @@ const Create = () => {
       ...updatedState,
     }));
   };
+  
   const handleSubmit = () => {
     const data = {
       topic: ScriptData.topic ?? undefined,
@@ -194,6 +195,7 @@ const Create = () => {
             isSuccess={isSuccess}
             Jobdata={data}
             ScriptData={ScriptData}
+            setScriptData={handleStateUpdate}
           />
         );
     }
