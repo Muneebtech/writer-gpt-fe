@@ -112,253 +112,283 @@ const ReviewData: React.FC<ChildComponentProps> = ({
   const rotateAnimation = `spin 1s linear infinite`;
   useEffect(() => {
     if (commandSuccess) {
-      setScriptData({script:commandData.script});
+      setScriptData({ script: commandData.script });
     }
-  }, [commandSuccess,commandData]);
+  }, [commandSuccess, commandData]);
   useEffect(() => {
     if (rewriteSuccess) {
-      setScriptData({script:rewriteData.script});
+      setScriptData({ script: rewriteData.script });
     }
-  }, [ rewriteSuccess,rewriteData]);
+  }, [rewriteSuccess, rewriteData]);
   return (
     <div>
-      <div className="h-[calc(100vh-13.6rem)] mt-6 rounded-md border-2 ">
-        <div>
-          <div className="ps-3 pt-2">
-            <h4 className="font-bold">REVIEW</h4>
+      {isLoading ? (
+        <>
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
           </div>
-          {rewriteLoading || commandJobLoading ? (
-            <>
-              {" "}
-              <LottieSpinner />{" "}
-            </>
-          ) : (
-            <>
-              <div className="table-bb-gray mt-4 ms-4 me-4"></div>
-              {isLoading ? (
-                <>
+        </>
+      ) : (
+        <>
+          <div className="h-[calc(100vh-13.6rem)] mt-6 rounded-md border-2 ">
+            <div>
+              <div className="ps-3 pt-2">
+                <h4 className="font-bold">REVIEW</h4>
+              </div>
+              {rewriteLoading || commandJobLoading ? (
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(200, 200, 200, 0.7)",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 9999,
+                  }}
+                >
                   <LottieSpinner />
-                </>
+                </div>
               ) : (
                 <>
-                  <div className="ps-4 h-[calc(100vh-17.2rem)] overflow-scroll">
-                    <div className="mt-1 overflow-scroll">
-                      <div key={"3234"} className="">
-                        <div className="flex items-center pt-1 pb-1 w-full">
-                          <div className=" pt-1 pb-1 w-[10%]">
-                            <p className="font-bold pe-3 font-text">
-                              {ScriptData?.name ? "Script Name" : "Script Name"}
-                            </p>
-                          </div>
-
-                          <div className=" pt-1 pb-1 flex  ml-1  w-[90%]">
-                            <p>
-                              {!ScriptData?.name ? (
-                                <FaSpinner
-                                  size={16}
-                                  style={{
-                                    animation: rotateAnimation,
-                                    marginRight: "10px",
-                                  }}
-                                ></FaSpinner>
-                              ) : (
-                                ScriptData?.name
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center w-full">
-                          <div className="w-[10%] flex  pt-1 pb-1">
-                            <p className="font-bold  pe-3 font-text">
-                              {" "}
-                              Thumbnail{" "}
-                            </p>
-                          </div>
-
-                          <div className=" ml-1 w-[90%] flex  pt-1 pb-1">
-                            {!ScriptData?.photoPath ? (
-                              <FaSpinner
-                                size={16}
-                                style={{
-                                  animation: rotateAnimation,
-                                  marginRight: "10px",
-                                }}
-                              ></FaSpinner>
-                            ) : (
-                              <Image
-                                src={
-                                  ScriptData?.photoPath
-                                    ? URL?.createObjectURL(profileImage as any)
-                                    : ""
-                                }
-                                alt="No Image"
-                                width={25}
-                                height={25}
-                              />
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex items-center pt-1 pb-1 w-full ">
-                          <div className="w-[10%] flex">
-                            <p className="font-bold pe-3 font-text ">
-                              {channel?.channel ? "Channel " : "Channel "}
-                            </p>
-                          </div>
-
-                          <div className=" pt-1 pb-1  ml-1  w-[90%]">
-                            <p>
-                              {!channel?.channel ? (
-                                <FaSpinner
-                                  size={16}
-                                  style={{
-                                    animation: rotateAnimation,
-                                    marginRight: "10px",
-                                  }}
-                                ></FaSpinner>
-                              ) : (
-                                channel?.channel
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center pt-1 pb-1 w-full">
-                          <div className="pt-1 pb-1 w-[10%]">
-                            <p className="font-bold pe-3 font-text">
-                              {topic?.topic ? "Topic " : "Topic "}
-                            </p>
-                          </div>
-
-                          <div className="pt-1 pb-1  ml-1  w-[90%]">
-                            <p>
-                              {!topic?.topic ? (
-                                <FaSpinner
-                                  size={16}
-                                  style={{
-                                    animation: rotateAnimation,
-                                    marginRight: "10px",
-                                  }}
-                                ></FaSpinner>
-                              ) : (
-                                topic?.topic
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center pt-1 pb-1 w-full">
-                          <div className="w-[10%] flex pt-1 pb-1">
-                            <p className="font-bold pe-3 font-text">
-                              {model?.model ? "Model " : "Model "}
-                            </p>
-                          </div>
-
-                          <div className="pt-1 pb-1  ml-1  w-[90%]">
-                            <p>
-                              {!model?.model ? (
-                                <FaSpinner
-                                  size={16}
-                                  style={{
-                                    animation: rotateAnimation,
-                                    marginRight: "10px",
-                                  }}
-                                ></FaSpinner>
-                              ) : (
-                                model?.model
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center pt-1 pb-1 w-full">
-                          <div className="pt-1 pb-1 w-[10%]">
-                            <p className="font-bold pe-3 font-text">
-                              {outro?.outro ? "Outro " : "Outro "}
-                            </p>
-                          </div>
-
-                          <div className="pt-1 pb-1  ml-1  w-[90%]">
-                            <p>
-                              {!outro?.outro ? (
-                                <FaSpinner
-                                  size={16}
-                                  style={{
-                                    animation: rotateAnimation,
-                                    marginRight: "10px",
-                                  }}
-                                ></FaSpinner>
-                              ) : (
-                                outro?.outro
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center ">
-                          <div className="w-[10%] flex">
-                            <p className="font-bold pe-3 font-text">
-                              {"Script"}
-                            </p>
-                          </div>
-                          {isSuccess ? (
-                            <div className="pe-2">
-                              <div className="flex items-center">
-                                <Button
-                                  variant="outlined"
-                                  className="rounded-lg ms-1 me-1 button-gaps"
-                                  onClick={handleRewrite}
-                                >
-                                  Re-write
-                                </Button>
-                              </div>
+                  <div className="table-bb-gray mt-4 ms-4 me-4"></div>
+                  <>
+                    <div className="ps-4 h-[calc(100vh-17.2rem)] overflow-scroll">
+                      <div className="mt-1 overflow-scroll">
+                        <div key={"3234"} className="">
+                          <div className="flex items-center pt-1 pb-1 w-full">
+                            <div className=" pt-1 pb-1 w-[10%]">
+                              <p className="font-bold pe-3 font-text">
+                                {ScriptData?.name
+                                  ? "Script Name"
+                                  : "Script Name"}
+                              </p>
                             </div>
-                          ) : null}
-                        </div>
-                        <div className=" flex pt-3 pb-3 w-full">
-                          <TextField
-                            value={
-                              ScriptData?.script
-                            }
-                            className="w-[97.7%]"
-                            multiline
-                          />
-                        </div>
-                        <>
-                          {isSuccess ? (
-                            <>
-                              <div className="ps-1 pt-4 flex items-center justify-between">
-                                <div className="w-[100%]">
-                                  <TextField
-                                    className="w-[100%]"
-                                    placeholder="Write Additional Command Here "
-                                    onChange={(
-                                      event: ChangeEvent<{
-                                        name?: string;
-                                        value: string;
-                                      }>
-                                    ) => setNewCommand(event.target.value)}
-                                  />
-                                </div>
-                                <div className="w-[20%] ps-3 pe-3">
+
+                            <div className=" pt-1 pb-1 flex  ml-1  w-[90%]">
+                              <p>
+                                {!ScriptData?.name ? (
+                                  <FaSpinner
+                                    size={16}
+                                    style={{
+                                      animation: rotateAnimation,
+                                      marginRight: "10px",
+                                    }}
+                                  ></FaSpinner>
+                                ) : (
+                                  ScriptData?.name
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center w-full">
+                            <div className="w-[10%] flex  pt-1 pb-1">
+                              <p className="font-bold  pe-3 font-text">
+                                Thumbnail
+                              </p>
+                            </div>
+
+                            <div className=" ml-1 w-[90%] flex  pt-1 pb-1">
+                              {!ScriptData?.photoPath ? (
+                                <FaSpinner
+                                  size={16}
+                                  style={{
+                                    animation: rotateAnimation,
+                                    marginRight: "10px",
+                                  }}
+                                ></FaSpinner>
+                              ) : (
+                                <Image
+                                  src={
+                                    ScriptData?.photoPath
+                                      ? URL?.createObjectURL(
+                                          profileImage as any
+                                        )
+                                      : ""
+                                  }
+                                  alt="No Image"
+                                  width={25}
+                                  height={25}
+                                />
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center pt-1 pb-1 w-full ">
+                            <div className="w-[10%] flex">
+                              <p className="font-bold pe-3 font-text ">
+                                {channel?.channel ? "Channel " : "Channel "}
+                              </p>
+                            </div>
+
+                            <div className=" pt-1 pb-1  ml-1  w-[90%]">
+                              <p>
+                                {!channel?.channel ? (
+                                  <FaSpinner
+                                    size={16}
+                                    style={{
+                                      animation: rotateAnimation,
+                                      marginRight: "10px",
+                                    }}
+                                  ></FaSpinner>
+                                ) : (
+                                  channel?.channel
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center pt-1 pb-1 w-full">
+                            <div className="pt-1 pb-1 w-[10%]">
+                              <p className="font-bold pe-3 font-text">
+                                {topic?.topic ? "Topic " : "Topic "}
+                              </p>
+                            </div>
+
+                            <div className="pt-1 pb-1  ml-1  w-[90%]">
+                              <p>
+                                {!topic?.topic ? (
+                                  <FaSpinner
+                                    size={16}
+                                    style={{
+                                      animation: rotateAnimation,
+                                      marginRight: "10px",
+                                    }}
+                                  ></FaSpinner>
+                                ) : (
+                                  topic?.topic
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center pt-1 pb-1 w-full">
+                            <div className="w-[10%] flex pt-1 pb-1">
+                              <p className="font-bold pe-3 font-text">
+                                {model?.model ? "Model " : "Model "}
+                              </p>
+                            </div>
+
+                            <div className="pt-1 pb-1  ml-1  w-[90%]">
+                              <p>
+                                {!model?.model ? (
+                                  <FaSpinner
+                                    size={16}
+                                    style={{
+                                      animation: rotateAnimation,
+                                      marginRight: "10px",
+                                    }}
+                                  ></FaSpinner>
+                                ) : (
+                                  model?.model
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center pt-1 pb-1 w-full">
+                            <div className="pt-1 pb-1 w-[10%]">
+                              <p className="font-bold pe-3 font-text">
+                                {outro?.outro ? "Outro " : "Outro "}
+                              </p>
+                            </div>
+
+                            <div className="pt-1 pb-1  ml-1  w-[90%]">
+                              <p>
+                                {!outro?.outro ? (
+                                  <FaSpinner
+                                    size={16}
+                                    style={{
+                                      animation: rotateAnimation,
+                                      marginRight: "10px",
+                                    }}
+                                  ></FaSpinner>
+                                ) : (
+                                  outro?.outro
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center ">
+                            <div className="w-[10%] flex">
+                              <p className="font-bold pe-3 font-text">
+                                {"Script"}
+                              </p>
+                            </div>
+                            {isSuccess ? (
+                              <div className="pe-2">
+                                <div className="flex items-center">
                                   <Button
-                                    variant="contained"
-                                    onClick={HandleAdditionalCommandData}
-                                    className="button-black"
+                                    variant="outlined"
+                                    className="rounded-lg ms-1 me-1 button-gaps"
+                                    onClick={handleRewrite}
                                   >
-                                    Run Command
+                                    Re-write
                                   </Button>
                                 </div>
                               </div>
-                            </>
-                          ) : (
-                            <></>
-                          )}
-                        </>
+                            ) : null}
+                          </div>
+                          <div className=" flex pt-3 pb-3 w-full">
+                            <TextField
+                              value={ScriptData?.script}
+                              className="w-[97.7%]"
+                              multiline
+                            />
+                          </div>
+                          <>
+                            {isSuccess ? (
+                              <>
+                                <div className="ps-1 pt-4 flex items-center justify-between">
+                                  <div className="w-[100%]">
+                                    <TextField
+                                      className="w-[100%]"
+                                      placeholder="Write Additional Command Here "
+                                      onChange={(
+                                        event: ChangeEvent<{
+                                          name?: string;
+                                          value: string;
+                                        }>
+                                      ) => setNewCommand(event.target.value)}
+                                    />
+                                  </div>
+                                  <div className="w-[20%] ps-3 pe-3">
+                                    <Button
+                                      variant="contained"
+                                      onClick={HandleAdditionalCommandData}
+                                      className="button-black"
+                                    >
+                                      Run Command
+                                    </Button>
+                                  </div>
+                                </div>
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 </>
               )}
-            </>
-          )}
-        </div>
-      </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
