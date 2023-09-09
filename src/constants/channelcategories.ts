@@ -67,8 +67,16 @@ export type VoiceData = {
     name: string;
     preview_url: string
     voice_id: string
+    labels: {
+        accent: string
+        age: string
+        description: string
+        gender: string
+        usecase: string
+    }
+
 }
-export type Channel ={
+export type Channel = {
     channel: string;
     subscribers: number;
     photoPath: string;
@@ -76,9 +84,8 @@ export type Channel ={
     youtubeUrl: string;
     discordUrl: string;
     category: {
-      category: string;
-      id: string;
+        category: string;
+        id: string;
     };
     id: string;
-  }
-  
+}

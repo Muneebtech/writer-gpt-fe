@@ -6,6 +6,7 @@ import { Box, Button, Modal, Popover, Typography } from "@mui/material";
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import Toaster from "@/common/Toaster/Toaster";
 import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
+import Skeleton from "@/common/Skeleton/Skeleton";
 interface OutroProps {
   handleOpenPopOver: () => void;
   closePopOver: boolean;
@@ -246,65 +247,80 @@ const Outros: React.FC<OutroProps> = ({
               )}
             </>
           </>
-          <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
-            <div className="flex items-center justify-between pe-16 ps-6 pt-4">
-              <div className="flex items-center ">
-                <p className="pe-6">No.</p>
-                <p>Outros</p>
-              </div>
-              <div className="pe-6">
-                <p>Status</p>
-              </div>
+          {FilterData?.length === 0 ? (
+            <div className="flex justify-center items-center  h-[calc(100vh-11.6rem)] ">
+              <Skeleton
+                widht={120}
+                height={120}
+                titleofPage="No Outro Data Found"
+                TitleData="Suggestion"
+              />
             </div>
-            <div className="table-bb-gray mt-2 ms-4 me-4"></div>
-            <div>
-              <div className="overflow-scroll h-[calc(100vh-15.5rem)]">
-                <>
-                  {FilterData?.map((items: outroDataTypes, index) => {
-                    return (
-                      <>
-                        {console.log(items, "items")}
-                        <div
-                          key={items?.id}
-                          className="border-b-2 mt-2 mb-2 ms-2 me-2 "
-                        >
-                          <div className="flex pe-12 ps-6">
-                            <div className="pt-2 ">
-                              <p>{index + 1}</p>
-                            </div>
-                            <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
-                              <p className="text-sm">{items?.description}</p>
-                            </div>
-                            <div>
-                              <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
-                                {items?.status === null ||
-                                items?.status === "New"
-                                  ? "New"
-                                  : "Used"}
-                              </p>
-                            </div>
+          ) : (
+            <>
+              <div className="mt-6 rounded-md border-2 h-[calc(100vh-12.5rem)]">
+                <div className="flex items-center justify-between pe-16 ps-6 pt-4">
+                  <div className="flex items-center ">
+                    <p className="pe-6">No.</p>
+                    <p>Outros</p>
+                  </div>
+                  <div className="pe-6">
+                    <p>Status</p>
+                  </div>
+                </div>
+                <div className="table-bb-gray mt-2 ms-4 me-4"></div>
+                <div>
+                  <div className="overflow-scroll h-[calc(100vh-15.5rem)]">
+                    <>
+                      {FilterData?.map((items: outroDataTypes, index) => {
+                        return (
+                          <>
+                            {console.log(items, "items")}
                             <div
-                              className="pt-2 cursor-pointer"
-                              onClick={(event) => {
-                                handlePopoverOpen(
-                                  items?.id || "",
-                                  event,
-                                  items
-                                );
-                                handleOpenPopOver();
-                              }}
+                              key={items?.id}
+                              className="border-b-2 mt-2 mb-2 ms-2 me-2 "
                             >
-                              <BsThreeDotsVertical />
+                              <div className="flex pe-12 ps-6">
+                                <div className="pt-2 ">
+                                  <p>{index + 1}</p>
+                                </div>
+                                <div className="ps-10 pe-10 pt-1 pb-1 w-[95%]">
+                                  <p className="text-sm">
+                                    {items?.description}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="bg-black text-white text-xs pt-1 pb-1 ps-2  mt-1 me-4  pe-2 rounded-xl">
+                                    {items?.status === null ||
+                                    items?.status === "New"
+                                      ? "New"
+                                      : "Used"}
+                                  </p>
+                                </div>
+                                <div
+                                  className="pt-2 cursor-pointer"
+                                  onClick={(event) => {
+                                    handlePopoverOpen(
+                                      items?.id || "",
+                                      event,
+                                      items
+                                    );
+                                    handleOpenPopOver();
+                                  }}
+                                >
+                                  <BsThreeDotsVertical />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
-                </>
+                          </>
+                        );
+                      })}
+                    </>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </>
       )}
     </div>

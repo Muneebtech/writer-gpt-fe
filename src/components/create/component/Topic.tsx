@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
+import Skeleton from "@/common/Skeleton/Skeleton";
 interface ChildComponentProps {
   setScriptData: (updatedState: Partial<Job>) => void;
   channelId: string;
@@ -51,74 +52,86 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
         </>
       ) : (
         <>
-          <div
-            // style={{ height: `${divHeight}px` }}
-            className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)]"
-          >
-            <div className="h-[10%]">
-              <div className="ps-3 pt-2">
-                <h4 className="font-bold">Select Topic</h4>
-              </div>
-              <div className="table-bb-gray mt-4 ms-4 me-4"></div>
+          {topicData?.length === 0 ? (
+            <div className="flex justify-center items-center  h-[calc(100vh-11.6rem)] ">
+              <Skeleton
+                widht={120}
+                height={120}
+                titleofPage="No Topic Record Found"
+                TitleData="Suggestion"
+              />
             </div>
-            {topicData?.length > 0 ? (
-
-              <div className="overflow-scroll h-[90%]">
-                <div className="flex flex-wrap justify-start mt-4 mb-4 ">
-                  {topicData?.map((item: Topic) => {
-                    const { id, topic, description } = item;
-                    return (
-                      <div
-                        onClick={() => handleClick(id)}
-                        key={id}
-                        className="flex h-[20%]
-                            cursor-pointer justify-between items-center ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
-                      >
-                        <div className="flex items-center h-[50px]">
-                          <div className="ps-2 ">
-                            <div className="pt-1 pb-1">
-                              <Tooltip title={topic}>
-                                <p className=" font-bold text-sm truncate-text">
-                                  {topic}
-                                </p>
-                              </Tooltip>
+          ) : (
+            <>
+              {" "}
+              <div
+                // style={{ height: `${divHeight}px` }}
+                className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)]"
+              >
+                <div className="h-[10%]">
+                  <div className="ps-3 pt-2">
+                    <h4 className="font-bold">Select Topic</h4>
+                  </div>
+                  <div className="table-bb-gray mt-4 ms-4 me-4"></div>
+                </div>
+                {topicData?.length > 0 ? (
+                  <div className="overflow-scroll h-[90%]">
+                    <div className="flex flex-wrap justify-start mt-4 mb-4 ">
+                      {topicData?.map((item: Topic) => {
+                        const { id, topic, description } = item;
+                        return (
+                          <div
+                            onClick={() => handleClick(id)}
+                            key={id}
+                            className="flex h-[20%]
+                        cursor-pointer justify-between items-center ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card"
+                          >
+                            <div className="flex items-center h-[50px]">
+                              <div className="ps-2 ">
+                                <div className="pt-1 pb-1">
+                                  <Tooltip title={topic}>
+                                    <p className=" font-bold text-sm truncate-text">
+                                      {topic}
+                                    </p>
+                                  </Tooltip>
+                                </div>
+                              </div>
+                            </div>
+                            {/* SelectCard */}
+                            <div className="flex items-center">
+                              {selectTopic === item.id ? (
+                                <Image
+                                  src="/SelectCard.png"
+                                  alt="round"
+                                  width={12}
+                                  height={12}
+                                />
+                              ) : (
+                                <Image
+                                  src="/Round.png"
+                                  alt="round"
+                                  width={12}
+                                  height={12}
+                                />
+                              )}
                             </div>
                           </div>
-                        </div>
-                        {/* SelectCard */}
-                        <div className="flex items-center">
-                          
-                          {selectTopic === item.id ? (
-                            <Image
-                              src="/SelectCard.png"
-                              alt="round"
-                              width={12}
-                              height={12}
-                            />
-                          ) : (
-                            <Image
-                              src="/Round.png"
-                              alt="round"
-                              width={12}
-                              height={12}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex justify-center items-center h-[80%]">
+                      <p className="font-[600] text-[15px]">
+                        No Topic Data Available
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
-            ) : (
-              <>
-                <div className="flex justify-center items-center h-[80%]">
-                  <p className="font-[600] text-[15px]">
-                    No Topic Data Available
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
+            </>
+          )}
         </>
       )}
     </div>

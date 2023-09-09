@@ -39,6 +39,7 @@ import { isAdminOrManager } from "@/utils/authorisation";
 import { decryptData } from "@/utils/localStorage";
 import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 import Toaster from "@/common/Toaster/Toaster";
+import Skeleton from "@/common/Skeleton/Skeleton";
 interface FormData {
   channel: string;
   category: string;
@@ -645,35 +646,48 @@ const Brands = () => {
                 )
               )}
             </div>
-            <div
-              ref={divRef}
-              id="Cards-channel"
-              style={{ overflow: "scroll" }}
-              className="flex flex-wrap items-start w-full h-[calc(100vh-11.5rem)] "
-            >
-              {isLoading ? (
-                <div className="flex justify-center items-center h-screen">
-                  <ScrollSpinner />
-                </div>
-              ) : (
-                filteredData?.map((data: getChannelTypes) => (
-                  <Cards
-                    handleClosePopover={handleClosePopover}
-                    handleOpenPopover={handleOpenPopover}
-                    closePopover={closePopover}
-                    HandleDeleteChannel={HandleDeleteChannel}
-                    data={data}
-                    key={data.id}
-                  />
-                ))
-              )}
-            </div>
-            {isFetching ? (
-              <div className="flex justify-center items-center">
-                <ScrollSpinner />
+            {filteredData?.length === 0 ? (
+              <div className="flex justify-center items-center  h-[calc(100vh-11.6rem)] ">
+                <Skeleton
+                  widht={120}
+                  height={120}
+                  titleofPage="No Channel Found"  
+                  TitleData="Suggestion"
+                />
               </div>
             ) : (
-              ""
+              <>
+                <div
+                  ref={divRef}
+                  id="Cards-channel"
+                  style={{ overflow: "scroll" }}
+                  className="flex flex-wrap items-start w-full h-[calc(100vh-11.5rem)] "
+                >
+                  {isLoading ? (
+                    <div className="flex justify-center items-center h-screen">
+                      <ScrollSpinner />
+                    </div>
+                  ) : (
+                    filteredData?.map((data: getChannelTypes) => (
+                      <Cards
+                        handleClosePopover={handleClosePopover}
+                        handleOpenPopover={handleOpenPopover}
+                        closePopover={closePopover}
+                        HandleDeleteChannel={HandleDeleteChannel}
+                        data={data}
+                        key={data.id}
+                      />
+                    ))
+                  )}
+                </div>
+                {isFetching ? (
+                  <div className="flex justify-center items-center">
+                    <ScrollSpinner />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </>
             )}
           </div>
         </>
