@@ -4,7 +4,7 @@ import { useGetJobs } from "@/services/Jobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
 import React, { useState, useMemo, useEffect } from "react";
-import { FiArrowDown, FiDownload, FiFilter } from "react-icons/fi";
+import { FiArrowDown, FiArrowUp, FiDownload, FiFilter } from "react-icons/fi";
 import { Box, Button, Modal } from "@mui/material";
 import Header from "@/common/Header/header";
 import Voice from "../voice";
@@ -135,7 +135,9 @@ const Table = () => {
               >
                 <FiFilter />
                 <span className="ps-2 pe-2">Filters</span>
-                <FiArrowDown />
+                {showFilters ? <FiArrowUp /> : <FiArrowDown />}
+                {/* <FiArrowDown />
+                <FiArrowUp /> */}
               </Button>
             </div>
           </div>
