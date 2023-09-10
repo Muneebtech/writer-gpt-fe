@@ -4,7 +4,7 @@ import { useGetJobs } from "@/services/Jobs";
 import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
 import React, { useState, useMemo, useEffect } from "react";
-import { FiDownload } from "react-icons/fi";
+import { FiArrowDown, FiDownload, FiFilter } from "react-icons/fi";
 import { Box, Button, Modal } from "@mui/material";
 import Header from "@/common/Header/header";
 import Voice from "../voice";
@@ -13,6 +13,7 @@ import FilterLibrarydata from "./filterLibrarydata";
 import Skeleton from "@/common/Skeleton/Skeleton";
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
   const { isLoading: loading, data: Data } = useGetJobs();
   const [totalPagesData, setTotalPages] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -119,14 +120,27 @@ const Table = () => {
         </>
       ) : (
         <>
-          <Header
-            title="LIBRARY"
-            showSearch={true}
-            searchKeyword="Search"
-            onSearch={handleSearch}
-          />
-          {filteredData?.length !== 0 ? (
-            <div className="flex justify-center items-center  h-[calc(100vh-11.6rem)] ">
+          <div className="flex justify-between items-center">
+            <Header
+              title="LIBRARY"
+              showSearch={true}
+              searchKeyword="Search"
+              onSearch={handleSearch}
+            />
+            <div>
+              <Button
+                onClick={() => setShowFilters(!showFilters)}
+                variant="outlined"
+                className="ps-4 pe-4"
+              >
+                <FiFilter />
+                <span className="ps-2 pe-2">Filters</span>
+                <FiArrowDown />
+              </Button>
+            </div>
+          </div>
+          {filteredData?.length === 0 ? (
+            <div className="flex justify-center items-center  h-[calc(100vh-11.8rem)] ">
               <Skeleton
                 widht={120}
                 height={120}
@@ -137,7 +151,7 @@ const Table = () => {
           ) : (
             <>
               <div className="table-bb-gray mt-1 ms-2 me-2"></div>
-              <FilterLibrarydata />
+              {showFilters && <FilterLibrarydata />}
 
               <div className="bg-white table-b-gray rounded-lg">
                 <div

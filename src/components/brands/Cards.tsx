@@ -2,7 +2,14 @@ import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Button, Modal, Popover, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Modal,
+  Popover,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { FaTrash } from "react-icons/fa";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { getChannelTypes } from "../Types/channel.types";
@@ -186,7 +193,7 @@ const Cards: React.FC<CardProps> = ({
       <div
         onClick={(event) => handleCardClick(data?.id, event)}
         key={key}
-        className="w-1/6 flex flex-col justify-start items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
+        className="w-1/6 h-[calc(100vh-17.7rem)] flex flex-col justify-between items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
       >
         <span
           style={{
@@ -207,9 +214,14 @@ const Cards: React.FC<CardProps> = ({
           />
         </div>
         <div className="flex flex-col justify-center items-center mb-5">
-          <span className="text-lg font-medium text-ellipsis w-full text-center">
-            {data?.channel}
-          </span>
+          <Tooltip title={data?.channel}>
+            <span className="text-lg font-medium w-full truncate-text-2 text-center">
+              {data?.channel?.length > 15
+                ? data?.channel?.slice(0, 15)
+                : data?.channel}{" "}
+              {data?.channel?.length > 15 && "..."}
+            </span>
+          </Tooltip>
           <span className="text-xs text-gray-500">
             Subscribers {data?.subscribers}
           </span>

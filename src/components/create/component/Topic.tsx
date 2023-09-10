@@ -53,7 +53,7 @@ const Topic: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
       ) : (
         <>
           {topicData?.length === 0 ? (
-            <div className="flex justify-center items-center  h-[calc(100vh-11.6rem)] ">
+            <div className="flex justify-center items-center  h-[calc(100vh-11.8rem)] ">
               <Skeleton
                 widht={120}
                 height={120}
