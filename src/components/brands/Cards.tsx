@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { FaTrash } from "react-icons/fa";
+import { FaSpinner, FaTrash } from "react-icons/fa";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { getChannelTypes } from "../Types/channel.types";
 import EditChannel from "./EditChannel";
@@ -34,6 +34,8 @@ interface CardProps {
   handleOpenPopover: () => void;
   key: string;
   HandleDeleteChannel: (id: string) => void;
+  isLoadingDelete: boolean;
+  isSuccessDelete: boolean;
 }
 const Cards: React.FC<CardProps> = ({
   data,
@@ -42,6 +44,8 @@ const Cards: React.FC<CardProps> = ({
   closePopover,
   handleOpenPopover,
   handleClosePopover,
+  isLoadingDelete,
+  isSuccessDelete,
 }) => {
   const [selectedData, setSelectedData] = useState<getChannelTypes | null>(
     null
@@ -49,7 +53,7 @@ const Cards: React.FC<CardProps> = ({
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLElement | null>(
     null
   );
-  const { isLoading, isSuccess } = useDeletechannels();
+  const { isLoading, isSuccess, mutate } = useDeletechannels();
   const [showeditModal, setShowEditModal] = useState(false);
   const [showdeleteModal, setDeleteModal] = useState(false);
   const { backgroundColor, textColor } = generateRandomColors();
@@ -90,6 +94,14 @@ const Cards: React.FC<CardProps> = ({
     setShowEditModal(false);
   };
 
+  useEffect(() => {
+    if (isSuccessDelete) {
+      handleClosePopover();
+      handleCloseDeleteModal();
+    }
+  }, [isSuccessDelete]);
+  const rotateAnimation = `spin 1s linear infinite`;
+
   return (
     <>
       <EditChannel
@@ -120,8 +132,28 @@ const Cards: React.FC<CardProps> = ({
                 className="flex items-center border-red-600 border-btn-red"
                 variant="outlined"
               >
-                <FaTrash className="text-red-600" />{" "}
-                <span className="ps-2 pe-2 text-red-600">Delete</span>
+                {isLoadingDelete ? (
+                  <>
+                    <span className="ps-2 pe-2 text-red-600 flex items-center">
+                      <>
+                        {" "}
+                        <FaSpinner
+                          size={16}
+                          style={{
+                            animation: rotateAnimation,
+                            marginRight: "10px",
+                          }}
+                        ></FaSpinner>
+                        Deleting...
+                      </>
+                    </span>
+                  </>
+                ) : (
+                  <div className="flex items-center">
+                    <FaTrash className="text-red-600" />
+                    <span className="ps-2 pe-2 text-red-600">Delete</span>
+                  </div>
+                )}{" "}
               </Button>
             </div>
             <div>
@@ -182,7 +214,7 @@ const Cards: React.FC<CardProps> = ({
                 id="modal-modal-description"
                 sx={{ mt: 1 }}
               >
-                {isLoading ? "Deleting..." : "Delete"}
+                Delete
               </Typography>
             </Box>
           </Popover>

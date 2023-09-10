@@ -673,6 +673,8 @@ const Brands = () => {
                         handleClosePopover={handleClosePopover}
                         handleOpenPopover={handleOpenPopover}
                         closePopover={closePopover}
+                        isLoadingDelete={isLoadingDelete}
+                        isSuccessDelete={isSuccessDelete}
                         HandleDeleteChannel={HandleDeleteChannel}
                         data={data}
                         key={data.id}
