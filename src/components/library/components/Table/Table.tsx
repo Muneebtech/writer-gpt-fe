@@ -5,7 +5,7 @@ import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
 import React, { useState, useMemo, useEffect } from "react";
 import { FiArrowDown, FiArrowUp, FiDownload, FiFilter } from "react-icons/fi";
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Button, Modal, Tooltip } from "@mui/material";
 import Header from "@/common/Header/header";
 import Voice from "../voice";
 import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
@@ -191,7 +191,7 @@ const Table = () => {
                           return (
                             <tr
                               key={row?.id}
-                              className={`border-b leading-3 ${
+                              className={`border-b leading-3 cursor-pointer ${
                                 index !== Data.length - 1 ? "table-bb-gray" : ""
                               }`}
                             >
@@ -210,12 +210,20 @@ const Table = () => {
                                 </div>
                               </td>
 
-                              <td className="py-4 px-4 text-left">
+                              <td className="py-4 px-4 w-[20%] text-left">
                                 {row?.model?.model}
                               </td>
-                              <td className="py-4 px-4 text-left">
-                                {row?.topic?.topic}
+                              <td className="py-4 w-[30%] px-4 text-left">
+                                <Tooltip title={row?.topic?.topic} placement="right">
+                                  <span>
+                                    {row?.topic?.topic?.length > 30
+                                      ? row?.topic?.topic?.slice(0, 30)
+                                      : row?.topic?.topic}
+                                    {row?.topic?.topic?.length > 30 && "..."}
+                                  </span>
+                                </Tooltip>
                               </td>
+
                               <td className="py-4 px-4 text-left">
                                 {row?.outro?.outro}
                               </td>

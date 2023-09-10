@@ -6,7 +6,7 @@ import Spinner from "@/modules/spinner/spinner";
 import { useGetJobs } from "@/services/Jobs";
 import { useGetBrandsJobs } from "@/services/channel/hooks/channelJobs";
 import { generateRandomColors } from "@/utils/randomColor";
-import { Box, Button, Popover, Typography } from "@mui/material";
+import { Box, Button, Popover, Tooltip, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
@@ -193,7 +193,7 @@ const OverView = () => {
                       return (
                         <tr
                           key={row?.id}
-                          className={`border-b leading-3 ${
+                          className={`border-b leading-3 cursor-pointer ${
                             index !== Data.length - 1 ? "table-bb-gray" : ""
                           }`}
                         >
@@ -209,11 +209,20 @@ const OverView = () => {
                               {row?.channel?.channel}
                             </div>
                           </td>
-                          <td className="py-4 px-4 text-left">
+                          <td className="py-4 w-[15%] px-4 text-left">
                             {row?.model?.model}
                           </td>
                           <td className="py-4 px-4 text-left">
-                            {row?.topic?.topic}
+                            <Tooltip
+                              title={row?.topic?.topic}
+                              placement="right"
+                            >
+                              <span>
+                                {row?.topic?.topic?.length > 30
+                                  ? row?.topic?.topic?.slice(0, 30) + "..."
+                                  : row?.topic?.topic}
+                              </span>
+                            </Tooltip>
                           </td>
                           <td className="py-4 px-4 text-left">
                             {row?.outro?.outro}
@@ -259,13 +268,13 @@ const OverView = () => {
                                 />
                               </Button>
                             </div>
-                            <BsThreeDotsVertical
+                            {/* <BsThreeDotsVertical
                               style={{
                                 marginRight: "-10px",
                                 cursor: "pointer",
                               }}
                               onClick={handlePopoverOpen}
-                            />
+                            /> */}
                           </td>
                           {/* <td className="py-4 px-4 text-center">{row.date}</td> */}
                         </tr>
