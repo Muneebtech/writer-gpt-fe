@@ -173,7 +173,7 @@ const Sidebar: React.FC = () => {
                   <span className="w-6 mr-2">
                     <FiTv />
                   </span>
-                  Brands
+                  Channels
                 </span>
               </Link>
             </li>

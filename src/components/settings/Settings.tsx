@@ -191,7 +191,7 @@ const Setting = () => {
           </div>
           <div className="table-bb-gray mt-1 ms-4 me-4"></div>
           <div className="mt-4">
-            <InputLabel className="pt-2 pb-2">Full Name</InputLabel>
+            <InputLabel className="pt-2 pb-2 mb-3">Full Name</InputLabel>
             <TextField
               name="name"
               value={ShowUserName}
