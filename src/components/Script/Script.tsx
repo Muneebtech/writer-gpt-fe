@@ -400,7 +400,7 @@ const Script = () => {
             variant="contained"
           >
             Create
-          </Button>
+          </Button> 
         </div>
         <Modal open={modalOpen} className="flex justify-center items-center">
           <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-3/4">
