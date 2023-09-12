@@ -29,6 +29,7 @@ import EditBrands from "./EditBrands";
 import { isAdminOrManager } from "@/utils/authorisation";
 import { useUpdateOutro } from "@/services/outro/hooks/useUpdateOutro";
 import { decryptData } from "@/utils/localStorage";
+import Toaster from "@/common/Toaster/Toaster";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -109,7 +110,7 @@ const brandsLibrary = () => {
   const [openPopoverTopic, setopenPopoverTopic] = useState<string>("");
   const {
     data: ManagerData,
-    isLoading: ManagerLoading,
+    isLoading: ManagerLoadings,
     isSuccess,
     mutate: managersMutate,
   } = UseGetManagers();
@@ -130,7 +131,7 @@ const brandsLibrary = () => {
   const {
     data,
     mutate,
-    isLoading: managerLoading,
+    isLoading: ManagerLoading,
     isSuccess: managerSuccess,
   } = UseAddManagers();
   const [textValue, setTextValue] = useState({
@@ -138,26 +139,35 @@ const brandsLibrary = () => {
     outro: "",
     id: "",
     managers: "",
+    topicDescripition: "",
   });
 
   const handleAddManagersList = () => {
     const addNewManager = [...managerDataList, addNewManagerData];
     setManagerDataList(addNewManager);
-    setAddNewManagerData({
-      id: (parseInt(addNewManagerData.id) + 1).toString(),
-      status: true,
-      firstName: "",
-      email: "",
-      photoPath: "",
-      role: "",
-      lastName: "",
-    });
-    mutate({ email: addNewManagerData.email, id: id });
+    if (addNewManagerData.email === "") {
+      setshowErrorManager(true);
+    } else if (addNewManagerData.email !== "") {
+      setAddNewManagerData({
+        id: (parseInt(addNewManagerData.id) + 1).toString(),
+        status: true,
+        firstName: "",
+        email: "",
+        photoPath: "",
+        role: "",
+        lastName: "",
+      });
+      mutate({ email: addNewManagerData.email, id: id });
+    }
   };
 
   const handleAddManagerDataLists = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    const SearchValues = event.target.value;
+    if (SearchValues) {
+      setshowErrorManager(false);
+    }
     setAddNewManagerData({
       ...addNewManagerData,
       firstName: event.target.value,
@@ -174,7 +184,7 @@ const brandsLibrary = () => {
   // creating  Topic //
   const {
     data: AddTopic,
-    isLoading: AddTopicLoading,
+    isLoading: TopicLoading,
     isSuccess: AddTopicSuccess,
     mutate: AddTopicMutate,
   } = useAddTopic();
@@ -184,29 +194,44 @@ const brandsLibrary = () => {
     isSuccess: updateTopicSuccess,
   } = useUpdateTopic();
 
-  const { mutate: mutateUpdateOutro, isSuccess: OutroUpdateSuccess } =
-    useUpdateOutro();
-  const { data: topicData, isLoading, mutate: mutateTopic } = useTopic();
+  const {
+    mutate: mutateUpdateOutro,
+    isSuccess: OutroUpdateSuccess,
+    isLoading: OutroUpdateLoading,
+  } = useUpdateOutro();
+  const {
+    data: topicData,
+    isLoading: topicLoading,
+    mutate: mutateTopic,
+  } = useTopic();
   const [topicDataList, setTopicList] = useState<Topic[]>(topicData || []);
   const [addNewTopicVideo, setAddNewTopicVideo] = useState({
     description: "",
     topic: "",
   });
   const handleAddNewVideoTopic = () => {
-    const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
-    setTopicList(AddNewTopicVideo as any);
-    setAddNewTopicVideo({
-      description: "",
-      topic: "",
-    });
-    AddTopicMutate({
-      topic: addNewTopicVideo.topic,
-      description: addNewTopicVideo.description,
-      channel: id as any,
-    });
+    if (addNewTopicVideo.topic === "" || addNewTopicVideo.description === "") {
+      setShowErrorTopic(true);
+    } else if (addNewTopicVideo.topic !== "") {
+      const AddNewTopicVideo = [...topicDataList, addNewTopicVideo];
+      setTopicList(AddNewTopicVideo as any);
+      setAddNewTopicVideo({
+        description: "",
+        topic: "",
+      });
+      AddTopicMutate({
+        topic: addNewTopicVideo.topic,
+        description: addNewTopicVideo.description,
+        channel: id as any,
+      });
+    }
   };
   const handleAddTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const SearchValues = event.target.value;
+    if (SearchValues) {
+      setShowErrorTopic(false);
+    }
     setAddNewTopicVideo((prevTopic) => ({
       ...prevTopic,
       [name]: value,
@@ -235,6 +260,10 @@ const brandsLibrary = () => {
   } = useGetOutro();
   const [showdeleteOutroModal, setdeleteOutroModal] = useState(false);
   const [showTopicDeleteModal, setshowTopicDeleteModal] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [showErrorTopic, setShowErrorTopic] = useState(false);
+  const [showErrorManager, setshowErrorManager] = useState(false);
+
   const [OutroDataList, setOutroDataList] = useState<outroDataTypes[]>(
     Outrodata || []
   );
@@ -277,12 +306,9 @@ const brandsLibrary = () => {
     console.log(newOutroData, "trigger:: start");
     console.log(newOutroData?.description.trim() !== "", "Outro");
     console.log(channelId, "ChannelId");
-    if (newOutroData?.description.trim() !== "") {
-      // const AddNewOutro: outroDataTypes = {
-      //   description: newOutroData.description,
-      // };
-
-      // setOutroDataList([...OutroDataList, AddNewOutro]);
+    if (newOutroData.description === "") {
+      setShowError(true);
+    } else if (newOutroData?.description.trim() !== "") {
       PostOutros({
         description: newOutroData.description,
         channel: channelId as any,
@@ -300,14 +326,31 @@ const brandsLibrary = () => {
     value: number,
     text: string
   ) => {
+    const SearchValues = event.target.value;
+    if (SearchValues) {
+      setShowError(false);
+    }
+    console.log(event.target.value, "Text::Upper Outside Condition");
+
     if (text === "edit") {
+      // console.log(text, "text", value, "value");
+      console.log(event.target.value, "Text");
+
       switch (value) {
         case 1:
           setTextValue({ ...textValue, outro: event.target.value });
           break;
         case 3:
-          setTextValue({ ...textValue, topic: event.target.value });
+          setTextValue({
+            ...textValue,
+            topic: SearchValues,
+          });
           break;
+        case 4:
+          setTextValue({
+            ...textValue,
+            topicDescripition: SearchValues,
+          });
       }
     }
     console.log("newOutroData", event.target.value, "Text", text);
@@ -347,6 +390,7 @@ const brandsLibrary = () => {
   const [value, setValue] = React.useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [closePopOver, setClosePopOver] = useState(false);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -425,10 +469,18 @@ const brandsLibrary = () => {
     event: React.MouseEvent<HTMLDivElement>,
     data: any
   ) => {
+    console.log(data, "data::data::data::data::data");
+
     setIsPopoverOpenTopic(true);
     setpopoverAnchorElTopic(event.currentTarget);
     setopenPopoverTopic(id);
-    setTextValue({ ...textValue, topic: data.description, id: data.id });
+    setTextValue({
+      ...textValue,
+      topic: data.description,
+      id: data.id,
+      topicDescripition: data.topic,
+    });
+    // setTextValue({ ...textValue, topicDescripition: data.topic, id: data.id });
   };
 
   const handleEditTopic = (id: string) => {
@@ -454,10 +506,27 @@ const brandsLibrary = () => {
       handleCloseEditodal();
     }
   }, [updateTopicSuccess, OutroUpdateSuccess]);
-
+  const src = `${process.env.NEXT_PUBLIC_API_ENDPOINT}${channelData?.photoPath}`;
+  const ClosePopOver = () => {
+    setClosePopOver(false);
+  };
+  const handleOpenPopOver = () => {
+    setClosePopOver(true);
+  };
+  const HandleCreateScript = () => {
+    if (channelData) {
+      router.push({
+        pathname: "/script/create",
+        query: { data: JSON.stringify(channelData) },
+      });
+    }
+  };
   return (
     <div>
       <EditBrands
+        ClosePopOver={ClosePopOver}
+        updateTopicLoading={updateTopicLoading}
+        OutroUpdateLoading={OutroUpdateLoading}
         openEditModal={openEditModal}
         handleCloseEditodal={handleCloseEditodal}
         value={value}
@@ -470,11 +539,17 @@ const brandsLibrary = () => {
       />
       {/* Modals */}
       <BrandsModal
+        showErrorManager={showErrorManager}
+        showErrorTopic={showErrorTopic}
+        ManagerLoading={ManagerLoading}
+        TopicLoading={TopicLoading}
+        OutroLoading={OutroLoading}
         addNewTopicVideo={addNewTopicVideo}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
         handleOpenModal={handleOpenModal}
         value={value}
+        showError={showError}
         HandleAddOutro={HandleAddOutro}
         handleInputChange={handleInputChange}
         handleAddNewVideoTopic={handleAddNewVideoTopic}
@@ -483,6 +558,55 @@ const brandsLibrary = () => {
         handleAddManagerDataLists={handleAddManagerDataLists}
         handleAddManagersList={handleAddManagersList}
       />
+      {/* Toasters */}
+      {outroSuccess ? (
+        <>
+          <Toaster
+            Success={true}
+            Color="green"
+            title="Outro Created SuccessFully"
+          />
+        </>
+      ) : null}
+      {AddTopicSuccess ? (
+        <>
+          <Toaster
+            Success={true}
+            Color="green"
+            title="Topic Created SuccessFully"
+          />
+        </>
+      ) : null}
+      {managerSuccess ? (
+        <>
+          <Toaster
+            Success={true}
+            Color="green"
+            title="mannager Created SuccessFully"
+          />
+        </>
+      ) : null}
+      {updateTopicSuccess ? (
+        <>
+          {" "}
+          <Toaster
+            Success={true}
+            Color="green"
+            title="Topic Update SuccessFully"
+          />
+        </>
+      ) : null}
+      {OutroUpdateSuccess ? (
+        <>
+          {" "}
+          <Toaster
+            Success={true}
+            Color="#00cc00f"
+            title="Outro Update SuccessFully"
+          />
+        </>
+      ) : null}
+
       <div className="flex items-center justify-between fade-out pb-3">
         <div className="flex items-center">
           <div className="flex items-center ">
@@ -490,8 +614,26 @@ const brandsLibrary = () => {
               <AiOutlineLeft />
             </div>
             <div className="ps-1 pe-1">
-              <Image src="/chaneel.png" alt="channel" width={30} height={30} />
+              <Image
+                width={50}
+                height={50}
+                className="w-8 h-8 rounded-full mr-1"
+                alt="Profile"
+                src={
+                  channelData?.photoPath !==
+                  "http://localhost:3000/uploads/null"
+                    ? src
+                    : "/channel.jpg"
+                }
+                loader={() =>
+                  channelData?.photoPath !==
+                  "http://localhost:3000/uploads/null"
+                    ? src
+                    : "/channel.jpg"
+                }
+              />
             </div>
+
             <div className="ps-1 pe-1">
               {" "}
               <span>{channelData?.channel}</span>
@@ -509,13 +651,18 @@ const brandsLibrary = () => {
             <Button
               suppressHydrationWarning={true}
               onClick={() => {
-                value === 1
-                  ? handleOpenModal()
-                  : value === 3
-                  ? handleOpenModal()
-                  : value === 5
-                  ? handleOpenModal()
-                  : null;
+                if (value === 0) {
+                  HandleCreateScript();
+                }
+                if (value === 1) {
+                  handleOpenModal();
+                }
+                if (value === 3) {
+                  handleOpenModal();
+                }
+                if (value === 5) {
+                  handleOpenModal();
+                }
               }}
               variant="contained"
               className="button-black ps-4 pe-4"
@@ -566,6 +713,8 @@ const brandsLibrary = () => {
             <CustomTabPanel value={value} index={1}>
               <div>
                 <Outros
+                  handleOpenPopOver={handleOpenPopOver}
+                  closePopOver={closePopOver}
                   handleOpenEditModal={handleOpenEditModal}
                   showdeleteOutroModal={showdeleteOutroModal}
                   handleCloseDeleteModal={handleCloseDeleteModal}
@@ -589,6 +738,10 @@ const brandsLibrary = () => {
             <CustomTabPanel value={value} index={3}>
               <div>
                 <VideoTopic
+                  ClosePopOver={ClosePopOver}
+                  closePopOver={closePopOver}
+                  handleOpenPopOver={handleOpenPopOver}
+                  topicLoading={topicLoading}
                   openPopoverTopic={openPopoverTopic}
                   setIsPopoverOpenTopic={setIsPopoverOpenTopic}
                   isPopoverOpenTopic={isPopoverOpenTopic}

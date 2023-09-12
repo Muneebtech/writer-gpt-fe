@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import Cards from "./Cards";
 import Header from "@/common/Header/header";
+import Card from "@mui/material/Card";
 import {
   Box,
   Button,
@@ -20,6 +21,7 @@ import {
   Popover,
 } from "@mui/material";
 import { FiCopy, FiPlus } from "react-icons/fi";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { FaSpinner, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import { AiOutlineUpload } from "react-icons/ai";
@@ -35,6 +37,9 @@ import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { isAdminOrManager } from "@/utils/authorisation";
 import { decryptData } from "@/utils/localStorage";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
+import Toaster from "@/common/Toaster/Toaster";
+import Skeleton from "@/common/Skeleton/Skeleton";
 interface FormData {
   channel: string;
   category: string;
@@ -54,7 +59,7 @@ const Brands = () => {
     data: ChannelData,
     mutate,
     isLoading: ChannelCreateLoading,
-    isSuccess,
+    isSuccess: ChannelCreateSuccess,
   } = useCreateChannel();
   const {
     data: DataChannels,
@@ -89,6 +94,8 @@ const Brands = () => {
     "Gold",
     "Violet",
   ];
+  const [closePopover, setClosePopover] = useState(false);
+  console.log(closePopover, "closePopover");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const {
     mutate: mutateChannel,
@@ -102,7 +109,15 @@ const Brands = () => {
     youtubeLink: "",
     photoPath: "",
   });
+  const [validationChannel, setvalidationChannel] = useState({
+    channel: false,
+    category: false,
+    discordLink: false,
+    youtubeLink: false,
+    photoPath: false,
+  });
 
+  const [showValidation, setShowValidation] = useState(false);
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
@@ -151,6 +166,13 @@ const Brands = () => {
     event: ChangeEvent<{ name?: string; value: string }>
   ) => {
     const { name, value } = event.target;
+    if (validationChannel[name as keyof typeof validationChannel] && value) {
+      setvalidationChannel((prevFields) => ({
+        ...prevFields,
+        [name as keyof typeof validationChannel]: false,
+      }));
+    }
+
     setFormData((prevState) => ({
       ...prevState,
       [name || ""]: value,
@@ -158,28 +180,55 @@ const Brands = () => {
   };
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const { name, value } = event.target;
+
+    if (name === "category") {
+      setvalidationChannel((prevFields) => ({
+        ...prevFields,
+        category: false,
+      }));
+    }
+
     setFormData((prevState) => ({
       ...prevState,
       [name || ""]: value,
     }));
   };
   const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    const formdata = new FormData();
-    formdata.append("channel", formData.channel as string);
-    formdata.append("category", formData.category as string);
-    formdata.append("youtubeUrl", formData.youtubeLink as string);
-    formdata.append("discordUrl", formData.discordLink as string);
-    formdata.append("photoPath", profileImage as File);
-    mutate(formdata);
-    setFormData({
-      channel: "",
-      category: "",
-      discordLink: "",
-      youtubeLink: "",
-      photoPath: "",
-    });
-    setProfileImage(null);
+    const { channel, category, youtubeLink, discordLink, photoPath } = formData;
+
+    const NewValidationFeilds = {
+      channel: channel === "",
+      category: category === "",
+      youtubeLink: youtubeLink === "",
+      discordLink: discordLink === "",
+      photoPath: photoPath === "",
+    };
+    if (
+      channel === "" ||
+      category === "" ||
+      youtubeLink === "" ||
+      discordLink === "" ||
+      photoPath === ""
+    ) {
+      setvalidationChannel(NewValidationFeilds);
+    } else {
+      event.preventDefault();
+      const formdata = new FormData();
+      formdata.append("channel", formData.channel as string);
+      formdata.append("category", formData.category as string);
+      formdata.append("youtubeUrl", formData.youtubeLink as string);
+      formdata.append("discordUrl", formData.discordLink as string);
+      formdata.append("photoPath", profileImage as File);
+      mutate(formdata);
+      setFormData({
+        channel: "",
+        category: "",
+        discordLink: "",
+        youtubeLink: "",
+        photoPath: "",
+      });
+      setProfileImage(null);
+    }
   };
   const handleUploadPictureClick = () => {
     if (fileInputRef.current) {
@@ -240,12 +289,46 @@ const Brands = () => {
     mutateChannel(id);
   };
   const rotateAnimation = `spin 1s linear infinite`;
-
+  const handleOpenPopover = () => {
+    setClosePopover(true);
+  };
+  const handleClosePopover = () => {
+    setClosePopover(false);
+  };
+  useEffect(() => {
+    if (ChannelCreateSuccess) {
+      handleCloseModal();
+    }
+  }, [ChannelCreateSuccess]);
   return (
     <>
+      {ChannelCreateSuccess && (
+        <>
+          <Toaster
+            Success={true}
+            title="Channel Created Successfully"
+            Color="green"
+          />
+        </>
+      )}
       {isLoading ? (
         <>
-          <Spinner />
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(200, 200, 200, 0.7)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <LottieSpinner />
+          </div>
         </>
       ) : (
         <>
@@ -270,224 +353,282 @@ const Brands = () => {
                 </>
               ) : null}
             </div>
-            <div className=" table-bb-gray mt-1 ms-4 me-4 "></div>
-            {isSuccess ? (
-              <></>
-            ) : (
-              <>
-                {" "}
-                <Modal
-                  open={openModal}
-                  onClose={handleCloseModal}
-                  className="flex justify-center items-center"
-                >
-                  <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-9/12">
-                    <Typography className="" variant="h6" gutterBottom>
-                      <div className="table-bb-gray mt-1 ms-3 me-4 flex items-center justify-between">
-                        <Header title="ADD CHANNELS" />
-                        <FaTimes
-                          onClick={handleCloseModal}
-                          className="cursor-pointer"
+            <div className=" table-bb-gray mt-1 ms-4 me-4 "></div>{" "}
+            <Modal
+              open={openModal}
+              onClose={handleCloseModal}
+              className="flex justify-center items-center"
+            >
+              <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-9/12">
+                <Typography className="" variant="h6" gutterBottom>
+                  <div className="table-bb-gray mt-1 ms-3 me-4 flex items-center justify-between">
+                    <Header title="ADD CHANNELS" />
+                    <FaTimes
+                      onClick={() => {
+                        handleCloseModal();
+                        handleClosePopover();
+                      }}
+                      className="cursor-pointer"
+                    />
+                  </div>
+                  <div className="flex items-center pb-6 pt-6 ">
+                    <div className="Side-spacing ">
+                      <div className="pt-2 pb-2">
+                        <InputLabel
+                          htmlFor="name"
+                          className="pt-2 pb-2 font-bold text-sm"
+                        >
+                          Name
+                        </InputLabel>
+                        <Input
+                          name="channel"
+                          value={formData.channel}
+                          onChange={handleInputChange}
+                          placeholder="Enter Your Name"
+                          className="border ps-4 pe-4 pt-2 pb-2 input-size "
                         />
-                      </div>
-                      <div className="flex items-center pb-6 pt-6 ">
-                        <div className="Side-spacing ">
-                          <div className="pt-2 pb-2">
-                            <InputLabel
-                              htmlFor="name"
-                              className="pt-2 pb-2 font-bold text-sm"
-                            >
-                              Name
-                            </InputLabel>
-                            <Input
-                              name="channel"
-                              value={formData.channel}
-                              onChange={handleInputChange}
-                              placeholder="Enter Your Name"
-                              className="border ps-4 pe-4 pt-2 pb-2 input-size "
-                            />
-                          </div>
-                          <div>
-                            <div className="flex items-center justify-between w-10/12">
-                              <InputLabel
-                                htmlFor="name"
-                                className="pt-2 pb-2 font-bold text-sm"
-                              >
-                                Category
-                              </InputLabel>
+                        {validationChannel?.channel ? (
+                          <>
+                            <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                              <AiOutlineExclamationCircle />{" "}
+                              <span className="ps-1">
+                                Please Enter Channel Name!
+                              </span>
                             </div>
-                            <Select
-                              name="category"
-                              value={formData.category}
-                              onChange={handleSelectChange}
-                              placeholder="Select category"
-                              className="input-size"
-                            >
-                              {CategoryData?.map((item: categoryDataTypess) => (
-                                <MenuItem key={item.id} value={item.id}>
-                                  {item.category}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </div>
-                          <div className="pt-2 pb-2">
-                            <InputLabel
-                              className="pt-2 pb-2 font-bold text-sm"
-                              htmlFor="youtube"
-                            >
-                              Youtube link
-                            </InputLabel>
-                            <Input
-                              id="youtube"
-                              name="youtubeLink"
-                              value={formData.youtubeLink}
-                              onChange={handleInputChange}
-                              type="text"
-                              placeholder="Insert Youtube Link"
-                              // inputRef={youtubeLinkSelectRef}
-                              className="py-1  px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
-                            />
-                            <Button
-                              onClick={() => copyToClipboard("youtubeLink")}
-                              title="Copy Link"
-                              className="bg-gray-200 position-btn border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
-                            >
-                              <FiCopy />
-                            </Button>
-                          </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <div>
+                        <div className="flex items-center justify-between w-10/12">
+                          <InputLabel
+                            htmlFor="name"
+                            className="pt-2 pb-2 font-bold text-sm"
+                          >
+                            Category
+                          </InputLabel>
                         </div>
-                        {/* Left Side */}
-                        <div className="Side-spacing ">
-                          <div className="flex items-center">
-                            <div>
-                              <div className="ms-4 mb-1 mt-1">
-                                <span className="font-bold text-base">
-                                  Profile Picture
-                                </span>
-                              </div>
-                              <div className="">
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  ref={fileInputRef}
-                                  style={{ display: "none" }}
-                                  onChange={handleProfileImageChange}
+                        <Select
+                          name="category"
+                          value={formData.category}
+                          onChange={handleSelectChange}
+                          placeholder="Select category"
+                          className="input-size"
+                        >
+                          {CategoryData?.map((item: categoryDataTypess) => (
+                            <MenuItem key={item.id} value={item.id}>
+                              {item.category}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {validationChannel?.category ? (
+                          <>
+                            <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                              <AiOutlineExclamationCircle />{" "}
+                              <span className="ps-1">
+                                Please Enter Channel Category!
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <div className="pt-2 pb-2">
+                        <InputLabel
+                          className="pt-2 pb-2 font-bold text-sm"
+                          htmlFor="youtube"
+                        >
+                          Youtube link
+                        </InputLabel>
+                        <Input
+                          id="youtube"
+                          name="youtubeLink"
+                          value={formData.youtubeLink}
+                          onChange={handleInputChange}
+                          type="text"
+                          placeholder="Insert Youtube Link"
+                          // inputRef={youtubeLinkSelectRef}
+                          className="py-1  px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
+                        />
+                        {validationChannel?.youtubeLink ? (
+                          <>
+                            <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                              <AiOutlineExclamationCircle />{" "}
+                              <span className="ps-1">
+                                Please Enter Youtube Link!
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                        <Button
+                          onClick={() => copyToClipboard("youtubeLink")}
+                          title="Copy Link"
+                          className="bg-gray-200 position-btn border border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
+                        >
+                          <FiCopy />
+                        </Button>
+                      </div>
+                    </div>
+                    {/* Left Side */}
+                    <div className="Side-spacing ">
+                      <div className="flex items-center">
+                        <div>
+                          <div className="ms-4 mb-1 mt-1">
+                            <span className="font-bold text-base">
+                              Profile Picture
+                            </span>
+                          </div>
+                          <div className="">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              ref={fileInputRef}
+                              style={{ display: "none" }}
+                              onChange={handleProfileImageChange}
+                            />
+                            {profileImage ? (
+                              <div className="profileImage">
+                                <Image
+                                  width={150}
+                                  height={150}
+                                  style={{ height: "150px" }}
+                                  className="rounded-full mr-2"
+                                  src={URL.createObjectURL(profileImage)}
+                                  alt="Profile"
                                 />
-                                {profileImage ? (
-                                  <div className="profileImage">
-                                    <Image
-                                      width={150}
-                                      height={150}
-                                      style={{ height: "150px" }}
-                                      className="rounded-full mr-2"
-                                      src={URL.createObjectURL(profileImage)}
-                                      alt="Profile"
-                                    />
-                                  </div>
+                                {validationChannel?.photoPath ? (
+                                  <>
+                                    <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                                      <AiOutlineExclamationCircle />{" "}
+                                      <span className="ps-1">
+                                        Please Add Image!
+                                      </span>
+                                    </div>
+                                  </>
                                 ) : (
-                                  <div className="profileImage">
-                                    <Image
-                                      width={150}
-                                      height={150}
-                                      style={{ height: "150px" }}
-                                      // className="rounded-full mr-2"
-                                      src="/ProfileAvatar.png"
-                                      alt="Profile"
-                                    />
-                                  </div>
+                                  <></>
                                 )}
                               </div>
-                            </div>
-                            <div className=" ps-6 pe-6">
-                              <div className="flex items-center pt-2 pb-2 cursor-pointer">
-                                <AiOutlineUpload size={20} />
-                                <span
-                                  onClick={handleUploadPictureClick}
-                                  className="ps-1 pe-1 border-b-2 border-gray-400 text-sm "
-                                >
-                                  Upload Picture
-                                </span>
+                            ) : (
+                              <div className="profileImage">
+                                <Image
+                                  width={150}
+                                  height={150}
+                                  style={{ height: "150px" }}
+                                  // className="rounded-full mr-2"
+                                  src="/ProfileAvatar.png"
+                                  alt="Profile"
+                                />
                               </div>
-                              <div className="flex items-center pt-2 pb-2 cursor-pointer">
-                                <AiOutlineUpload size={20} />
-                                <span className="ps-1 pe-1 border-b-2 border-gray-400 text-sm">
-                                  Select Picture
-                                </span>
-                              </div>
-                            </div>
+                            )}
                           </div>
-                          <div className="pt-2 pb-2">
-                            <InputLabel
-                              htmlFor="discord"
-                              className="pt-2 pb-2 font-bold text-sm"
+                        </div>
+                        <div className=" ps-6 pe-6">
+                          <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                            <AiOutlineUpload size={20} />
+                            <span
+                              onClick={handleUploadPictureClick}
+                              className="ps-1 pe-1 border-b-2 border-gray-400 text-sm "
                             >
-                              Discord Link
-                            </InputLabel>
-                            <Input
-                              name="discordLink"
-                              value={formData.discordLink}
-                              onChange={handleInputChange}
-                              id="discord"
-                              type="text"
-                              placeholder="Insert Discord Link"
-                              inputRef={discordLinkInputRef}
-                              className="py-1 px-3 border  border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
-                            />
-                            <Button
-                              onClick={() => copyToClipboard("discordLink")}
-                              title="Copy Link"
-                              className="bg-gray-200 position-btn border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
-                            >
-                              <FiCopy />
-                            </Button>
+                              Upload Picture
+                            </span>
+                          </div>
+                          <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                            <AiOutlineUpload size={20} />
+                            <span className="ps-1 pe-1 border-b-2 border-gray-400 text-sm">
+                              Select Picture
+                            </span>
                           </div>
                         </div>
                       </div>
-                    </Typography>
-                    <div className="table-bb-gray "></div>
-                    <div className="flex justify-between items-center pt-4 pb-2">
-                      <Button
-                        onClick={handleCloseModal}
-                        variant="outlined"
-                        className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleSubmit}
-                        variant="contained"
-                        className="button-black ps-4 pe-4"
-                      >
-                        {ChannelCreateLoading ? (
-                          <></>
-                        ) : (
+                      <div className="pt-2 pb-2">
+                        <InputLabel
+                          htmlFor="discord"
+                          className="pt-2 pb-2 font-bold text-sm"
+                        >
+                          Discord Link
+                        </InputLabel>
+                        <Input
+                          name="discordLink"
+                          value={formData.discordLink}
+                          onChange={handleInputChange}
+                          id="discord"
+                          type="text"
+                          placeholder="Insert Discord Link"
+                          inputRef={discordLinkInputRef}
+                          className="py-1 px-3 border  border-gray-300 rounded-l-md focus:outline-none focus:ring focus:border-blue-300 flex-grow input-size "
+                        />
+                        {validationChannel?.discordLink ? (
                           <>
-                            {" "}
-                            <FiPlus size={25} className="pe-1 ps-1" />
-                          </>
-                        )}
-                        {ChannelCreateLoading ? (
-                          <>
-                            <div className="flex items-center">
-                              <FaSpinner
-                                size={16}
-                                style={{
-                                  animation: rotateAnimation,
-                                  marginRight: "10px",
-                                }}
-                              ></FaSpinner>
-                              <span className="ms-1"> Creating Channel...</span>
+                            <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                              <AiOutlineExclamationCircle />{" "}
+                              <span className="ps-1">
+                                Please Enter Discord Link!
+                              </span>
                             </div>
                           </>
                         ) : (
-                          <>Create Channel</>
+                          <></>
                         )}
-                      </Button>
+                        <Button
+                          onClick={() => copyToClipboard("discordLink")}
+                          title="Copy Link"
+                          className="bg-gray-200 position-btn border Discord-link  border-gray-300 rounded-r-md p-2 ml-1 hover:bg-gray-300"
+                        >
+                          <FiCopy />
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </Modal>
-              </>
-            )}
+                </Typography>
+                <div className="table-bb-gray "></div>
+                <div className="flex justify-between items-center pt-4 pb-2">
+                  <Button
+                    onClick={() => {
+                      handleCloseModal();
+                    }}
+                    variant="outlined"
+                    className=" black text-black px-4 py-1 ms-1 me-1 border-black-btn"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleSubmit}
+                    variant="contained"
+                    className="button-black ps-4 pe-4"
+                  >
+                    {ChannelCreateLoading ? (
+                      <></>
+                    ) : (
+                      <>
+                        {" "}
+                        <FiPlus size={25} className="pe-1 ps-1" />
+                      </>
+                    )}
+                    {ChannelCreateLoading ? (
+                      <>
+                        <div className="flex items-center">
+                          <FaSpinner
+                            size={16}
+                            style={{
+                              animation: rotateAnimation,
+                              marginRight: "10px",
+                            }}
+                          ></FaSpinner>
+                          <span className="ms-1"> Creating Channel...</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>Create Channel</>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </Modal>
             <div className="flex flex-wrap gap-2 justify-between cursor-pointer">
               {[{ category: "All", id: "4234" }, ...CategoryData]?.map(
                 (obj: categoryDataTypess) => (
@@ -505,32 +646,50 @@ const Brands = () => {
                 )
               )}
             </div>
-            <div
-              ref={divRef}
-              id="Cards-channel"
-              style={{ overflow: "scroll" }}
-              className="flex flex-wrap items-start w-full h-[calc(100vh-11.5rem)] "
-            >
-              {isLoading ? (
-                <div className="flex justify-center items-center h-screen">
-                  <ScrollSpinner />
-                </div>
-              ) : (
-                filteredData?.map((data: getChannelTypes) => (
-                  <Cards
-                    HandleDeleteChannel={HandleDeleteChannel}
-                    data={data}
-                    key={data.id}
-                  />
-                ))
-              )}
-            </div>
-            {isFetching ? (
-              <div className="flex justify-center items-center">
-                <ScrollSpinner />
+            {filteredData?.length === 0 ? (
+              <div className="flex justify-center items-center  h-[calc(100vh-11.8rem)] ">
+                <Skeleton
+                  widht={120}
+                  height={120}
+                  titleofPage="No Channel Found"  
+                  TitleData="Suggestion"
+                />
               </div>
             ) : (
-              ""
+              <>
+                <div
+                  ref={divRef}
+                  id="Cards-channel"
+                  style={{ overflow: "scroll" }}
+                  className="flex flex-wrap items-start w-full h-[calc(100vh-11.5rem)] "
+                >
+                  {isLoading ? (
+                    <div className="flex justify-center items-center h-screen">
+                      <ScrollSpinner />
+                    </div>
+                  ) : (
+                    filteredData?.map((data: getChannelTypes) => (
+                      <Cards
+                        handleClosePopover={handleClosePopover}
+                        handleOpenPopover={handleOpenPopover}
+                        closePopover={closePopover}
+                        isLoadingDelete={isLoadingDelete}
+                        isSuccessDelete={isSuccessDelete}
+                        HandleDeleteChannel={HandleDeleteChannel}
+                        data={data}
+                        key={data.id}
+                      />
+                    ))
+                  )}
+                </div>
+                {isFetching ? (
+                  <div className="flex justify-center items-center">
+                    <ScrollSpinner />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </>
             )}
           </div>
         </>

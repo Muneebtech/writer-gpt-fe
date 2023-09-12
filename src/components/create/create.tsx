@@ -18,6 +18,10 @@ import { FiBook } from "react-icons/fi";
 import LanguageModel from "./component/LanguageModel";
 import Topic from "./component/Topic";
 import Outro from "./component/Outro";
+import Toaster from "@/common/Toaster/Toaster";
+import ScriptSuccessPage from "./component/ScriptSuccessPage";
+import ScriptsButtons from "./component/ScriptsButtons";
+import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 const steps = [
   "CHANNEL",
   "BASIC",
@@ -45,8 +49,11 @@ const Create = () => {
   };
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
   const [channelId, setChannelId] = useState<string>("");
-
+  const [showToaster, setShowToaster] = useState("");
+  console.log(ScriptData, "ScriptData::ScriptData::ScriptData");
+  const [alertMessage, setAlertMessage] = useState("");
   const [Open, setOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
   const { data, isLoading, isSuccess, mutate } = useCreateJob();
   // Load the active step value from local storage on component mount
@@ -61,27 +68,77 @@ const Create = () => {
     localStorage.setItem("activeStep", activeStep.toString());
   }, [activeStep]);
 
+  // const handleNext = () => {
+  //   let newSkipped = skipped;
+  //   newSkipped = new Set(newSkipped.values());
+  //   newSkipped.delete(activeStep);
+  //   if (activeStep === 0 && ScriptData?.channel === "") {
+  //     <Alert severity="error">Please Add Channel First</Alert>
+  //     setActiveStep(0);
+  //   } else if (
+  //     activeStep === 1 &&
+  //     ScriptData?.name === "" &&
+  //     ScriptData?.photoPath === undefined
+  //   ) {
+  //     alert("Please Add Basic data First");
+  //     setActiveStep(1);
+  //   } else if (activeStep === 2 && ScriptData?.model === "") {
+  //     alert("Please Add Model Data First");
+  //     setActiveStep(2);
+  //   } else if (activeStep === 3 && ScriptData?.topic === "") {
+  //     alert("Please Add Topic Data First");
+  //     setActiveStep(3);
+  //   } else if (activeStep === 4 && ScriptData?.outro === "") {
+  //     alert("Please Add Outro Data First");
+  //     setActiveStep(4);
+  //   } else if (activeStep < 6) {
+  //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  //   }
+  //   setSkipped(newSkipped);
+  // };
+  console.log(activeStep, "activeStep");
+
   const handleNext = () => {
     let newSkipped = skipped;
     newSkipped = new Set(newSkipped.values());
     newSkipped.delete(activeStep);
-    if (activeStep < 6) {
-      setActiveStep(prevActiveStep => prevActiveStep + 1);
+
+    // Your existing validation checks
+    if (activeStep === 0 && ScriptData?.channel === "") {
+      setActiveStep(0);
+      setShowToaster("0");
+    } else if (
+      activeStep === 1 &&
+      (ScriptData?.name === "" || ScriptData?.photoPath === undefined)
+    ) {
+      setShowToaster("1");
+      setActiveStep(1);
+    } else if (activeStep === 2 && ScriptData?.model === "") {
+      setShowToaster("2");
+      setActiveStep(2);
+    } else if (activeStep === 3 && ScriptData?.topic === "") {
+      setShowToaster("3");
+      setActiveStep(3);
+    } else if (activeStep === 4 && ScriptData?.outro === "") {
+      setShowToaster("4");
+      setActiveStep(4);
+    } else if (activeStep < 6) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     setSkipped(newSkipped);
   };
-
   const handleBack = () => {
     if (activeStep > 0) {
-      setActiveStep(prevActiveStep => prevActiveStep - 1);
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }
   };
   const handleStateUpdate = (updatedState: Partial<Job>) => {
-    setScriptData(prevState => ({
+    setScriptData((prevState) => ({
       ...prevState,
       ...updatedState,
     }));
   };
+  
   const handleSubmit = () => {
     const data = {
       topic: ScriptData.topic ?? undefined,
@@ -114,6 +171,8 @@ const Create = () => {
         );
       case 1:
         return <BasicData setScriptData={handleStateUpdate} />;
+      // return <ScriptSuccessPage />;
+      // return <ScriptsButtons />;
       // return <Script setScriptData={handleStateUpdate} />;
       case 2:
         return <LanguageModel setScriptData={handleStateUpdate} />;
@@ -130,21 +189,75 @@ const Create = () => {
       case 5:
         return <Review ScriptData={ScriptData} />;
       case 6:
-        return <ReviewData Jobdata={data} ScriptData={ScriptData} />;
+        return (
+          <ReviewData
+            isLoading={isLoading}
+            isSuccess={isSuccess}
+            Jobdata={data}
+            ScriptData={ScriptData}
+            setScriptData={handleStateUpdate}
+          />
+        );
     }
   };
   const SlideTransition = (props: SlideProps) => {
     return <Slide {...props} direction="left" />;
   };
+
   useEffect(() => {
     if (isSuccess) {
       setOpen(true);
       setDataFlag(true);
     }
   }, [isSuccess]);
-  useEffect(() => {}, []);
   return (
     <div>
+      {showToaster === "0" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Select the Channel First"
+          />
+        </>
+      )}
+      {showToaster === "1" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Add Basic Data First"
+          />
+        </>
+      )}
+      {showToaster === "2" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Select Language Model First"
+          />
+        </>
+      )}
+      {showToaster === "3" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Select Topic First"
+          />
+        </>
+      )}
+      {showToaster === "4" && (
+        <>
+          <Toaster
+            Color="red"
+            Error={true}
+            title="Error: Please Add Outro First"
+          />
+        </>
+      )}
+
       <div className="mb-2 mt-1">
         <Header title="CREATE SCRIPT" />
       </div>
@@ -172,7 +285,7 @@ const Create = () => {
         })}
       </Stepper>
       <div className="mt-1 mb-1">{renderStepContent(activeStep)}</div>
-      {activeStep > 3 && <>{isLoading ? <Spinner></Spinner> : null}</>}
+      {/* {activeStep > 3 && <>{isLoading ? <LottieSpinner />  : null}</>} */}
       <div className="btn-postion">
         <div className="table-bb-gray mt-3 mb-3"></div>
         <div className="flex justify-between mt-3">

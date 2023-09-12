@@ -117,4 +117,5 @@ export type Topic = {
   description?: string | any;
   id?: string | any;
   channel?: string
+  status?:string
 };

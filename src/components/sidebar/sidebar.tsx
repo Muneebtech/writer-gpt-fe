@@ -23,11 +23,13 @@ import Cookies from "js-cookie";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import { User } from "../Types/user.type";
+import Toaster from "@/common/Toaster/Toaster";
 const Sidebar: React.FC = () => {
   const [showdeleteModal, setDeleteModal] = useState(false);
   const router = useRouter();
   const token = decryptData("token");
   const [UserDetails, setUserDetails] = useState<User>();
+  const [showToast, setShowToast] = useState(false);
   const { mutate, isSuccess, isLoading: logOutLoading } = useLogout();
   const handleLogout = () => {
     mutate({ refreshToken: token?.refresh?.token });
@@ -43,6 +45,7 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     if (isSuccess) {
       router.push("/signin");
+      setShowToast(true);
     }
   }, [isSuccess, router]);
   const HandleDeleteModal = () => {
@@ -55,72 +58,77 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      {isSuccess ? (
-        <></>
-      ) : (
+      {showToast && (
         <>
-          {" "}
-          <Modal
-            open={showdeleteModal}
-            onClose={handleCloseDeleteModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            className="flex justify-center items-center"
-          >
-            <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Logging Out?
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Are you sure you want to logout ? Logout Cancel
-              </Typography>
-              <div className="flex justify-end pt-4">
-                <div className="pe-2 ps-2">
-                  <Button
-                    onClick={handleLogout}
-                    className="flex items-center border-red-600 border-btn-red"
-                    variant="outlined"
-                  >
-                    {logOutLoading ? (
-                      <></>
-                    ) : (
-                      <>
-                        {" "}
-                        <FiLogOut className="text-red-600" />{" "}
-                      </>
-                    )}
-                    <span className="ps-2 pe-2 text-red-600">
-                      {logOutLoading ? (
-                        <div className="flex items-center">
-                          <FaSpinner
-                            size={16}
-                            style={{
-                              animation: rotateAnimation,
-                              marginRight: "10px",
-                            }}
-                          ></FaSpinner>
-                          <span className="ms-1"> LoggingOut</span>
-                        </div>
-                      ) : (
-                        "Logout"
-                      )}
-                    </span>
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    onClick={handleCloseDeleteModal}
-                    variant="contained"
-                    className="btn-black button-black-modal"
-                  >
-                    <span className="ps-2 pe-2">Cancel</span>
-                  </Button>
-                </div>
-              </div>
-            </Box>
-          </Modal>
+          <Toaster
+            title="Logged Out Successfully"
+            Success={true}
+            Color="green"
+          />
         </>
       )}
+      <>
+        {" "}
+        <Modal
+          open={showdeleteModal}
+          onClose={handleCloseDeleteModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="flex justify-center items-center"
+        >
+          <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-1/2">
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Logging Out?
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Are you sure you want to logout ? Logout Cancel
+            </Typography>
+            <div className="flex justify-end pt-4">
+              <div className="pe-2 ps-2">
+                <Button
+                  onClick={handleLogout}
+                  className="flex items-center border-red-600 border-btn-red"
+                  variant="outlined"
+                >
+                  {logOutLoading ? (
+                    <></>
+                  ) : (
+                    <>
+                      {" "}
+                      <FiLogOut className="text-red-600" />{" "}
+                    </>
+                  )}
+                  <span className="ps-2 pe-2 text-red-600">
+                    {logOutLoading ? (
+                      <div className="flex items-center">
+                        <FaSpinner
+                          size={16}
+                          style={{
+                            animation: rotateAnimation,
+                            marginRight: "10px",
+                          }}
+                        ></FaSpinner>
+                        <span className="ms-1"> LoggingOut</span>
+                      </div>
+                    ) : (
+                      "Logout"
+                    )}
+                  </span>
+                </Button>
+              </div>
+              <div>
+                <Button
+                  onClick={handleCloseDeleteModal}
+                  variant="contained"
+                  className="btn-black button-black-modal"
+                >
+                  <span className="ps-2 pe-2">Cancel</span>
+                </Button>
+              </div>
+            </div>
+          </Box>
+        </Modal>
+      </>
 
       <div className="w-48 h-screen flex flex-col bg-black text-white ">
         <div className="p-4">
@@ -165,7 +173,7 @@ const Sidebar: React.FC = () => {
                   <span className="w-6 mr-2">
                     <FiTv />
                   </span>
-                  Brands
+                  Channels
                 </span>
               </Link>
             </li>

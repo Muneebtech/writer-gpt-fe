@@ -9,8 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 import React, { useState } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaSpinner, FaTimes } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { useAddTopic } from "@/services/topic";
 import { UseAddManagers } from "@/services/managers";
@@ -21,6 +22,12 @@ interface ChildProps {
     topic: string;
   };
   openModal: boolean;
+  OutroLoading: boolean;
+  TopicLoading: boolean;
+  ManagerLoading: boolean;
+  showErrorTopic: boolean;
+  showError: boolean;
+  showErrorManager: boolean;
   handleCloseModal: () => void;
   handleOpenModal: () => void;
   HandleAddOutro: () => void;
@@ -51,11 +58,14 @@ const BrandsEditModal: React.FC<ChildProps> = ({
   handleClearTextFieldData,
   handleAddManagersList,
   handleAddManagerDataLists,
+  OutroLoading,
+  TopicLoading,
+  ManagerLoading,
   value,
+  showError,
+  showErrorTopic,
+  showErrorManager,
 }) => {
-  const { isLoading: OutroLoading } = useAddOutro();
-  const { isLoading: TopicLoading } = useAddTopic();
-  const { isLoading: ManagerLoading } = UseAddManagers();
   return (
     <div>
       {" "}
@@ -97,8 +107,19 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         label="ADD OUTRO"
                         multiline
                         rows={6}
+                        error={showError}
                         className="w-full mt-2 mb-2"
                       />
+                      {showError ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">Please Add Outro</span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : value === 3 ? (
                     <>
@@ -108,7 +129,20 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         label="ADD TOPIC DESCRIPTION"
                         className="w-full mt-2 mb-2"
                         name="topic"
+                        error={showErrorTopic}
                       />
+                      {showErrorTopic ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">
+                              Please Add Topic Description
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                       <div className="pt-4">
                         <TextField
                           onChange={handleAddTopic}
@@ -116,8 +150,19 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                           label="ADD TOPIC HERE"
                           className="w-full mt-2 mb-2"
                           name="description"
+                          error={showErrorTopic}
                         />
                       </div>
+                      {showErrorTopic ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">Please Add Topic </span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : value === 5 ? (
                     <>
@@ -128,7 +173,20 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                         onChange={handleAddManagerDataLists}
                         label="abc@gmail.com"
                         className="w-full"
+                        error={showError}
                       />
+                      {showErrorManager ? (
+                        <>
+                          <div className="text-red-700 text-sm mt-1 flex items-center ps-1">
+                            <AiOutlineExclamationCircle />{" "}
+                            <span className="ps-1">
+                              Please Add Manager Email{" "}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   ) : null}
                 </div>
@@ -160,7 +218,45 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                 variant="contained"
                 className="button-black ps-4 pe-4"
               >
-                <FiPlus size={25} className="pe-1 ps-1" />
+                {!OutroLoading && !TopicLoading && !ManagerLoading && (
+                  <>
+                    <FiPlus size={25} className="pe-1 ps-1" />
+                  </>
+                )}
+
+                {OutroLoading && (
+                  <>
+                    <FaSpinner
+                      size={16}
+                      className="rotate"
+                      style={{
+                        marginRight: "10px",
+                      }}
+                    ></FaSpinner>
+                  </>
+                )}
+                {TopicLoading && (
+                  <>
+                    <FaSpinner
+                      size={16}
+                      className="rotate"
+                      style={{
+                        marginRight: "10px",
+                      }}
+                    ></FaSpinner>
+                  </>
+                )}
+                {ManagerLoading && (
+                  <>
+                    <FaSpinner
+                      size={16}
+                      className="rotate"
+                      style={{
+                        marginRight: "10px",
+                      }}
+                    ></FaSpinner>
+                  </>
+                )}
                 {value === 1
                   ? "ADD OUTRO"
                   : value === 3
@@ -168,42 +264,6 @@ const BrandsEditModal: React.FC<ChildProps> = ({
                   : value === 5
                   ? "ADD MANAGER"
                   : null}
-                {OutroLoading ? (
-                  <>
-                    <LoadingButton
-                      loading
-                      loadingIndicator="Loading…"
-                      variant="outlined"
-                      color="error"
-                    ></LoadingButton>
-                  </>
-                ) : (
-                  <></>
-                )}
-                {TopicLoading ? (
-                  <>
-                    <LoadingButton
-                      loading
-                      loadingIndicator="Loading…"
-                      variant="outlined"
-                      color="error"
-                    ></LoadingButton>
-                  </>
-                ) : (
-                  <></>
-                )}
-                {ManagerLoading ? (
-                  <>
-                    <LoadingButton
-                      loading
-                      loadingIndicator="Loading…"
-                      variant="outlined"
-                      color="error"
-                    ></LoadingButton>
-                  </>
-                ) : (
-                  <></>
-                )}
               </Button>
             </div>
           </div>

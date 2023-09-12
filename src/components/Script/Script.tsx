@@ -1,5 +1,5 @@
 import { categories } from "@/constants/categories";
-import { OutroItems, Outros } from "@/constants/outro";
+import {  Outros } from "@/constants/outro";
 import {
   Box,
   Button,
@@ -25,6 +25,7 @@ import Image from "next/image";
 import { useCreateChannel } from "@/services/channel";
 import Header from "@/common/Header/header";
 import { useGetOutro } from "@/services/outro";
+import { outroDataTypes } from "../Types/Outro.type";
 interface FormData {
   name: string;
   categorylist: string;
@@ -399,7 +400,7 @@ const Script = () => {
             variant="contained"
           >
             Create
-          </Button>
+          </Button> 
         </div>
         <Modal open={modalOpen} className="flex justify-center items-center">
           <div className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-3/4">
@@ -407,12 +408,12 @@ const Script = () => {
               Select Outros
             </Typography>
             <List className="custom-scrollbar">
-              {Outrodata?.map((item: OutroItems) => {
+              {Outrodata?.map((item: outroDataTypes) => {
                 return (
                   <ListItem button key={item?.id}>
                     <Checkbox
                       color="default"
-                      onClick={() => handleSelectOption(item.description)}
+                      onClick={() => handleSelectOption(item.description as any)}
                     ></Checkbox>
                     <ListItemText
                       className="border-2 ps-2 pe-2 pt-2 pb-2"

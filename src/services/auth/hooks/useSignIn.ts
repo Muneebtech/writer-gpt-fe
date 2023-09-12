@@ -3,11 +3,11 @@ import { SignIn } from "../types";
 import { AuthService } from "../authService";
 
 export function useSignIn() {
-  const { mutate, isLoading, data, isSuccess } = useMutation(
+  const { mutate, isLoading, data, isSuccess, isError } = useMutation(
     (data: SignIn) => AuthService.logInUser(data),
     {
-      onSuccess: (_response) => {},
+      onSuccess: (_response) => { },
     }
   );
-  return { data, mutate, isLoading, isSuccess };
+  return { data, mutate, isLoading, isSuccess,isError };
 }

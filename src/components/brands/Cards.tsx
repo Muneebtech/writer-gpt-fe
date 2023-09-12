@@ -2,8 +2,15 @@ import { generateRandomColors } from "@/utils/randomColor";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Button, Modal, Popover, Typography } from "@mui/material";
-import { FaTrash } from "react-icons/fa";
+import {
+  Box,
+  Button,
+  Modal,
+  Popover,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { FaSpinner, FaTrash } from "react-icons/fa";
 import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { getChannelTypes } from "../Types/channel.types";
 import EditChannel from "./EditChannel";
@@ -22,17 +29,31 @@ interface CardProps {
     photoPath: File | any;
     subscribers: string;
   };
+  handleClosePopover: () => void;
+  closePopover: boolean;
+  handleOpenPopover: () => void;
   key: string;
   HandleDeleteChannel: (id: string) => void;
+  isLoadingDelete: boolean;
+  isSuccessDelete: boolean;
 }
-const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
+const Cards: React.FC<CardProps> = ({
+  data,
+  key,
+  HandleDeleteChannel,
+  closePopover,
+  handleOpenPopover,
+  handleClosePopover,
+  isLoadingDelete,
+  isSuccessDelete,
+}) => {
   const [selectedData, setSelectedData] = useState<getChannelTypes | null>(
     null
   );
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLElement | null>(
     null
   );
-  const { isLoading, isSuccess } = useDeletechannels();
+  const { isLoading, isSuccess, mutate } = useDeletechannels();
   const [showeditModal, setShowEditModal] = useState(false);
   const [showdeleteModal, setDeleteModal] = useState(false);
   const { backgroundColor, textColor } = generateRandomColors();
@@ -73,9 +94,18 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
     setShowEditModal(false);
   };
 
+  useEffect(() => {
+    if (isSuccessDelete) {
+      handleClosePopover();
+      handleCloseDeleteModal();
+    }
+  }, [isSuccessDelete]);
+  const rotateAnimation = `spin 1s linear infinite`;
+
   return (
     <>
       <EditChannel
+        handleClosePopover={handleClosePopover}
         handleShowEditModal={handleShowEditModal}
         handleHideEditModal={handleHideEditModal}
         showeditModal={showeditModal}
@@ -102,8 +132,28 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
                 className="flex items-center border-red-600 border-btn-red"
                 variant="outlined"
               >
-                <FaTrash className="text-red-600" />{" "}
-                <span className="ps-2 pe-2 text-red-600">Delete</span>
+                {isLoadingDelete ? (
+                  <>
+                    <span className="ps-2 pe-2 text-red-600 flex items-center">
+                      <>
+                        {" "}
+                        <FaSpinner
+                          size={16}
+                          style={{
+                            animation: rotateAnimation,
+                            marginRight: "10px",
+                          }}
+                        ></FaSpinner>
+                        Deleting...
+                      </>
+                    </span>
+                  </>
+                ) : (
+                  <div className="flex items-center">
+                    <FaTrash className="text-red-600" />
+                    <span className="ps-2 pe-2 text-red-600">Delete</span>
+                  </div>
+                )}{" "}
               </Button>
             </div>
             <div>
@@ -125,49 +175,57 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
           {isSuccess ? (
             <></> // Render nothing when isSuccess is true
           ) : (
-            <Popover
-              open={
-                isPopoverOpen &&
-                data?.category?.id ===
-                  popoverAnchorEl?.getAttribute("data-category-id")
-              }
-              anchorEl={popoverAnchorEl}
-              onClose={handlePopoverClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-            >
-              <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
-                <Typography
-                  onClick={() => handleShowEditModal(data?.id, data)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
-                >
-                  Edit
-                </Typography>
-                <Typography
-                  onClick={() => HandleDeleteModal(data?.category?.id)}
-                  className="cursor-pointer"
-                  id="modal-modal-description"
-                  sx={{ mt: 1 }}
-                >
-                  {isLoading ? "Deleting..." : "Delete"}
-                </Typography>
-              </Box>
-            </Popover>
+            <></>
           )}
         </>
       )}
+      {closePopover ? (
+        <>
+          {" "}
+          <Popover
+            open={
+              isPopoverOpen &&
+              data?.category?.id ===
+                popoverAnchorEl?.getAttribute("data-category-id")
+            }
+            anchorEl={popoverAnchorEl}
+            onClose={handlePopoverClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Box className="bg-white p-4 rounded-lg overflow-y-auto modal-max-height w-96">
+              <Typography
+                onClick={() => handleShowEditModal(data?.id, data)}
+                className="cursor-pointer"
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+              >
+                Edit
+              </Typography>
+              <Typography
+                onClick={() => HandleDeleteModal(data?.category?.id)}
+                className="cursor-pointer"
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+              >
+                Delete
+              </Typography>
+            </Box>
+          </Popover>
+        </>
+      ) : (
+        <></>
+      )}
       <div
-        onClick={event => handleCardClick(data?.id, event)}
+        onClick={(event) => handleCardClick(data?.id, event)}
         key={key}
-        className="w-1/6 flex flex-col justify-start items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
+        className="w-1/6 h-[calc(100vh-17.7rem)] flex flex-col justify-between items-center border border-gray-200 gap-2 rounded-lg mx-4 my-2 p-2 cursor-pointer hover:shadow-lg transition-shadow duration-300"
       >
         <span
           style={{
@@ -181,16 +239,21 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
         <div className="w-24 h-24 relative">
           <Image
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", borderRadius: "50%" }}
             src={data?.photoPath ? src : "/channel.jpg"}
             loader={() => (data?.photoPath ? src : "/channel.jpg")}
             alt="no image"
           />
         </div>
         <div className="flex flex-col justify-center items-center mb-5">
-          <span className="text-lg font-medium text-ellipsis w-full text-center">
-            {data?.channel}
-          </span>
+          <Tooltip title={data?.channel}>
+            <span className="text-lg font-medium w-full truncate-text-2 text-center">
+              {data?.channel?.length > 15
+                ? data?.channel?.slice(0, 15)
+                : data?.channel}{" "}
+              {data?.channel?.length > 15 && "..."}
+            </span>
+          </Tooltip>
           <span className="text-xs text-gray-500">
             Subscribers {data?.subscribers}
           </span>
@@ -211,9 +274,10 @@ const Cards: React.FC<CardProps> = ({ data, key, HandleDeleteChannel }) => {
           {isAdminOrManager() ? (
             <>
               <div
-                onClick={event => {
+                onClick={(event) => {
                   event.stopPropagation();
                   handlePopoverOpen(event);
+                  handleOpenPopover();
                 }}
                 className="rounded-2xl px-3 z-1000 py-1 flex justify-center items-center border-gray-200 border popover-trigger"
                 data-category-id={data?.category?.id}

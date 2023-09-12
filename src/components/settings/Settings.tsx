@@ -1,11 +1,37 @@
 import Header from "@/common/Header/header";
-import { Button, Switch } from "@mui/material";
-import { useState } from "react";
-import { AiOutlineLeft } from "react-icons/ai";
+import { Button, InputLabel, Switch, TextField } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { AiOutlineLeft, AiOutlineUpload } from "react-icons/ai";
 import Image from "next/image";
+import ProfileEidtModal from "./ProfileEidtModal";
+import { decryptData } from "@/utils/localStorage";
+// import { useSignIn } from "@/services/auth";
+import { AuthTypes, ProfileuserName } from "@/utils/types";
+import { useProfileUpdate } from "@/services/Profile";
+import { FaSpinner } from "react-icons/fa";
+import Toaster from "@/common/Toaster/Toaster";
 
 const Setting = () => {
+  const [updateProfileUserName, setUpdateProfileUserName] =
+    useState<ProfileuserName>({
+      name: "",
+      id: "",
+    });
+  console.log(
+    updateProfileUserName,
+    "updateProfileUserName::updateProfileUserName"
+  );
+
+  const {
+    mutate: profileIsUpdate,
+    isLoading: profileIsLoading,
+    isSuccess: profileIsSuccess,
+  } = useProfileUpdate();
   const [showProfile, setShowprofile] = useState(true);
+  const [userData, setUserData] = useState<AuthTypes>({});
+  const [userTokens, setUserTokens] = useState(null);
+  const [showToaster, setShowtoaster] = useState(false);
+  console.log(userData, "userData");
 
   const handleOpenProfile = () => {
     setShowprofile(false);
@@ -13,56 +39,147 @@ const Setting = () => {
   const handleCloseProfile = () => {
     setShowprofile(true);
   };
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+  useEffect(() => {
+    const decryptedUserData = decryptData("userdata");
+    const decryptedUserTokens = decryptData("token");
+
+    if (decryptedUserData) {
+      setUserData(decryptedUserData);
+    }
+
+    if (decryptedUserTokens) {
+      setUserTokens(decryptedUserTokens);
+    }
+  }, []);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [updateProfileName, setUpdateProfileName] = useState({
+    id: userData?.id,
+    name: userData?.firstName,
+  });
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (updateProfileName) {
+      setUpdateProfileUserName(updateProfileName);
+    }
+  }, [updateProfileName]);
+  console.log(updateProfileName, "updateProfileName");
+
+  const handleUploadPictureClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleProfileImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedImage = event.target.files[0];
+      setProfileImage(selectedImage);
+    }
+  };
+  const HandleChangeUserName = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const SearchValues = event.target.value;
+    console.log(SearchValues, "SearchValues");
+    setIsEditing(true);
+
+    setUpdateProfileName((prevProfile) => ({
+      ...prevProfile,
+      name: SearchValues,
+      id: userData?.id,
+    }));
+  };
+  const ShowUserName = isEditing
+    ? updateProfileName?.name
+    : `${userData?.firstName} ${userData?.lastName}` || "";
+  const HandleSubmitUserName = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (updateProfileUserName.name === userData?.firstName) {
+      setShowtoaster(true);
+    } else if (updateProfileUserName?.name === "") {
+      setShowtoaster(true);
+    } else if (updateProfileUserName) {
+      profileIsUpdate(updateProfileUserName);
+    }
+  };
+  useEffect(() => {
+    if (profileIsSuccess) {
+      setUpdateProfileName({
+        id: "",
+        name: "",
+      });
+    }
+  }, [profileIsSuccess]);
   return (
     <>
+      {showToaster && (
+        <>
+          {" "}
+          <>
+            <Toaster Error={true} Color="red" title="User Name Already Exist" />
+          </>
+        </>
+      )}
+      {showToaster && (
+        <>
+          {" "}
+          <>
+            <Toaster Error={true} Color="red" title="Please Add User Name" />
+          </>
+        </>
+      )}
+      {profileIsSuccess ? (
+        <>
+          <>
+            <Toaster
+              Success={true}
+              Color="green"
+              title="Profile Updated Successfully"
+            />
+          </>
+        </>
+      ) : null}
+      <ProfileEidtModal
+        userData={userData}
+        handleCloseModal={handleCloseModal}
+        handleOpenModal={handleOpenModal}
+        openModal={openModal}
+      />
       {showProfile ? (
         <>
           <div>
             <Header title="Settings" />
           </div>
-          <div className="table-bb-gray mt-1 ms-4 me-4"></div>
+          <div className="table-bb-gray mt-2 mb-2 "></div>
           <div
-            className="table-bb-gray mt-4 mb-4 cursor-pointer"
+            className=" cursor-pointer mt-2 mb-2"
             onClick={handleOpenProfile}
           >
-            <span className="text-xl font-bold pb-1 pt-1">Profile Setting</span>
-            <p className="pt-2 pb-2 w-3/4 font-thin">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              vestibulum sapien ligula, eu eleifend quam efficitur sit amet.
-              Suspendisse et ligula eros. Duis sit amet aliquet libero. In sed
-              gravida justo. Nulla tempor lobortis massa at imperdiet. Integer
-              ut blandit dui.
-            </p>
+            <span className="text-lg font-normal pb-1 pt-1">
+              Profile Setting
+            </span>
           </div>
-          <div className="table-bb-gray mt-4 mb-4">
-            <div className="flex justify-between pe-4">
-              <span className="text-xl font-bold pb-1 pt-1">History</span>
+          <div className="table-bb-gray mt-3 mb-3"></div>
+          <div className="table-bb-gray mt-3 mb-3">
+            <div className="flex justify-between pe-4 mt-2 mb-2">
+              <span className="text-lg font-normal pb-1 pt-1">History</span>
               <Switch className="text-black" />
             </div>
-            <p className="pt-2 pb-2 w-3/4 font-thin">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              vestibulum sapien ligula, eu eleifend quam efficitur sit amet.
-              Suspendisse et ligula eros. Duis sit amet aliquet libero. In sed
-              gravida justo. Nulla tempor lobortis massa at imperdiet. Integer
-              ut blandit dui.
-            </p>
-          </div>
-          <div className="table-bb-gray mt-4 mb-4">
-            <div className="flex justify-between pe-4">
-              <span className="text-xl font-bold pb-1 pt-1">Lorem Ipsum</span>
-              <Switch className="text-black" />
-            </div>
-            <p className="pt-2 pb-2 w-3/4 font-thin">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              vestibulum sapien ligula, eu eleifend quam efficitur sit amet.
-              Suspendisse et ligula eros. Duis sit amet aliquet libero. In sed
-              gravida justo. Nulla tempor lobortis massa at imperdiet. Integer
-              ut blandit dui.
-            </p>
           </div>
         </>
       ) : (
-        <>
+        <div className="">
           <div
             className="flex items-center cursor-pointer"
             onClick={handleCloseProfile}
@@ -73,52 +190,112 @@ const Setting = () => {
             <Header title="Profile History" />
           </div>
           <div className="table-bb-gray mt-1 ms-4 me-4"></div>
-
           <div className="mt-4">
+            <InputLabel className="pt-2 pb-2 mb-3">Full Name</InputLabel>
+            <TextField
+              name="name"
+              value={ShowUserName}
+              onChange={HandleChangeUserName}
+              variant="outlined"
+              autoComplete="off"
+              className="pt-1 pb-1 w-3/6 "
+              label="Full Name"
+            ></TextField>
+          </div>
+          <div className="mt-4 h-[calc(100vh-15rem)]">
             <div className="flex justify-between items-center">
               <div className="">
                 <div className="flex items-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleProfileImageChange}
+                  />
                   <Image
-                    width={170}
-                    height={170}
+                    width={145}
+                    height={145}
                     className="rounded-full mr-2"
-                    src="/ProfileAvatar.png"
+                    src={
+                      profileImage
+                        ? URL.createObjectURL(profileImage)
+                        : "/ProfileAvatar.png"
+                    }
                     alt="Profile"
                   />
-                  <div className="ps-4 ">
-                    <div>
-                      <span className="text-2xl font-bold">Joe Harrison</span>
+                  <div className="ps-3 pe-3">
+                    <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                      <AiOutlineUpload size={20} />
+                      <span
+                        onClick={handleUploadPictureClick}
+                        className="ps-1 pe-1 border-b-2 border-gray-400"
+                      >
+                        Upload Picture
+                      </span>
                     </div>
-                    <div>
-                      <span className="font-medium">Manager</span>
+                    <div className="flex items-center pt-2 pb-2 cursor-pointer">
+                      <AiOutlineUpload size={20} />
+                      <span className="ps-1 pe-1 border-b-2 border-gray-400">
+                        Select Picture
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div>
-                <Button className="button-black ps-4 pe-4 pt-2 pb-2">
-                  Edit
+            </div>
+            <div>
+              <div className="pt-3">
+                <Button
+                  onClick={handleOpenModal}
+                  variant="outlined"
+                  className="mt-3 rounded-lg"
+                >
+                  Change Password
                 </Button>
               </div>
             </div>
-            <div className="flex mt-6">
-              <div className="border-e-2 ps-3 pe-3">
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">Email</span>
-                </div>
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">Number</span>
-                </div>
-              </div>
-              <div className="table-bb-gray"></div>
-              <div className="ps-3 pe-3">
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">joeharrison@gmail.com</span>
-                </div>
-                <div className="pt-2 pb-2 ps-2 pe-2">
-                  <span className="font-medium">+154826846849</span>
-                </div>
-              </div>
+          </div>
+        </div>
+      )}
+      {showProfile ? (
+        <></>
+      ) : (
+        <>
+          <div className="table-bb-gray mt-1 ms-4 me-4"></div>
+          <div className="flex justify-between items-center pt-4">
+            <div>
+              <Button
+                className="text-black ms-2 me-2"
+                variant="outlined"
+                onClick={handleCloseProfile}
+              >
+                Back
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                className="button-black ms-2 me-2"
+                onClick={HandleSubmitUserName}
+              >
+                {profileIsLoading ? (
+                  <>
+                    <>
+                      <FaSpinner
+                        size={16}
+                        className="rotate"
+                        style={{
+                          marginRight: "10px",
+                        }}
+                      ></FaSpinner>
+                      Saving...
+                    </>
+                  </>
+                ) : (
+                  <> Save</>
+                )}
+              </Button>
             </div>
           </div>
         </>

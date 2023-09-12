@@ -5,7 +5,7 @@ import Header from '@/common/Header/header';
 const Library = () => {
   return (
     <>
-    <div className='flex flex-col gap-5'>
+    <div className='flex flex-col gap-5 '>
 
     {/* <Header title='Library'/> */}
     <Table/>
