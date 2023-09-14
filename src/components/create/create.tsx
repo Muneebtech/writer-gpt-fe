@@ -210,6 +210,11 @@ const Create = () => {
       setDataFlag(true);
     }
   }, [isSuccess]);
+  useEffect(() => {
+    if (isSuccess) {
+      handleStateUpdate({script:data.script})
+    }
+  }, [isSuccess,data]);
   return (
     <div>
       {showToaster === "0" && (
