@@ -27,12 +27,8 @@ import Image from "next/image";
 import { categoryDataTypess } from "../Types/category.type";
 // import BrandsLibrary from "../brandsLibrary/brandsLibrary";
 import { useCategories } from "@/services/category/hooks/useCategories";
-import { ChannelServices, useCreateChannel } from "@/services/channel";
 import { useGetChannels } from "@/services/channel/hooks/useGetChannels";
 import { getChannelTypes } from "../Types/channel.types";
-import Spinner from "@/modules/spinner/spinner";
-import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
-import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { useUpdateChannel } from "@/services/channel/hooks/useUpdateChannel";
 import Toaster from "@/common/Toaster/Toaster";
 interface FormData {
