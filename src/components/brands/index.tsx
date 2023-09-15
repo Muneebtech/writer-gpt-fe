@@ -34,7 +34,7 @@ import { useGetChannels } from "@/services/channel/hooks/useGetChannels";
 import { getChannelTypes } from "../Types/channel.types";
 import Spinner from "@/modules/spinner/spinner";
 import ScrollSpinner from "@/modules/spinner/ScrollSpinner";
-import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
+import { useDeleteChannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { isAdminOrManager } from "@/utils/authorisation";
 import { decryptData } from "@/utils/localStorage";
 import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
@@ -101,7 +101,7 @@ const Brands = () => {
     mutate: mutateChannel,
     isLoading: isLoadingDelete,
     isSuccess: isSuccessDelete,
-  } = useDeletechannels();
+  } = useDeleteChannels();
   const [formData, setFormData] = useState<FormData>({
     channel: "",
     category: "",
@@ -651,7 +651,7 @@ const Brands = () => {
                 <Skeleton
                   widht={120}
                   height={120}
-                  titleofPage="No Channel Found"  
+                  titleofPage="No Channel Found"
                   TitleData="Suggestion"
                 />
               </div>

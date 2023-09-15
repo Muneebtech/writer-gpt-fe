@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { FaSpinner, FaTrash } from "react-icons/fa";
-import { useDeletechannels } from "@/services/channel/hooks/useDeleteChaneel";
+import { useDeleteChannels } from "@/services/channel/hooks/useDeleteChaneel";
 import { getChannelTypes } from "../Types/channel.types";
 import EditChannel from "./EditChannel";
 import { isAdminOrManager } from "@/utils/authorisation";
@@ -53,7 +53,7 @@ const Cards: React.FC<CardProps> = ({
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLElement | null>(
     null
   );
-  const { isLoading, isSuccess, mutate } = useDeletechannels();
+  const { isLoading, isSuccess, mutate } = useDeleteChannels();
   const [showeditModal, setShowEditModal] = useState(false);
   const [showdeleteModal, setDeleteModal] = useState(false);
   const { backgroundColor, textColor } = generateRandomColors();
