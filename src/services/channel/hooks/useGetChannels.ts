@@ -9,6 +9,7 @@ export function useGetChannels(params: QueryData) {
     fetchNextPage,
     isFetchingNextPage,
     isFetching,
+    refetch
   } = useInfiniteQuery(
     ["useGetChannels", params],
     ({ pageParam = 1 }) => {
@@ -39,5 +40,6 @@ export function useGetChannels(params: QueryData) {
     totalPages,
     isFetchingNextPage,
     isFetching,
+    refetch
   };
 }
