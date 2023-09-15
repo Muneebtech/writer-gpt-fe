@@ -69,8 +69,6 @@ const Cards: React.FC<CardProps> = ({
   };
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-    console.log();
-
     setPopoverAnchorEl(event.currentTarget);
   };
   const handlePopoverClose = () => {

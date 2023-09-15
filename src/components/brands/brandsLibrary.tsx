@@ -1,15 +1,13 @@
 import Header from "@/common/Header/header";
-import Spinner from "@/modules/spinner/spinner";
 import { useGetChannelById } from "@/services/channel";
 import { Button } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { AiOutlineLeft } from "react-icons/ai";
 import { FiPlus } from "react-icons/fi";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import OverView from "./BrandsTabPane/OverView";
 import Outros from "./BrandsTabPane/Outros";
@@ -26,7 +24,6 @@ import { UseAddManagers, UseGetManagers } from "@/services/managers";
 import { ManagerType } from "../Types/manager.type";
 import { useAddOutro } from "@/services/outro/hooks/AddOutro";
 import EditBrands from "./EditBrands";
-import { isAdminOrManager } from "@/utils/authorisation";
 import { useUpdateOutro } from "@/services/outro/hooks/useUpdateOutro";
 import { decryptData } from "@/utils/localStorage";
 import Toaster from "@/common/Toaster/Toaster";
@@ -287,25 +284,8 @@ const brandsLibrary = () => {
   const handleCloseDeleteModal = () => {
     setdeleteOutroModal(false);
   };
-  // const HandleAddOutro = () => {
-  //   if (newOutroData?.description.trim() !== "") {
-  //     const AddNewOutro: outroDataTypes = {
-  //       ...newOutroData,
-  //       description: "",
-  //     };
 
-  //     setOutroDataList([...OutroDataList, AddNewOutro]);
-  //     setNewOutroData({
-  //       description: "",
-  //     });
-
-  //     PostOutros({ description: newOutroData, id: id });
-  //   }
-  // };
   const HandleAddOutro = () => {
-    console.log(newOutroData, "trigger:: start");
-    console.log(newOutroData?.description.trim() !== "", "Outro");
-    console.log(channelId, "ChannelId");
     if (newOutroData.description === "") {
       setShowError(true);
     } else if (newOutroData?.description.trim() !== "") {
@@ -313,8 +293,6 @@ const brandsLibrary = () => {
         description: newOutroData.description,
         channel: channelId as any,
       });
-      console.log("trigger");
-
       setNewOutroData({
         description: "",
       });
@@ -330,12 +308,8 @@ const brandsLibrary = () => {
     if (SearchValues) {
       setShowError(false);
     }
-    console.log(event.target.value, "Text::Upper Outside Condition");
 
     if (text === "edit") {
-      // console.log(text, "text", value, "value");
-      console.log(event.target.value, "Text");
-
       switch (value) {
         case 1:
           setTextValue({ ...textValue, outro: event.target.value });
@@ -353,7 +327,6 @@ const brandsLibrary = () => {
           });
       }
     }
-    console.log("newOutroData", event.target.value, "Text", text);
     if (text === "add") {
       switch (value) {
         case 1:
@@ -469,7 +442,6 @@ const brandsLibrary = () => {
     event: React.MouseEvent<HTMLDivElement>,
     data: any
   ) => {
-    console.log(data, "data::data::data::data::data");
 
     setIsPopoverOpenTopic(true);
     setpopoverAnchorElTopic(event.currentTarget);

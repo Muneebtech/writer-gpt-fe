@@ -40,7 +40,6 @@ const ReviewData: React.FC<ChildComponentProps> = ({
   setScriptData,
   isLoading,
 }) => {
-  console.log(Jobdata, "jobData");
 
   const profileImage = ScriptData?.photoPath;
   const {
@@ -67,8 +66,6 @@ const ReviewData: React.FC<ChildComponentProps> = ({
     isLoading: commandJobLoading,
     data: commandData,
   } = useCommandJob();
-  console.log(commandData, "commandData");
-  console.log(rewriteData, "rewriteData");
 
   const { data: modelData } = useModel();
   const { data: channelData } = useGetChannels({});
