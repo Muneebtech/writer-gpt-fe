@@ -12,16 +12,12 @@ import StepLabel from "@mui/material/StepLabel";
 import { Job } from "../Types/job.type";
 import { useCreateJob } from "@/services/Jobs/hooks/createJob";
 import ReviewData from "./component/ReviewData";
-import Spinner from "@/modules/spinner/spinner";
 import { useRouter } from "next/router";
 import { FiBook } from "react-icons/fi";
 import LanguageModel from "./component/LanguageModel";
 import Topic from "./component/Topic";
 import Outro from "./component/Outro";
 import Toaster from "@/common/Toaster/Toaster";
-import ScriptSuccessPage from "./component/ScriptSuccessPage";
-import ScriptsButtons from "./component/ScriptsButtons";
-import LottieSpinner from "@/common/LottifliesSpinner/LottieSpinner";
 const steps = [
   "CHANNEL",
   "BASIC",
@@ -50,10 +46,7 @@ const Create = () => {
   const [ScriptData, setScriptData] = useState<Job>(initialValue);
   const [channelId, setChannelId] = useState<string>("");
   const [showToaster, setShowToaster] = useState("");
-  console.log(ScriptData, "ScriptData::ScriptData::ScriptData");
-  const [alertMessage, setAlertMessage] = useState("");
   const [Open, setOpen] = useState(false);
-  const [alertOpen, setAlertOpen] = useState(false);
   const [dataFlag, setDataFlag] = useState(false);
   const { data, isLoading, isSuccess, mutate } = useCreateJob();
   // Load the active step value from local storage on component mount
@@ -68,35 +61,13 @@ const Create = () => {
     localStorage.setItem("activeStep", activeStep.toString());
   }, [activeStep]);
 
-  // const handleNext = () => {
-  //   let newSkipped = skipped;
-  //   newSkipped = new Set(newSkipped.values());
-  //   newSkipped.delete(activeStep);
-  //   if (activeStep === 0 && ScriptData?.channel === "") {
-  //     <Alert severity="error">Please Add Channel First</Alert>
-  //     setActiveStep(0);
-  //   } else if (
-  //     activeStep === 1 &&
-  //     ScriptData?.name === "" &&
-  //     ScriptData?.photoPath === undefined
-  //   ) {
-  //     alert("Please Add Basic data First");
-  //     setActiveStep(1);
-  //   } else if (activeStep === 2 && ScriptData?.model === "") {
-  //     alert("Please Add Model Data First");
-  //     setActiveStep(2);
-  //   } else if (activeStep === 3 && ScriptData?.topic === "") {
-  //     alert("Please Add Topic Data First");
-  //     setActiveStep(3);
-  //   } else if (activeStep === 4 && ScriptData?.outro === "") {
-  //     alert("Please Add Outro Data First");
-  //     setActiveStep(4);
-  //   } else if (activeStep < 6) {
-  //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   }
-  //   setSkipped(newSkipped);
-  // };
-  console.log(activeStep, "activeStep");
+  useEffect(() => {
+    if (isSuccess) {
+      handleStateUpdate({script:data.script})
+      setOpen(true);
+      setDataFlag(true);
+    }
+  }, [data,isSuccess]);
 
   const handleNext = () => {
     let newSkipped = skipped;
@@ -157,9 +128,7 @@ const Create = () => {
     formdata.append("channel", data.channel as string);
     mutate(formdata);
   };
-  const handleChannelId = () => {
-    setChannelId("");
-  };
+
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
@@ -204,17 +173,6 @@ const Create = () => {
     return <Slide {...props} direction="left" />;
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      setOpen(true);
-      setDataFlag(true);
-    }
-  }, [isSuccess]);
-  useEffect(() => {
-    if (isSuccess) {
-      handleStateUpdate({script:data.script})
-    }
-  }, [isSuccess,data]);
   return (
     <div>
       {showToaster === "0" && (
