@@ -75,8 +75,10 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
             </div>
           ) : (
             <>
-              {" "}
-              <div className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)] ">
+              <div
+                // style={{ height: `${divHeight}px` }}
+                className="mt-6 rounded-md border-2 h-[calc(100vh-13.5rem)]"
+              >
                 <div className="h-[10%]">
                   <div className="ps-3 pt-2">
                     <h4 className="font-bold">SELECT LANGUAGE MODEL</h4>

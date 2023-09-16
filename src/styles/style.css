@@ -155,17 +155,13 @@ textarea {
 .Mui-active-complete {
   background-color: #1e9030 !important;
 }
-
-.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
-  font-size: 25px;
-}
-
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
   font-size: 25px;
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
   color: #171717 !important;
+  font-size: 25px !important;
 }
 
 .css-1hv8oq8-MuiStepLabel-label.Mui-completed {
@@ -237,14 +233,19 @@ textarea {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .truncate-text-2 {
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Number of lines to show */
+  -webkit-line-clamp: 2;
+  /* Number of lines to show */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  white-space: nowrap; /* Prevent text from wrapping */
-  text-overflow: ellipsis; /* Add ellipsis (...) for overflow text */
+  white-space: nowrap;
+  /* Prevent text from wrapping */
+  text-overflow: ellipsis;
+  /* Add ellipsis (...) for overflow text */
 }
+
 .spinner .spinner-blade {
   position: absolute;
   left: 0.4629em;
@@ -370,7 +371,7 @@ textarea {
 }
 
 .border-black-btn {
-  border: 1px solid #171717;
+  border: 1px solid #171717 !important;
 }
 
 .outro-item:hover {
@@ -382,8 +383,8 @@ textarea {
   height: 27.5vh;
 }
 
-.border-black-btn {
-  border: 1px solid #171717;
+.css-4ff9q7.Mui-active {
+  background-color: #171717 !important;
 }
 
 .border-btn-red {
@@ -688,13 +689,16 @@ label+.css-v4u5dn-MuiInputBase-root-MuiInput-root {
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   padding: 5px 15px !important;
 }
-.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root{
-  padding: 10px 10px!important;
+
+.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
+  padding: 10px 10px !important;
   height: auto;
 }
-.button-gaps{
+
+.button-gaps {
   margin: 0px 5px !important;
 }
+
 .text-truncate {
   overflow: hidden !important;
   white-space: nowrap !important;
