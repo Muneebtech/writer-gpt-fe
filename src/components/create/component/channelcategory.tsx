@@ -116,7 +116,8 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                 </div>
                 <div></div>
                 {Data?.length > 0 ? (
-                  <div className="flex flex-wrap flex-start mt-4 mb-4 h-[90%] overflow-scroll">
+                  <div className="overflow-scroll h-[90%]">
+                  <div className="flex flex-wrap flex-start mt-4 mb-4">
                     {Data?.map((item: Channel) => {
                       const { id, channel, description } = item;
                       const isSelected = selectedItemId === id;
@@ -126,11 +127,11 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                             handleClick(id);
                           }}
                           key={id}
-                          className={`flex cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card ${
+                          className={`flex h-[20%] cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card ${
                             isSelected ? "Selected" : ""
                           }`}
                         >
-                          <div className="flex items-center">
+                          <div className="flex items-center h-[50px]">
                             <div>
                               <Image
                                 src="/chaneel.png"
@@ -172,6 +173,7 @@ const ChannelAndCategory: React.FC<ChildComponentProps> = ({
                         </div>
                       );
                     })}
+                  </div>
                   </div>
                 ) : (
                   <>

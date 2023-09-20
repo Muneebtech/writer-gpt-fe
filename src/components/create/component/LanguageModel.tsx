@@ -100,35 +100,17 @@ const LanguageModel: React.FC<ChildComponentProps> = ({ setScriptData }) => {
                 {/* <div className=" mt-4 mb-4 h-[calc(100vh-22.5rem)] overflow-scroll"> */}
                 {FilterData?.length > 0 ? (
                   <div className="overflow-scroll h-[90%]">
-                    {" "}
                     <div className="flex flex-wrap flex-start mt-4 mb-4  ">
-                      {[
-                        ...FilterData,
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                        // { model: "fsafas", description: "sfas", id: "3523" },
-                      ]?.map((item: ModelList) => {
+                      {FilterData?.map((item: ModelList) => {
                         const { id, description, model } = item;
                         return (
                           <div
                             onClick={() => handleClick(id)}
                             key={id}
                             className="flex h-[20%]
-                          cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 w-[30%] "
+                          cursor-pointer justify-between items-center pt-2 pb-2 ps-4 pe-4 border rounded ms-2 me-2 mt-2 mb-2 widht-card "
                           >
-                            <div className="flex items-center">
+                            <div className="flex items-center h-[50px]">
                               <div className="ps-2 ">
                                 <div className="pt-1 pb-1">
                                   <p className=" font-bold text-sm">{model}</p>

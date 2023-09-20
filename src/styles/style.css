@@ -380,7 +380,7 @@ textarea {
 }
 
 .height-outro {
-  height: 27.5vh;
+  height: calc(100vh - 435px);
 }
 
 .css-4ff9q7.Mui-active {
