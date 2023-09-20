@@ -234,12 +234,6 @@ const Setting = () => {
                         Upload Picture
                       </span>
                     </div>
-                    <div className="flex items-center pt-2 pb-2 cursor-pointer">
-                      <AiOutlineUpload size={20} />
-                      <span className="ps-1 pe-1 border-b-2 border-gray-400">
-                        Select Picture
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>
