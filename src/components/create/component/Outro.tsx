@@ -13,8 +13,7 @@ interface ChildComponentProps {
 }
 const Outro: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
   const { data: Outrodata, isLoading: outroLoading, mutate } = useGetOutro()
-  console.log(Outrodata, 'Outrodata')
-  console.log(Outrodata, 'Outrodata::Outrodata::Outrodata  ')
+
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   const [dataList, setDataList] = useState<outroDataTypes[]>(Outrodata || [])
@@ -47,7 +46,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
   }
 
   const ClearAllData = () => {
-    setDataList([])
+    setNewData({ description: '', id:"0" ,outro:"",status:null})
   }
 
   const handleClearTextField = () => {
@@ -116,7 +115,7 @@ const Outro: React.FC<ChildComponentProps> = ({ setScriptData, channelId }) => {
                     <TextField
                       id='filled-multiline-static'
                       label='Type outro here...'
-                      rows={4}
+                      rows={2}
                       multiline
                       variant='filled'
                       className='border-2 w-full'

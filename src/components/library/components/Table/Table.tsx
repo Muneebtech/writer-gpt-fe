@@ -128,7 +128,7 @@ const Table = () => {
               onSearch={handleSearch}
             />
             <div>
-              <Button
+              {/* <Button
                 onClick={() => setShowFilters(!showFilters)}
                 variant="outlined"
                 className="ps-4 pe-4"
@@ -136,9 +136,8 @@ const Table = () => {
                 <FiFilter />
                 <span className="ps-2 pe-2">Filters</span>
                 {showFilters ? <FiArrowUp /> : <FiArrowDown />}
-                {/* <FiArrowDown />
-                <FiArrowUp /> */}
-              </Button>
+                
+              </Button> */}
             </div>
           </div>
           {filteredData?.length === 0 ? (
