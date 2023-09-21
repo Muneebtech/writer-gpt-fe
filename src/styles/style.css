@@ -377,6 +377,18 @@ textarea {
   background-color: #f9f9f9;
   border-radius: 8px;
 }
+.css-1ujsas3 {
+  color:black
+}
+.css-1q2h7u5.Mui-selected {
+  color:black;
+}
+.css-4ff9q7.Mui-completed {
+  color:  #1e9030 !important;
+}
+.css-4ff9q7.Mui-active {
+  color: black;
+}
 
 .height-outro {
   height: 27.5vh;
